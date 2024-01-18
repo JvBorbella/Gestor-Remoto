@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/pages/splash.dart';
+import 'package:projeto/Front/pages/splash.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
+        
       ),
       //Tela em que inicia após compilar.
       home: const Splash(),
