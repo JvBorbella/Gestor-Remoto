@@ -62,19 +62,43 @@ class _ConfigPageState extends State<ConfigPage> {
                                     String url = urlController.text;
                                     ApiService.fetchData(url).then((response) {
                                       // Faça algo com a resposta (exibição na tela, etc.)
-                                      if (response == 200) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginPage()),
-                                        );
-                                      };
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            'Ip salvo com sucesso!',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => LoginPage(),
+                                        ),
+                                      );
+                                      print(response);
                                     }).catchError((error) {
                                       // Trate erros (exibição de mensagem de erro, etc.)
-                                      print(error);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            'Não foi possível conectar-se ao servidor.',
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Color(0xffffffff)),
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
                                     });
                                   },
                                 ),
+
                                 SizedBox(
                                   width: 15,
                                 ),

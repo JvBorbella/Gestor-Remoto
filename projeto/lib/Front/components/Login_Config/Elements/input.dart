@@ -26,7 +26,7 @@ class _InputState extends State<Input> {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
         child: Container(
-          //Margem interna do input.
+          //Margem externa do input.
           margin: EdgeInsets.only(left: 5.0, right: 5),
           child: Column(
             //Alinhagem do input
@@ -47,11 +47,13 @@ class _InputState extends State<Input> {
                   ),
                   //Propriedade usada para fazer com que no Focus do input, o label seja alinhado ao centro.
                   floatingLabelAlignment: FloatingLabelAlignment.center,
+                  floatingLabelStyle: TextStyle(
+                  ),
                   //Borda do input
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xff42b9f0)),
                   ),
-                  //Borda do input no focus
+                  //Borda do input no focus                  
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0xff42b9f0),
