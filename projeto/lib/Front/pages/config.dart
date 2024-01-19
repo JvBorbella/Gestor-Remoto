@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/Url-Connect.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/buttom.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
@@ -15,6 +16,7 @@ class ConfigPage extends StatefulWidget {
 class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
+    TextEditingController urlController = TextEditingController();
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -41,6 +43,7 @@ class _ConfigPageState extends State<ConfigPage> {
                           type: TextInputType.text,
                           text: 'Configuração de IP',
                           obscureText: false,
+                          controller: urlController,
                         ),
                         SizedBox(
                           height: 35,
@@ -53,19 +56,33 @@ class _ConfigPageState extends State<ConfigPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 //Chamando os button
-                                ButtomInitial(
-                                  text: 'Salvar',
-                                  destination: LoginPage(),
-                                  height: MediaQuery.of(context).size.width * 0.05
+                                TextButton(
+                                  child: Text('Salvar'),
+                                  onPressed: () {
+                                    String url = urlController.text;
+                                    ApiService.fetchData(url).then((response) {
+                                      // Faça algo com a resposta (exibição na tela, etc.)
+                                      if (response == 200) {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()),
+                                        );
+                                      };
+                                    }).catchError((error) {
+                                      // Trate erros (exibição de mensagem de erro, etc.)
+                                      print(error);
+                                    });
+                                  },
                                 ),
                                 SizedBox(
                                   width: 15,
                                 ),
                                 ButtomInitial(
-                                  text: 'Cancelar',
-                                  destination: LoginPage(),
-                                  height: MediaQuery.of(context).size.width * 0.05
-                                ),
+                                    text: 'Cancelar',
+                                    destination: LoginPage(),
+                                    height: MediaQuery.of(context).size.width *
+                                        0.05),
                               ],
                             ),
                           ],

@@ -4,11 +4,11 @@ class ButtomInitial extends StatefulWidget {
   //Variável para definir o texto do button na página em que é chamado
   final String text;
   //Variável para definir o destino ao clicar no button na página em que é chamado
-  final Widget destination;
+  final destination;
   //Variável para definir o tamanho do button na página em que é chamado
   final double height;
 
-  const ButtomInitial({Key? key, required this.text, required this.destination, required this.height}) : super(key: key);
+  const ButtomInitial({Key? key, required this.text, this.destination, required this.height}) : super(key: key);
 
   @override
   State<ButtomInitial> createState() => _ButtomInitialState();

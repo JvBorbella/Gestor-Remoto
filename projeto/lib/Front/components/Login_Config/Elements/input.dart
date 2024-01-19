@@ -8,9 +8,10 @@ class Input extends StatefulWidget {
   final TextInputType type;
   //Variável para definir se o texto passado no input será exibido ou ocultado, na página em que é chamado
   final obscureText;
+  final controller;
 
   const Input(
-      {Key? key, required this.text, required this.type, this.obscureText})
+      {Key? key, required this.text, required this.type, this.obscureText, this.controller})
       : super(key: key);
 
   @override
@@ -34,6 +35,7 @@ class _InputState extends State<Input> {
             children: [
               TextField(
                 //Configurações do input
+                controller: widget.controller,
                 keyboardType: widget.type,
                 obscureText: widget.obscureText,
                 cursorColor: Color(0xff00568e),
