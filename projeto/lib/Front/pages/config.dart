@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Back/Url-Connect.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
+import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/buttom.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Login_Config/Estructure/form-card.dart';
@@ -56,48 +57,50 @@ class _ConfigPageState extends State<ConfigPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 //Chamando os button
-                                TextButton(
-                                  child: Text('Salvar'),
-                                  onPressed: () {
-                                    String url = urlController.text;
-                                    ApiService.fetchData(url).then((response) {
-                                      // Faça algo com a resposta (exibição na tela, etc.)
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Text(
-                                            'Ip salvo com sucesso!',
-                                            style: TextStyle(
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => LoginPage(),
-                                        ),
-                                      );
-                                      print(response);
-                                    }).catchError((error) {
-                                      // Trate erros (exibição de mensagem de erro, etc.)
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Text(
-                                            'Não foi possível conectar-se ao servidor.',
-                                            style: TextStyle(
+                                ButtonConfig(
+                                    text: 'Salvar',
+                                    onPressed: () {
+                                      String url = urlController.text;
+                                      ApiService.fetchData(url)
+                                          .then((response) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              'Ip salvo com sucesso!',
+                                              style: TextStyle(
                                                 fontSize: 13,
-                                                color: Color(0xffffffff)),
+                                                color: Color(0xfffffffff),
+                                              ),
+                                            ),
+                                            backgroundColor: Colors.green,
                                           ),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
-                                    });
-                                  },
-                                ),
+                                        );
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => LoginPage(),
+                                          ),
+                                        );
+                                        print(response);
+                                      }).catchError((error) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              'Não foi possível conectar-se ao servidor.',
+                                              style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Color(0xffffffff)),
+                                            ),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      });
+                                    },
+                                    height: MediaQuery.of(context).size.width *
+                                        0.05),
 
                                 SizedBox(
                                   width: 15,

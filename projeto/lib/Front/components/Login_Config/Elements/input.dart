@@ -19,25 +19,32 @@ class Input extends StatefulWidget {
 }
 
 class _InputState extends State<Input> {
+  TextEditingController _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Se um controlador foi fornecido, use-o; caso contrário, use o controlador interno.
+    if (widget.controller != null) {
+      _textController = widget.controller;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      //ConstrainedBox usada para definir um tamanho máximo para o input
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
         child: Container(
-          //Margem externa do input.
           margin: EdgeInsets.only(left: 5.0, right: 5),
           child: Column(
-            //Alinhagem do input
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextField(
-                //Configurações do input
-                controller: widget.controller,
+                controller: _textController,
                 keyboardType: widget.type,
-                obscureText: widget.obscureText,
+                obscureText: widget.obscureText ?? false, // Padrão para false se não for fornecido.
                 cursorColor: Color(0xff00568e),
                 decoration: InputDecoration(
                   labelText: widget.text,
@@ -45,15 +52,10 @@ class _InputState extends State<Input> {
                     color: Color(0xffA6A6A6),
                     fontSize: 12,
                   ),
-                  //Propriedade usada para fazer com que no Focus do input, o label seja alinhado ao centro.
                   floatingLabelAlignment: FloatingLabelAlignment.center,
-                  floatingLabelStyle: TextStyle(
-                  ),
-                  //Borda do input
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0xff42b9f0)),
                   ),
-                  //Borda do input no focus                  
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0xff42b9f0),
@@ -62,7 +64,6 @@ class _InputState extends State<Input> {
                   ),
                 ),
               ),
-              //Espaçamento para elementos abaixo.
               SizedBox(
                 height: 5,
               )
@@ -71,5 +72,12 @@ class _InputState extends State<Input> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Certifique-se de liberar o controlador ao destruir o widget.
+    _textController.dispose();
+    super.dispose();
   }
 }
