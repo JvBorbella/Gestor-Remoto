@@ -1,6 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Splash/Elements/Text-Splash.dart';
+import 'package:projeto/Front/components/Style.dart';
 import 'dart:async';
 
 import 'package:projeto/Front/pages/login.dart';
@@ -34,17 +34,7 @@ class _SplashState extends State<Splash> {
         //Estilização da tela splash
         decoration: BoxDecoration(
           //Gradiente color usado na tela splash
-          gradient: LinearGradient(
-            colors: [
-              Color(0xff0B4164),
-              Color(0xff0476A8),
-              Color(0xff009BC0),
-              Color(0xff2EB9D3),
-            ],
-            //Direcionamento do gradient
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: Style.gradient
         ),
         //Conteúdo da tela
         child: Row(
@@ -60,7 +50,7 @@ class _SplashState extends State<Splash> {
                   children: [
                     Image.network(
                       'https://ideiatecnologia.com.br/wp-content/webp-express/webp-images/uploads/2023/11/imagem_2023-11-13_202733151.png.webp',
-                      color: Color(0xffffffff),
+                      color: Style.tertiaryColor,
                       height: 90,
                     ),
                   ],

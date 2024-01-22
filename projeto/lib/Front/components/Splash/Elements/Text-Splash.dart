@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class AnimatedTextMove extends StatefulWidget {
   final String text;
@@ -59,7 +60,7 @@ class _AnimatedTextMoveState extends State<AnimatedTextMove> {
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.w300,
-            color: Color(0xffF2F2F2),
+            color: Style.tertiaryColor,
           ),
         ),
       ),

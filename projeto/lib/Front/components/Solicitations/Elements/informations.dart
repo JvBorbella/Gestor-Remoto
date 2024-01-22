@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class Informations extends StatefulWidget {
   const Informations({super.key});
@@ -27,12 +28,12 @@ class _InformationsState extends State<Informations> {
                       'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                       width: 70,
                       height: 70,
-                      color: Color(0xff00568e),
+                      color: Style.primaryColor,
                       fit: BoxFit.cover,
                     ),
                   ),
                   decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Color(0xff00568e)),
+                    border: Border.all(width: 2, color: Style.primaryColor),
                     borderRadius: BorderRadius.circular(50),
                   ),
                 ),

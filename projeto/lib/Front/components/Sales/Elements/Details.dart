@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class Details extends StatefulWidget {
   const Details({super.key});
@@ -23,7 +24,7 @@ class _DetailsState extends State<Details> {
                 //Estilização
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Color(0xff00568e),
+                  color: Style.primaryColor,
                 ),
                 //Campos e seus valores
                 child: Row(
@@ -34,7 +35,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           'Ticket md.',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 8,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -42,7 +43,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           '000,00',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -57,7 +58,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           'Margem.',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 8,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -65,7 +66,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           '0,0%',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -80,7 +81,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           'Participação.',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 8,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -88,7 +89,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           '0,0%',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -103,7 +104,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           'Clientes.',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 8,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -111,7 +112,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           '0',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -126,7 +127,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           'Cupom.',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 8,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -134,7 +135,7 @@ class _DetailsState extends State<Details> {
                         Text(
                           '0',
                           style: TextStyle(
-                              color: Color(0xfffffffff),
+                              color: Style.tertiaryColor,
                               fontSize: 12,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
@@ -144,7 +145,7 @@ class _DetailsState extends State<Details> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

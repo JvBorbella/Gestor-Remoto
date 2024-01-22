@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class ButtonConfig extends StatefulWidget {
   //Variável para definir o texto do button na página em que é chamado
@@ -37,7 +38,7 @@ class _ButtonConfigState extends State<ButtonConfig> {
               widget.text,
               //Estilização do button
               style: TextStyle(
-                color: Color(0xff42b9f0),
+                color: Style.secondaryColor,
                 fontWeight: FontWeight.bold,
                 fontSize: widget.height,
               ),

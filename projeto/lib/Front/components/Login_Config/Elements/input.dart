@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class Input extends StatefulWidget {
   //Variável para definir o texto do input na página em que é chamado
@@ -44,29 +45,26 @@ class _InputState extends State<Input> {
               TextField(
                 controller: _textController,
                 keyboardType: widget.type,
-                obscureText: widget.obscureText ?? false, // Padrão para false se não for fornecido.
-                cursorColor: Color(0xff00568e),
+                obscureText: widget.obscureText ?? false,
+                cursorColor: Style.primaryColor,
                 decoration: InputDecoration(
                   labelText: widget.text,
                   labelStyle: TextStyle(
-                    color: Color(0xffA6A6A6),
-                    fontSize: 12,
+                    color: Style.quarantineColor,
+                    fontSize: MediaQuery.of(context).size.height * 0.025,
                   ),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xff42b9f0)),
+                    borderSide: BorderSide(color: Style.secondaryColor),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Color(0xff42b9f0),
+                      color: Style.secondaryColor,
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 5,
-              )
             ],
           ),
         ),

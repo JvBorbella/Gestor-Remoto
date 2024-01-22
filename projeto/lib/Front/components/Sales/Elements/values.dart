@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Sales/Elements/Text-Values.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class Values extends StatefulWidget {
   const Values({super.key});
@@ -24,7 +25,7 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Hoje',
-                      style: TextStyle(fontSize: 9, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],
@@ -33,7 +34,7 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Ontem',
-                      style: TextStyle(fontSize: 9, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],
@@ -51,7 +52,7 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Semana passada',
-                      style: TextStyle(fontSize: 9, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],
@@ -60,7 +61,7 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Mês passado',
-                      style: TextStyle(fontSize: 9, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],
@@ -72,7 +73,7 @@ class _ValuesState extends State<Values> {
             ),
             //Linha divisória
             Divider(
-              color: Color(0xffD9D9D9), // Cor da linha
+              color: Style.quarantineColor, // Cor da linha
               height: 20, // Altura da linha
               thickness: 2,
             ),
@@ -87,7 +88,7 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Meta de hoje',
-                      style: TextStyle(fontSize: 9, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],
@@ -96,7 +97,7 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Meta acum.',
-                      style: TextStyle(fontSize: 9, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],

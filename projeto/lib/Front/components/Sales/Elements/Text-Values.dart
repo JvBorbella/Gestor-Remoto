@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class TextValues extends StatefulWidget {
   final String text;
@@ -17,7 +18,7 @@ class _TextValuesState extends State<TextValues> {
         widget.text,
         style: TextStyle(
           fontSize: 18,
-          color: Color(0xff00568e),
+          color: Style.primaryColor,
           fontWeight: FontWeight.bold
         ),
       ),

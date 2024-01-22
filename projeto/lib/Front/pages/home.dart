@@ -9,6 +9,7 @@ import 'package:projeto/Front/components/Global/Estructure/requisition-card.dart
 import 'package:projeto/Front/components/Home/Requisitions/Elements/text-requisition.dart';
 import 'package:projeto/Front/components/Home/Estructure/total-card.dart';
 import 'package:projeto/Front/components/Home/Estructure/filial-card.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -61,7 +62,7 @@ class _HomeState extends State<Home> {
                               Text(
                                 'Requisições',
                                 style: TextStyle(
-                                    color: Color(0xff00568E),
+                                    color: Style.primaryColor,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),

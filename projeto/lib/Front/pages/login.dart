@@ -3,6 +3,7 @@ import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/buttom.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Login_Config/Estructure/form-card.dart';
+import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/config.dart';
 import 'package:projeto/Front/pages/home.dart';
 
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: false,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: Style.inputSpace,
                       ),
                       Input(
                         text: 'Senha',

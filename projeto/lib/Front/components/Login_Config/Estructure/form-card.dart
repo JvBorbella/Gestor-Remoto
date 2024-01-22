@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class FormCard extends StatefulWidget {
   //Variável para permitir que sejam inseridos outros elementos dentro do card.
@@ -23,7 +24,7 @@ class _FormCardState extends State<FormCard> {
           // Imagem usada nas telas de login e config.
           Image.network(
                 'https://ideiatecnologia.com.br/wp-content/webp-express/webp-images/uploads/2023/11/imagem_2023-11-13_202733151.png.webp',
-                color: Color(0xff00568e),
+                color: Style.primaryColor,
                 height: 90,
               ),
               //Área do container com os widgets de form.

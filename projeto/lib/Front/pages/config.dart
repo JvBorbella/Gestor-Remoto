@@ -5,6 +5,7 @@ import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart
 import 'package:projeto/Front/components/Login_Config/Elements/buttom.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Login_Config/Estructure/form-card.dart';
+import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/login.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -71,10 +72,10 @@ class _ConfigPageState extends State<ConfigPage> {
                                               'Ip salvo com sucesso!',
                                               style: TextStyle(
                                                 fontSize: 13,
-                                                color: Color(0xfffffffff),
+                                                color: Style.tertiaryColor,
                                               ),
                                             ),
-                                            backgroundColor: Colors.green,
+                                            backgroundColor: Style.sucefullColor,
                                           ),
                                         );
                                         Navigator.of(context).push(
@@ -92,9 +93,9 @@ class _ConfigPageState extends State<ConfigPage> {
                                               'Não foi possível conectar-se ao servidor.',
                                               style: TextStyle(
                                                   fontSize: 13,
-                                                  color: Color(0xffffffff)),
+                                                  color: Style.tertiaryColor),
                                             ),
-                                            backgroundColor: Colors.red,
+                                            backgroundColor: Style.errorColor,
                                           ),
                                         );
                                       });
