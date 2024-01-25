@@ -6,6 +6,7 @@ import 'package:projeto/Front/components/Solicitations/Elements/deleteButton.dar
 import 'package:projeto/Front/components/Solicitations/Elements/informations.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Global/Estructure/requisition-card.dart';
+import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/home.dart';
 
 class Solicitacion extends StatefulWidget {
@@ -32,7 +33,7 @@ class _SolicitacionState extends State<Solicitacion> {
                   ),
               ], text: 'Solicitações'),
               SizedBox(
-                height: 10,
+                height: Style.ContentInternalSpace,
               ),
               // Spacer para preencher o espaço entre Navbar e RequisitionCard
               Spacer(),
@@ -59,7 +60,7 @@ class _SolicitacionState extends State<Solicitacion> {
                             ],
                           ),
                           SizedBox(
-                            height: 10,
+                            height: Style.ContentInternalSpace,
                           ),
                           //Chamando o texto referente à solicitação
                           Row(
@@ -77,7 +78,7 @@ class _SolicitacionState extends State<Solicitacion> {
                             ],
                           ),
                           SizedBox(
-                            height: 30,
+                            height: Style.ContentInternalButtonSpace,
                           ),
                           //Chamando o button de autorização
                           Row(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/Token-Verification.dart';
 import 'package:projeto/Front/components/Splash/Elements/Text-Splash.dart';
 import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/Front/pages/home.dart';
 import 'dart:async';
-
 import 'package:projeto/Front/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -17,13 +19,20 @@ class _SplashState extends State<Splash> {
   //Função para iniciar o timer quando o widget for carregado
   void initState() {
     super.initState();
-
-    //Função para adicionar um timer à tela splash
-    Timer(Duration(seconds: 4), () {
-      Navigator.of(context).pushReplacement(
-        //Função executada após o tempo acabar
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
+    verificarToken().then((value) {
+      if (value) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage())
+        );
+      }
     });
   }
 
@@ -33,9 +42,8 @@ class _SplashState extends State<Splash> {
       body: Container(
         //Estilização da tela splash
         decoration: BoxDecoration(
-          //Gradiente color usado na tela splash
-          gradient: Style.gradient
-        ),
+            //Gradiente color usado na tela splash
+            gradient: Style.gradient),
         //Conteúdo da tela
         child: Row(
           //Alinhamentos
@@ -69,5 +77,13 @@ class _SplashState extends State<Splash> {
         ),
       ),
     );
+  }
+  Future<bool> verificarToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString('token') != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

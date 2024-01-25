@@ -9,7 +9,9 @@ import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/login.dart';
 
 class ConfigPage extends StatefulWidget {
-  const ConfigPage({super.key});
+   final String initialUrl;
+
+  const ConfigPage({super.key, this.initialUrl = ''});
 
   @override
   State<ConfigPage> createState() => _ConfigPageState();
@@ -38,7 +40,7 @@ class _ConfigPageState extends State<ConfigPage> {
                     FormCard(
                       children: [
                         SizedBox(
-                          height: 15,
+                          height: Style.ImageToInputSpace,
                         ),
                         //Chamando elementos para dentro do container
                         Input(
@@ -48,7 +50,7 @@ class _ConfigPageState extends State<ConfigPage> {
                           controller: urlController,
                         ),
                         SizedBox(
-                          height: 35,
+                          height: Style.InputToButtonSpace,
                         ),
                         Column(
                           children: [
@@ -80,7 +82,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                         );
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: (context) => LoginPage(),
+                                            builder: (context) => LoginPage(url: url),
                                           ),
                                         );
                                         print(response);
@@ -104,7 +106,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                         0.05),
 
                                 SizedBox(
-                                  width: 15,
+                                  width: Style.ButtonSpace,
                                 ),
                                 ButtomInitial(
                                     text: 'Cancelar',

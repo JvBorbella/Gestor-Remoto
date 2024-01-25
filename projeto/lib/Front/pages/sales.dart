@@ -4,6 +4,7 @@ import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Sales/Elements/Details.dart';
 import 'package:projeto/Front/components/Sales/Elements/values.dart';
 import 'package:projeto/Front/components/Sales/Estructure/Card-Sales.dart';
+import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/home.dart';
 
 class Sales extends StatefulWidget {
@@ -38,12 +39,12 @@ class _SalesState extends State<Sales> {
                     style: TextStyle(fontSize: 26, color: Color(0xffA6A6A6)),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores
                   Values(),
                   SizedBox(
-                    height: 10,
+                    height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores adicionais - rodapé do card
                   Details(),

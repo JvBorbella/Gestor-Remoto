@@ -1,20 +1,32 @@
+import 'dart:convert';
+import 'package:projeto/Back/Url-Connect.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
+import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/buttom.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Login_Config/Estructure/form-card.dart';
 import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/config.dart';
 import 'package:projeto/Front/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final String url;
+
+  const LoginPage({super.key, this.url = ''});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String urlController = '';
+  final _formKey = GlobalKey<FormState>();
+  final _userController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,32 +47,48 @@ class _LoginPageState extends State<LoginPage> {
                   FormCard(
                     children: [
                       SizedBox(
-                        height: 35,
-                      ),
+                          height: Style.ImageToInputSpace,
+                        ),
                       Input(
                         text: 'Email',
                         type: TextInputType.emailAddress,
                         obscureText: false,
+                        controller: _userController,
+                        validator: (user) {
+                          if (user == null || user.isEmpty) {
+                            return 'Por favor, digite sua senha';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: Style.inputSpace,
                       ),
                       Input(
-                        text: 'Senha',
-                        type: TextInputType.text,
-                        obscureText: true,
-                      ),
+                          text: 'Senha',
+                          type: TextInputType.text,
+                          obscureText: true,
+                          controller: _passwordController,
+                          validator: (senha) {
+                            if (senha == null || senha.isEmpty) {
+                              return 'Por favor, digite sua senha';
+                            }
+                            return null;
+                          }),
                       SizedBox(
-                        height: 35,
+                        height: Style.InputToButtonSpace,
                       ),
-                      ButtomInitial(
+                      ButtonConfig(
                         text: 'Entrar',
-                        destination: Home(),
+                        onPressed: () async {
+                          login();
+                          print('Botão pressionado com sucesso!');
+                        },
                         height: MediaQuery.of(context).size.width * 0.05,
                       ),
                       ButtomInitial(
                         text: 'Configurar',
-                        destination: ConfigPage(),
+                        destination: ConfigPage(initialUrl: urlController),
                         height: MediaQuery.of(context).size.width * 0.05,
                       ),
                     ],
@@ -72,5 +100,45 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> login() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    try {
+      // Use a URL fornecida pelo ConfigPage
+      var url = Uri.parse(widget.url);
+
+      // Faça a solicitação para verificar as credenciais
+      var response = await http.post(
+        url,
+        body: {
+          'username': _userController.text,
+          'password': _passwordController.text,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Credenciais válidas, salve o token e navegue para a Home()
+        await sharedPreferences.setString(
+          'token',
+          "Token ${jsonDecode(response.body)['token']}",
+        );
+        print('Token ' + jsonDecode(response.body)['token']);
+
+        // Navegue para a Home()
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ),
+        );
+      } else {
+        // Credenciais inválidas, exiba uma mensagem de erro ou tome outra ação necessária
+        print('Credenciais inválidas');
+      }
+    } catch (e) {
+      print('Erro durante a solicitação HTTP: $e');
+      // Trate o erro conforme necessário
+    }
   }
 }

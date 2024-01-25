@@ -10,9 +10,10 @@ class Input extends StatefulWidget {
   //Variável para definir se o texto passado no input será exibido ou ocultado, na página em que é chamado
   final obscureText;
   final controller;
+  final validator;
 
   const Input(
-      {Key? key, required this.text, required this.type, this.obscureText, this.controller})
+      {Key? key, required this.text, required this.type, this.obscureText, this.controller, this.validator})
       : super(key: key);
 
   @override
