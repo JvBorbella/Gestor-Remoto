@@ -7,9 +7,10 @@ import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Login_Config/Estructure/form-card.dart';
 import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigPage extends StatefulWidget {
-   final String initialUrl;
+  final String initialUrl;
 
   const ConfigPage({super.key, this.initialUrl = ''});
 
@@ -62,9 +63,14 @@ class _ConfigPageState extends State<ConfigPage> {
                                 //Chamando os button
                                 ButtonConfig(
                                     text: 'Salvar',
-                                    onPressed: () {
+                                    onPressed: () async {
                                       String url = urlController.text;
-                                      ApiService.fetchData(url)
+
+                                      // Save the URL to SharedPreferences
+                                      SharedPreferences sharedPreferences =
+                                          await SharedPreferences.getInstance();
+                                      sharedPreferences
+                                          .setString('userUrl', url)
                                           .then((response) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -77,12 +83,14 @@ class _ConfigPageState extends State<ConfigPage> {
                                                 color: Style.tertiaryColor,
                                               ),
                                             ),
-                                            backgroundColor: Style.sucefullColor,
+                                            backgroundColor:
+                                                Style.sucefullColor,
                                           ),
                                         );
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: (context) => LoginPage(url: url),
+                                            builder: (context) =>
+                                                LoginPage(url: url),
                                           ),
                                         );
                                         print(response);

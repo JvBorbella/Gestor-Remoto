@@ -28,6 +28,15 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _userController.text =
+        ''; // Você pode inicializar com um valor padrão se necessário
+    _passwordController.text =
+        ''; // Você pode inicializar com um valor padrão se necessário
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -40,61 +49,66 @@ class _LoginPageState extends State<LoginPage> {
               ], text: 'Login'),
               //expanded para preencher o espaço de tela completo abaixo da navbar
               Expanded(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //Chamando o container com os elementos para login
-                  FormCard(
-                    children: [
-                      SizedBox(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //Chamando o container com os elementos para login
+                    FormCard(
+                      children: [
+                        SizedBox(
                           height: Style.ImageToInputSpace,
                         ),
-                      Input(
-                        text: 'Email',
-                        type: TextInputType.emailAddress,
-                        obscureText: false,
-                        controller: _userController,
-                        validator: (user) {
-                          if (user == null || user.isEmpty) {
-                            return 'Por favor, digite sua senha';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: Style.inputSpace,
-                      ),
-                      Input(
-                          text: 'Senha',
+                        Input(
+                          text: 'Usuário',
                           type: TextInputType.text,
-                          obscureText: true,
-                          controller: _passwordController,
-                          validator: (senha) {
-                            if (senha == null || senha.isEmpty) {
+                          obscureText: false,
+                          controller: _userController,
+                          validator: (user) {
+                            if (user == null || user.isEmpty) {
                               return 'Por favor, digite sua senha';
                             }
                             return null;
-                          }),
-                      SizedBox(
-                        height: Style.InputToButtonSpace,
-                      ),
-                      ButtonConfig(
-                        text: 'Entrar',
-                        onPressed: () async {
-                          login();
-                          print('Botão pressionado com sucesso!');
-                        },
-                        height: MediaQuery.of(context).size.width * 0.05,
-                      ),
-                      ButtomInitial(
-                        text: 'Configurar',
-                        destination: ConfigPage(initialUrl: urlController),
-                        height: MediaQuery.of(context).size.width * 0.05,
-                      ),
-                    ],
-                  ),
-                ],
-              )),
+                          },
+                        ),
+                        SizedBox(
+                          height: Style.inputSpace,
+                        ),
+                        Input(
+                            text: 'Senha',
+                            type: TextInputType.text,
+                            obscureText: true,
+                            controller: _passwordController,
+                            validator: (senha) {
+                              if (senha == null || senha.isEmpty) {
+                                return 'Por favor, digite sua senha';
+                              }
+                              return null;
+                            }),
+                        SizedBox(
+                          height: Style.InputToButtonSpace,
+                        ),
+                        ButtonConfig(
+                          text: 'Entrar',
+                          onPressed: () async {
+                            if (_userController.text.isNotEmpty &&
+                                _passwordController.text.isNotEmpty) {
+                              login();
+                            } else {
+                              print('Por favor, preencha todos os campos.');
+                            }
+                          },
+                          height: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                        ButtomInitial(
+                          text: 'Configurar',
+                          destination: ConfigPage(initialUrl: urlController),
+                          height: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -106,20 +120,25 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     try {
-      // Use a URL fornecida pelo ConfigPage
       var url = Uri.parse(widget.url);
+      print('URL recebida: $url');
+      print('Username: ${_userController.text}');
+    print('Password: ${_passwordController.text}');
+      print(widget.url);
 
-      // Faça a solicitação para verificar as credenciais
+      // Obtenha os valores dos controladores aqui
+      var username = _userController.text;
+      var password = _passwordController.text;
+
       var response = await http.post(
         url,
         body: {
-          'username': _userController.text,
-          'password': _passwordController.text,
+          'username': username,
+          'password': password,
         },
       );
 
       if (response.statusCode == 200) {
-        // Credenciais válidas, salve o token e navegue para a Home()
         await sharedPreferences.setString(
           'token',
           "Token ${jsonDecode(response.body)['token']}",
@@ -138,6 +157,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       print('Erro durante a solicitação HTTP: $e');
+      print('Detalhes do erro: ${e.toString()}');
       // Trate o erro conforme necessário
     }
   }
