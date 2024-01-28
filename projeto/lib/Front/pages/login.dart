@@ -123,15 +123,21 @@ class _LoginPageState extends State<LoginPage> {
       var url = Uri.parse(widget.url);
       print('URL recebida: $url');
       print('Username: ${_userController.text}');
-    print('Password: ${_passwordController.text}');
+      print('Password: ${_passwordController.text}');
       print(widget.url);
 
-      // Obtenha os valores dos controladores aqui
       var username = _userController.text;
       var password = _passwordController.text;
 
+      var basicAuth =
+          'Basic ' + base64Encode(utf8.encode('$username:$password'));
+
       var response = await http.post(
         url,
+        headers: {
+          'Authorization': basicAuth,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
         body: {
           'username': username,
           'password': password,
@@ -145,20 +151,17 @@ class _LoginPageState extends State<LoginPage> {
         );
         print('Token ' + jsonDecode(response.body)['token']);
 
-        // Navegue para a Home()
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => Home(),
           ),
         );
       } else {
-        // Credenciais inválidas, exiba uma mensagem de erro ou tome outra ação necessária
         print('Credenciais inválidas');
       }
     } catch (e) {
       print('Erro durante a solicitação HTTP: $e');
       print('Detalhes do erro: ${e.toString()}');
-      // Trate o erro conforme necessário
     }
   }
 }
