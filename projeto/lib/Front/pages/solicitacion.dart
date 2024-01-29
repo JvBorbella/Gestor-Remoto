@@ -10,7 +10,8 @@ import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/home.dart';
 
 class Solicitacion extends StatefulWidget {
-  const Solicitacion({Key? key});
+  final token;
+  const Solicitacion({Key? key, this.token}) : super(key: key);
 
   @override
   State<Solicitacion> createState() => _SolicitacionState();

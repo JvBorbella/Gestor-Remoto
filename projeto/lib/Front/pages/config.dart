@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Back/Url-Connect.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
-import 'package:projeto/Front/components/Login_Config/Elements/buttom.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Login_Config/Estructure/form-card.dart';
 import 'package:projeto/Front/components/Style.dart';
@@ -19,6 +17,13 @@ class ConfigPage extends StatefulWidget {
 }
 
 class _ConfigPageState extends State<ConfigPage> {
+  TextEditingController urlController = TextEditingController();
+
+  Future<String> _getUrl() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString('saveUrl') ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController urlController = TextEditingController();
@@ -44,11 +49,23 @@ class _ConfigPageState extends State<ConfigPage> {
                           height: Style.ImageToInputSpace,
                         ),
                         //Chamando elementos para dentro do container
-                        Input(
-                          type: TextInputType.text,
-                          text: 'Configuração de IP',
-                          obscureText: false,
-                          controller: urlController,
+                        FutureBuilder<String>(
+                          future: _getUrl(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              // Configurando o valor inicial do controlador
+                              urlController.text = snapshot.data ?? '';
+
+                              return Input(
+                                type: TextInputType.text,
+                                text: 'Configuração de IP',
+                                obscureText: false,
+                                controller: urlController,
+                              );
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
                         ),
                         SizedBox(
                           height: Style.InputToButtonSpace,
@@ -65,12 +82,11 @@ class _ConfigPageState extends State<ConfigPage> {
                                     text: 'Salvar',
                                     onPressed: () async {
                                       String url = urlController.text;
-
                                       // Save the URL to SharedPreferences
                                       SharedPreferences sharedPreferences =
                                           await SharedPreferences.getInstance();
                                       sharedPreferences
-                                          .setString('userUrl', url)
+                                          .setString('saveUrl', url)
                                           .then((response) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -116,9 +132,17 @@ class _ConfigPageState extends State<ConfigPage> {
                                 SizedBox(
                                   width: Style.ButtonSpace,
                                 ),
-                                ButtomInitial(
+                                ButtonConfig(
                                     text: 'Cancelar',
-                                    destination: LoginPage(),
+                                    onPressed: () async {
+                                      String url = urlController.text;
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              LoginPage(url: url),
+                                        ),
+                                      );
+                                    },
                                     height: MediaQuery.of(context).size.width *
                                         0.05),
                               ],

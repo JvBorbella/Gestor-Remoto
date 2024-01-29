@@ -8,7 +8,8 @@ import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/home.dart';
 
 class Sales extends StatefulWidget {
-  const Sales({super.key});
+  final token;
+  const Sales({Key? key, this.token}) : super(key: key);
 
   @override
   State<Sales> createState() => _SalesState();

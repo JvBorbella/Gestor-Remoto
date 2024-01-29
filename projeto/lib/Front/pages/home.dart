@@ -12,15 +12,19 @@ import 'package:projeto/Front/components/Home/Estructure/filial-card.dart';
 import 'package:projeto/Front/components/Style.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final token;
+  const Home({Key? key, this.token}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  String urlController = '';
+  
   @override
   Widget build(BuildContext context) {
+    print('Valor de token: ${widget.token}');
     int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
     return SafeArea(
       child: Scaffold(

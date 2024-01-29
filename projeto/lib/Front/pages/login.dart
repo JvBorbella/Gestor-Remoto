@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:projeto/Back/Url-Connect.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
@@ -11,11 +10,12 @@ import 'package:projeto/Front/pages/config.dart';
 import 'package:projeto/Front/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:crypto/crypto.dart';
 
 class LoginPage extends StatefulWidget {
   final String url;
 
-  const LoginPage({super.key, this.url = ''});
+  const LoginPage({super.key, this.url = '',});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -23,17 +23,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String urlController = '';
-  final _formKey = GlobalKey<FormState>();
   final _userController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _userController.text =
-        ''; // Você pode inicializar com um valor padrão se necessário
-    _passwordController.text =
-        ''; // Você pode inicializar com um valor padrão se necessário
+    _userController.text = '';
+    _passwordController.text = '';
   }
 
   @override
@@ -94,7 +91,12 @@ class _LoginPageState extends State<LoginPage> {
                                 _passwordController.text.isNotEmpty) {
                               login();
                             } else {
-                              print('Por favor, preencha todos os campos.');
+                              ScaffoldMessenger(
+                                child: SnackBar(
+                                  content: Text(
+                                      'Por favor, preencha todos os campos!'),
+                                ),
+                              );
                             }
                           },
                           height: MediaQuery.of(context).size.width * 0.05,
@@ -121,47 +123,44 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       var url = Uri.parse(widget.url);
-      print('URL recebida: $url');
-      print('Username: ${_userController.text}');
-      print('Password: ${_passwordController.text}');
-      print(widget.url);
-
       var username = _userController.text;
       var password = _passwordController.text;
+      var md5Password = md5.convert(utf8.encode(password)).toString();
+      var authorization = Uri.parse(widget.url + '/ideia/secure/login?');
 
-      var basicAuth =
-          'Basic ' + base64Encode(utf8.encode('$username:$password'));
+      print('URL recebida da ConfigPage: $url');
+      print('Username: ${_userController.text}');
+      print('Password: ${_passwordController.text}');
 
       var response = await http.post(
-        url,
+        authorization,
         headers: {
-          'Authorization': basicAuth,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: {
-          'username': username,
-          'password': password,
+          'auth-user': username,
+          'auth-pass': md5Password,
         },
       );
+      print('Url de requisição: $authorization');
 
       if (response.statusCode == 200) {
+        var token = jsonDecode(response.body)['data']['token'];
+        var dados = Uri.parse(widget.url + '/ideia/secure/monitorvendasempresas/hoje?=$token');
         await sharedPreferences.setString(
           'token',
-          "Token ${jsonDecode(response.body)['token']}",
+          "Token ${jsonDecode(response.body)['data']['token']}",
         );
-        print('Token ' + jsonDecode(response.body)['token']);
+        print(response.body);
+        print('Token ' + jsonDecode(response.body)['data']['token']);
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => Home(),
+            builder: (context) => Home(token: jsonDecode(response.body)['data']['token']),
           ),
         );
       } else {
-        print('Credenciais inválidas');
+        print('Acesso inválido');
       }
     } catch (e) {
       print('Erro durante a solicitação HTTP: $e');
-      print('Detalhes do erro: ${e.toString()}');
     }
   }
 }
