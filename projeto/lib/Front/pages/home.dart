@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Home/Elements/Conteudo-FilialCard.dart';
 import 'package:projeto/Front/components/Home/Elements/ModalButtom.dart';
@@ -10,21 +12,23 @@ import 'package:projeto/Front/components/Home/Requisitions/Elements/text-requisi
 import 'package:projeto/Front/components/Home/Estructure/total-card.dart';
 import 'package:projeto/Front/components/Home/Estructure/filial-card.dart';
 import 'package:projeto/Front/components/Style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   final token;
-  const Home({Key? key, this.token}) : super(key: key);
+  final url;
+  const Home({Key? key, this.token, this.url}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  String urlController = '';
-  
+    String empresa = '';
   @override
   Widget build(BuildContext context) {
     print('Valor de token: ${widget.token}');
+    print('Url com os dados: ${widget.url}');
     int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
     return SafeArea(
       child: Scaffold(
@@ -128,57 +132,6 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 15,
               ),
-              FilialCard(
-                // height: MediaQuery.of(context).size.width < 600
-                //     ? MediaQuery.of(context).size.width * 0.45
-                //     : MediaQuery.of(context).size.width * 0.11,
-                children: [
-                  Column(
-                    children: [
-                      TextBUtton(
-                        text: '(Empresa)',
-                      ),
-                      ConteudoFilialCard(),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              FilialCard(
-                // height: MediaQuery.of(context).size.width < 600
-                //     ? MediaQuery.of(context).size.width * 0.45
-                //     : MediaQuery.of(context).size.width * 0.11,
-                children: [
-                  Column(
-                    children: [
-                      TextBUtton(
-                        text: '(Empresa)',
-                      ),
-                      ConteudoFilialCard(),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              FilialCard(
-                // height: MediaQuery.of(context).size.width < 600
-                //     ? MediaQuery.of(context).size.width * 0.45
-                //     : MediaQuery.of(context).size.width * 0.11,
-                children: [
-                  Column(
-                    children: [
-                      TextBUtton(
-                        text: '(Empresa)',
-                      ),
-                      ConteudoFilialCard(),
-                    ],
-                  ),
-                ],
-              ),
               SizedBox(
                 height: 15,
               ),
@@ -186,6 +139,21 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> dados() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = Uri.parse(widget.url);
+
+    final response = await http.get(url);
+
+    var empresa = jsonDecode(response.body)['data']['empresa_codigo'];
+    
+
+    await sharedPreferences.setString(
+      'token',
+      "Token ${jsonDecode(response.body)['data']['token']}",
     );
   }
 }

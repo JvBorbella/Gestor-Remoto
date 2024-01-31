@@ -52,7 +52,7 @@ class _InputState extends State<Input> {
                   labelText: widget.text,
                   labelStyle: TextStyle(
                     color: Style.quarantineColor,
-                    fontSize: MediaQuery.of(context).size.height * 0.025,
+                    fontSize: MediaQuery.of(context).size.height * 0.020,
                   ),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
                   enabledBorder: UnderlineInputBorder(

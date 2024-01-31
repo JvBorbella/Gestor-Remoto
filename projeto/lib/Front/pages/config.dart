@@ -26,7 +26,6 @@ class _ConfigPageState extends State<ConfigPage> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController urlController = TextEditingController();
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -52,7 +51,8 @@ class _ConfigPageState extends State<ConfigPage> {
                         FutureBuilder<String>(
                           future: _getUrl(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
                               // Configurando o valor inicial do controlador
                               urlController.text = snapshot.data ?? '';
 
@@ -79,61 +79,19 @@ class _ConfigPageState extends State<ConfigPage> {
                               children: [
                                 //Chamando os button
                                 ButtonConfig(
-                                    text: 'Salvar',
-                                    onPressed: () async {
-                                      String url = urlController.text;
-                                      // Save the URL to SharedPreferences
-                                      SharedPreferences sharedPreferences =
-                                          await SharedPreferences.getInstance();
-                                      sharedPreferences
-                                          .setString('saveUrl', url)
-                                          .then((response) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            behavior: SnackBarBehavior.floating,
-                                            content: Text(
-                                              'Ip salvo com sucesso!',
-                                              style: TextStyle(
-                                                fontSize: 13,
-                                                color: Style.tertiaryColor,
-                                              ),
-                                            ),
-                                            backgroundColor:
-                                                Style.sucefullColor,
-                                          ),
-                                        );
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                LoginPage(url: url),
-                                          ),
-                                        );
-                                        print(response);
-                                      }).catchError((error) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            behavior: SnackBarBehavior.floating,
-                                            content: Text(
-                                              'Não foi possível conectar-se ao servidor.',
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Style.tertiaryColor),
-                                            ),
-                                            backgroundColor: Style.errorColor,
-                                          ),
-                                        );
-                                      });
-                                    },
-                                    height: MediaQuery.of(context).size.width *
-                                        0.05),
+                                  text: 'Salvar',
+                                  onPressed: () {
+                                    _saveUrl(urlController.text);
+                                  },
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ),
 
                                 SizedBox(
                                   width: Style.ButtonSpace,
                                 ),
                                 ButtonConfig(
-                                    text: 'Cancelar',
+                                    text: 'Voltar',
                                     onPressed: () async {
                                       String url = urlController.text;
                                       Navigator.of(context).push(
@@ -159,5 +117,30 @@ class _ConfigPageState extends State<ConfigPage> {
         ),
       ),
     );
+  }
+
+  void _saveUrl(String url) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString('saveUrl', urlController.text).then((response) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Ip salvo com sucesso!',
+            style: TextStyle(
+              fontSize: 13,
+              color: Style.tertiaryColor,
+            ),
+          ),
+          backgroundColor: Style.sucefullColor,
+        ),
+      );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => LoginPage(url: urlController.text),
+        ),
+      );
+      print(response);
+    });
   }
 }

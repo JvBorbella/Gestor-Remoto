@@ -51,8 +51,8 @@ class _NavbarButtonState extends State<NavbarButton> {
                   children: [
                     //Buttom de sair
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
+                      onPressed: () async {
+                        Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },

@@ -15,7 +15,10 @@ import 'package:crypto/crypto.dart';
 class LoginPage extends StatefulWidget {
   final String url;
 
-  const LoginPage({super.key, this.url = '',});
+  const LoginPage({
+    super.key,
+    this.url = '',
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -79,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                               if (senha == null || senha.isEmpty) {
                                 return 'Por favor, digite sua senha';
                               }
-                              return null;
                             }),
                         SizedBox(
                           height: Style.InputToButtonSpace,
@@ -91,10 +93,17 @@ class _LoginPageState extends State<LoginPage> {
                                 _passwordController.text.isNotEmpty) {
                               login();
                             } else {
-                              ScaffoldMessenger(
-                                child: SnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  behavior: SnackBarBehavior.floating,
                                   content: Text(
-                                      'Por favor, preencha todos os campos!'),
+                                    'Por favor, preencha todos os campos',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Style.tertiaryColor,
+                                    ),
+                                  ),
+                                  backgroundColor: Style.errorColor,
                                 ),
                               );
                             }
@@ -128,9 +137,9 @@ class _LoginPageState extends State<LoginPage> {
       var md5Password = md5.convert(utf8.encode(password)).toString();
       var authorization = Uri.parse(widget.url + '/ideia/secure/login?');
 
-      print('URL recebida da ConfigPage: $url');
-      print('Username: ${_userController.text}');
-      print('Password: ${_passwordController.text}');
+      // print('URL recebida da ConfigPage: $url');
+      // print('Username: ${_userController.text}');
+      // print('Password: ${_passwordController.text}');
 
       var response = await http.post(
         authorization,
@@ -139,27 +148,69 @@ class _LoginPageState extends State<LoginPage> {
           'auth-pass': md5Password,
         },
       );
-      print('Url de requisição: $authorization');
 
       if (response.statusCode == 200) {
         var token = jsonDecode(response.body)['data']['token'];
-        var dados = Uri.parse(widget.url + '/ideia/secure/monitorvendasempresas/hoje?=$token');
+        var dados = Uri.parse(
+            widget.url + '/ideia/secure/monitorvendasempresas/hoje?=$token');
         await sharedPreferences.setString(
           'token',
           "Token ${jsonDecode(response.body)['data']['token']}",
         );
-        print(response.body);
+        // print(response.body);
         print('Token ' + jsonDecode(response.body)['data']['token']);
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => Home(token: jsonDecode(response.body)['data']['token']),
+            builder: (context) =>
+                Home(url: dados,),
           ),
         );
+      } else if (response.statusCode == 404) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Sem conexão com o servidor!',
+              style: TextStyle(
+                fontSize: 13,
+                color: Style.tertiaryColor,
+              ),
+            ),
+            backgroundColor: Style.errorColor,
+          ),
+        );
+        print('Url não encontrada');
       } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Não foi possícel iniciar a sessão',
+              style: TextStyle(
+                fontSize: 13,
+                color: Style.tertiaryColor,
+              ),
+            ),
+            backgroundColor: Style.errorColor,
+          ),
+        );
         print('Acesso inválido');
       }
     } catch (e) {
+       ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Login inválido!',
+              style: TextStyle(
+                fontSize: 13,
+                color: Style.tertiaryColor,
+              ),
+            ),
+            backgroundColor: Style.errorColor,
+          ),
+        );
       print('Erro durante a solicitação HTTP: $e');
     }
   }
