@@ -24,11 +24,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-    String empresa = '';
   @override
   Widget build(BuildContext context) {
     print('Valor de token: ${widget.token}');
-    print('Url com os dados: ${widget.url}');
+    print('Url recebida na Home: ${widget.url}');
     int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
     return SafeArea(
       child: Scaffold(
@@ -144,16 +143,23 @@ class _HomeState extends State<Home> {
 
   Future<void> dados() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var url = Uri.parse(widget.url);
-
-    final response = await http.get(url);
-
-    var empresa = jsonDecode(response.body)['data']['empresa_codigo'];
+    var token = widget.token;
+    var UrlRequisition = Uri.parse(widget.url + '/ideia/secure/monitorvendasempresas/hoje?');
     
+    var response = await http.post(
+        UrlRequisition,
+        headers: {
+          'token': token,
+        },
+      );
 
-    await sharedPreferences.setString(
-      'token',
-      "Token ${jsonDecode(response.body)['data']['token']}",
-    );
+      if (response.statusCode == 200) {
+         var empresa = jsonDecode(response.body)['data']['empresa_codigo'];
+      }    
+
+    // await sharedPreferences.setString(
+    //   'token',
+    //   "Token ${jsonDecode(response.body)['data']['token']}",
+    // );
   }
 }

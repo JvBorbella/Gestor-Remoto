@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) =>
-                Home(url: dados,),
+                Home(token: token),
           ),
         );
       } else if (response.statusCode == 404) {
@@ -186,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
           SnackBar(
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'Não foi possícel iniciar a sessão',
+              'Login inválido',
               style: TextStyle(
                 fontSize: 13,
                 color: Style.tertiaryColor,
@@ -202,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
           SnackBar(
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'Login inválido!',
+              'Não foi possível iniciar a sessão',
               style: TextStyle(
                 fontSize: 13,
                 color: Style.tertiaryColor,
