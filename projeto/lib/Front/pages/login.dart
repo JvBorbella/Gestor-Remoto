@@ -151,8 +151,6 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         var token = jsonDecode(response.body)['data']['token'];
-        var dados = Uri.parse(
-            widget.url + '/ideia/secure/monitorvendasempresas/hoje?=$token');
         await sharedPreferences.setString(
           'token',
           "Token ${jsonDecode(response.body)['data']['token']}",
@@ -162,8 +160,9 @@ class _LoginPageState extends State<LoginPage> {
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) =>
-                Home(token: token),
+            builder: (context) => Home(
+                url: widget.url +
+                    '/ideia/secure', token: token,),
           ),
         );
       } else if (response.statusCode == 404) {
@@ -198,19 +197,19 @@ class _LoginPageState extends State<LoginPage> {
         print('Acesso inválido');
       }
     } catch (e) {
-       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'Não foi possível iniciar a sessão',
-              style: TextStyle(
-                fontSize: 13,
-                color: Style.tertiaryColor,
-              ),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Não foi possível iniciar a sessão',
+            style: TextStyle(
+              fontSize: 13,
+              color: Style.tertiaryColor,
             ),
-            backgroundColor: Style.errorColor,
           ),
-        );
+          backgroundColor: Style.errorColor,
+        ),
+      );
       print('Erro durante a solicitação HTTP: $e');
     }
   }

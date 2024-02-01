@@ -16,14 +16,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   final token;
-  final url;
-  const Home({Key? key, this.token, this.url}) : super(key: key);
+  final String url;
+  const Home({Key? key, this.token, this.url = ''}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  String urlController = '';
+
+   @override
+  void initState() {
+    super.initState();
+    dados();  // Chame a função dados() aqui para que seja executada ao construir a tela
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Valor de token: ${widget.token}');
@@ -141,21 +149,28 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future<void> dados() async {
+  dados() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var token = widget.token;
-    var UrlRequisition = Uri.parse(widget.url + '/ideia/secure/monitorvendasempresas/hoje?');
-    
-    var response = await http.post(
+    try {
+      var token = widget.token;
+      var UrlRequisition = Uri.parse(widget.url + '/monitorvendasempresas/hoje?');
+
+      var response = await http.post(
         UrlRequisition,
         headers: {
-          'token': token,
+          'auth-token': token,
         },
       );
+      print(response);
 
       if (response.statusCode == 200) {
-         var empresa = jsonDecode(response.body)['data']['empresa_codigo'];
-      }    
+        response.body;
+        var empresa = jsonDecode(response.body)['data']['empresa_codigo'];
+        print(response.body);
+      }
+    } catch (e) {
+      print('Erro durante a requisição: $e');
+    }
 
     // await sharedPreferences.setString(
     //   'token',

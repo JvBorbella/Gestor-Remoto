@@ -81,7 +81,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                 ButtonConfig(
                                   text: 'Salvar',
                                   onPressed: () {
-                                    _saveUrl(urlController.text);
+                                    _saveUrl(urlController.text,);
                                   },
                                   height:
                                       MediaQuery.of(context).size.width * 0.05,
