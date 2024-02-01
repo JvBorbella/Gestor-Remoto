@@ -26,14 +26,15 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String urlController = '';
 
-   @override
+  @override
   void initState() {
     super.initState();
-    dados();  // Chame a função dados() aqui para que seja executada ao construir a tela
+    dados(); // Chame a função dados() aqui para que seja executada ao construir a tela
   }
 
   @override
   Widget build(BuildContext context) {
+    String empresa = '';
     print('Valor de token: ${widget.token}');
     print('Url recebida na Home: ${widget.url}');
     int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
@@ -129,7 +130,7 @@ class _HomeState extends State<Home> {
                   Column(
                     children: [
                       TextBUtton(
-                        text: '(Empresa)',
+                        text: empresa,
                       ),
                       ConteudoFilialCard(),
                     ],
@@ -151,9 +152,12 @@ class _HomeState extends State<Home> {
 
   dados() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String empresa = '';
+
     try {
       var token = widget.token;
-      var UrlRequisition = Uri.parse(widget.url + '/monitorvendasempresas/hoje?');
+      var UrlRequisition =
+          Uri.parse(widget.url + '/monitorvendasempresas/hoje?');
 
       var response = await http.post(
         UrlRequisition,
@@ -164,13 +168,27 @@ class _HomeState extends State<Home> {
       print(response);
 
       if (response.statusCode == 200) {
-        response.body;
-        var empresa = jsonDecode(response.body)['data']['empresa_codigo'];
-        print(response.body);
+        var jsonData = json.decode(response.body);
+
+        // Verifique se 'data', 'monitorvendasempresas' e 'empresa_codigo' estão presentes antes de acessar
+        if (jsonData.containsKey('data') &&
+            jsonData['data'].containsKey('monitorvendasempresas') &&
+            jsonData['data']['monitorvendasempresas'].isNotEmpty) {
+          setState(() {
+            empresa =
+                jsonData['data']['monitorvendasempresas'][0]['empresa_nome'];
+          });
+          print('Código da empresa: $empresa');
+        } else {
+          print('Dados ausentes no JSON.');
+        }
+
+        print('Response body: ${response.body}');
       }
     } catch (e) {
       print('Erro durante a requisição: $e');
     }
+    print('Valor da variável empresa: $empresa');
 
     // await sharedPreferences.setString(
     //   'token',
