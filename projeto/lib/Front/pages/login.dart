@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:projeto/Back/SaveUrl.dart';
 import 'package:projeto/Back/SaveUser.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
@@ -39,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController.text = '';
   }
 
-   @override
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _loadSavedUser();
@@ -47,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loadSavedUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String savedUser = sharedPreferences.getString('saveUser') ?? '';
+    String savedUser = await sharedPreferences.getString('saveUser') ?? '';
     setState(() {
       _userController.text = savedUser;
     });
@@ -106,9 +105,10 @@ class _LoginPageState extends State<LoginPage> {
                         ButtonConfig(
                           text: 'Entrar',
                           onPressed: () async {
-                            saveUserService.saveUser(context, _userController.text);
                             if (_userController.text.isNotEmpty &&
                                 _passwordController.text.isNotEmpty) {
+                              saveUserService.saveUser(
+                                  context, _userController.text);
                               login();
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -179,8 +179,9 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => Home(
-                url: widget.url +
-                    '/ideia/secure', token: token,),
+              url: widget.url + '/ideia/secure',
+              token: token,
+            ),
           ),
         );
       } else if (response.statusCode == 404) {
