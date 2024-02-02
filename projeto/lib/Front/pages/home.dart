@@ -25,39 +25,41 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String urlController = '';
+  late String empresa;
+  bool isLoading = true;
+  int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
 
   @override
   void initState() {
     super.initState();
-    dados(); // Chame a função dados() aqui para que seja executada ao construir a tela
+    dados();
   }
 
   @override
   Widget build(BuildContext context) {
-    String empresa = '';
-    print('Valor de token: ${widget.token}');
-    print('Url recebida na Home: ${widget.url}');
-    int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
+    if (isLoading) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Container(
           child: ListView(
             children: [
-              //Chamando a navbar
               Navbar(
                 children: [
-                  //Chamando os elementos internos da navbar
                   NavbarButton(),
                 ],
                 text: 'Página inicial',
               ),
-              //Chamando o card que armazenará o total do dia
               TotalCard(),
-              //Chamando o card que receberá as solicitações dos usuários
               RequisitionCard(
                 children: [
                   Row(
-                    //Alinhamento interno
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -68,9 +70,7 @@ class _HomeState extends State<Home> {
                         children: [
                           Row(
                             children: [
-                              //Chamando os elementos para dentro do card
                               Padding(
-                                //Condição para ajustar o posicionamento do texto de acordo com a formatação do número de requisições
                                 padding: numberOfRequisitions <= 0
                                     ? EdgeInsets.only(left: 30)
                                     : EdgeInsets.all(0),
@@ -100,7 +100,6 @@ class _HomeState extends State<Home> {
                             height: 30,
                           ),
                           Row(
-                            //Alinhamento do button
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -114,19 +113,12 @@ class _HomeState extends State<Home> {
                     ],
                   )
                 ],
-                //Altura do card
-                // height: 150,
               ),
               SizedBox(
                 height: 10,
               ),
-              //Chamando os cards que armazenarão as informações de cada empresa
               FilialCard(
-                // height: MediaQuery.of(context).size.width < 600
-                //     ? MediaQuery.of(context).size.width * 0.45
-                //     : MediaQuery.of(context).size.width * 0.11,
                 children: [
-                  //Chamando os elementos internos do card
                   Column(
                     children: [
                       TextBUtton(
@@ -150,10 +142,8 @@ class _HomeState extends State<Home> {
     );
   }
 
-  dados() async {
+  Future<void> dados() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String empresa = '';
-
     try {
       var token = widget.token;
       var UrlRequisition =
@@ -165,18 +155,16 @@ class _HomeState extends State<Home> {
           'auth-token': token,
         },
       );
-      print(response);
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
 
-        // Verifique se 'data', 'monitorvendasempresas' e 'empresa_codigo' estão presentes antes de acessar
         if (jsonData.containsKey('data') &&
             jsonData['data'].containsKey('monitorvendasempresas') &&
             jsonData['data']['monitorvendasempresas'].isNotEmpty) {
           setState(() {
-            empresa =
-                jsonData['data']['monitorvendasempresas'][0]['empresa_nome'];
+            empresa = jsonData['data']['monitorvendasempresas'][0]['empresa_nome'];
+            isLoading = false; // Marcamos como carregado
           });
           print('Código da empresa: $empresa');
         } else {
@@ -189,10 +177,6 @@ class _HomeState extends State<Home> {
       print('Erro durante a requisição: $e');
     }
     print('Valor da variável empresa: $empresa');
-
-    // await sharedPreferences.setString(
-    //   'token',
-    //   "Token ${jsonDecode(response.body)['data']['token']}",
-    // );
   }
 }
+
