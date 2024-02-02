@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/SaveUrl.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
@@ -18,10 +19,20 @@ class ConfigPage extends StatefulWidget {
 
 class _ConfigPageState extends State<ConfigPage> {
   TextEditingController urlController = TextEditingController();
+  final SaveUrlService saveUrlService = SaveUrlService();
 
-  Future<String> _getUrl() async {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadSavedUrl();
+  }
+
+  Future<void> _loadSavedUrl() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString('saveUrl') ?? '';
+    String savedUrl = sharedPreferences.getString('saveUrl') ?? '';
+    setState(() {
+      urlController.text = savedUrl;
+    });
   }
 
   @override
@@ -48,24 +59,11 @@ class _ConfigPageState extends State<ConfigPage> {
                           height: Style.ImageToInputSpace,
                         ),
                         //Chamando elementos para dentro do container
-                        FutureBuilder<String>(
-                          future: _getUrl(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              // Configurando o valor inicial do controlador
-                              urlController.text = snapshot.data ?? '';
-
-                              return Input(
-                                type: TextInputType.text,
-                                text: 'Configuração de IP',
-                                obscureText: false,
-                                controller: urlController,
-                              );
-                            } else {
-                              return CircularProgressIndicator();
-                            }
-                          },
+                        Input(
+                          type: TextInputType.text,
+                          text: 'Configuração de IP',
+                          obscureText: false,
+                          controller: urlController,
                         ),
                         SizedBox(
                           height: Style.InputToButtonSpace,
@@ -81,28 +79,25 @@ class _ConfigPageState extends State<ConfigPage> {
                                 ButtonConfig(
                                   text: 'Salvar',
                                   onPressed: () {
-                                    _saveUrl(urlController.text,);
+                                    saveUrlService.saveUrl(context, urlController.text);
                                   },
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.05,
+                                  height: MediaQuery.of(context).size.width * 0.05,
                                 ),
-
                                 SizedBox(
                                   width: Style.ButtonSpace,
                                 ),
                                 ButtonConfig(
-                                    text: 'Voltar',
-                                    onPressed: () async {
-                                      String url = urlController.text;
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              LoginPage(url: url),
-                                        ),
-                                      );
-                                    },
-                                    height: MediaQuery.of(context).size.width *
-                                        0.05),
+                                  text: 'Voltar',
+                                  onPressed: () async {
+                                    String url = urlController.text;
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginPage(url: url),
+                                      ),
+                                    );
+                                  },
+                                  height: MediaQuery.of(context).size.width * 0.05,
+                                ),
                               ],
                             ),
                           ],
@@ -117,30 +112,5 @@ class _ConfigPageState extends State<ConfigPage> {
         ),
       ),
     );
-  }
-
-  void _saveUrl(String url) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString('saveUrl', urlController.text).then((response) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Ip salvo com sucesso!',
-            style: TextStyle(
-              fontSize: 13,
-              color: Style.tertiaryColor,
-            ),
-          ),
-          backgroundColor: Style.sucefullColor,
-        ),
-      );
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoginPage(url: urlController.text),
-        ),
-      );
-      print(response);
-    });
   }
 }

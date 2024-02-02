@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SaveUrl extends StatefulWidget {
-  const SaveUrl({Key? key}) : super(key: key);
-
-  @override
-  State<SaveUrl> createState() => _SaveUrlState();
-}
-
-class _SaveUrlState extends State<SaveUrl> {
-  TextEditingController urlController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Material();
-  }
-
-  void SaveUrl(String url) async {
+class SaveUrlService {
+  Future<void> saveUrl(BuildContext context, String url) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString('saveUrl', urlController.text).then((response) {
+    sharedPreferences.setString('saveUrl', url).then((response) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -28,15 +13,15 @@ class _SaveUrlState extends State<SaveUrl> {
             'Ip salvo com sucesso!',
             style: TextStyle(
               fontSize: 13,
-              color: Style.tertiaryColor,
+              // Adicione as cores ou estilos necessários
             ),
           ),
-          backgroundColor: Style.sucefullColor,
+          backgroundColor: Colors.green, // Adicione a cor desejada
         ),
       );
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => LoginPage(url: urlController.text),
+          builder: (context) => LoginPage(url: url),
         ),
       );
       print(response);

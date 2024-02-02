@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/SaveUrl.dart';
+import 'package:projeto/Back/SaveUser.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/buttom.dart';
@@ -26,6 +28,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   String urlController = '';
+  final SaveUserService saveUserService = SaveUserService();
   final _userController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -34,6 +37,20 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _userController.text = '';
     _passwordController.text = '';
+  }
+
+   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadSavedUser();
+  }
+
+  Future<void> _loadSavedUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUser = sharedPreferences.getString('saveUser') ?? '';
+    setState(() {
+      _userController.text = savedUser;
+    });
   }
 
   @override
@@ -89,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                         ButtonConfig(
                           text: 'Entrar',
                           onPressed: () async {
+                            saveUserService.saveUser(context, _userController.text);
                             if (_userController.text.isNotEmpty &&
                                 _passwordController.text.isNotEmpty) {
                               login();
