@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/Data.dart';
+import 'package:projeto/Back/UrlProvider.dart';
 import 'package:projeto/Front/components/Home/Elements/Values-of-Days.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConteudoFilialCard extends StatefulWidget {
-  const ConteudoFilialCard({super.key});
+  const ConteudoFilialCard({Key? key}) : super(key: key);
 
   @override
   State<ConteudoFilialCard> createState() => _ConteudoFilialCardState();
 }
 
 class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
+  late String valorHoje;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // fetchData();
+  }
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -88,4 +100,21 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
       ),
     );
   }
+
+  //  Future<void> fetchData() async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   var url = Provider.of<UrlProvider>(context).url;
+  //   var token = Provider.of<UrlProvider>(context).token;
+
+  //   String? fetchedData = await DataService.fetchData(token, url,);
+
+  //   if (fetchedData != null) {
+  //     setState(() {
+  //       valorHoje = fetchedData;
+  //       isLoading = false; // Marcamos como carregado
+  //     });
+  //     print('Código da empresa: $valorHoje');
+  //   }
+
+  // }
 }

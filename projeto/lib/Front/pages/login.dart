@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/Logined.dart';
 import 'package:projeto/Back/SaveUser.dart';
 import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Login_Config/Elements/ButtonConfig.dart';
@@ -8,10 +8,7 @@ import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Login_Config/Estructure/form-card.dart';
 import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/config.dart';
-import 'package:projeto/Front/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'package:crypto/crypto.dart';
 
 class LoginPage extends StatefulWidget {
   final String url;
@@ -36,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _userController.text = '';
     _passwordController.text = '';
+
+    saveUserService.listenAndSaveUser(context, _userController);
   }
 
   @override
@@ -81,7 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _userController,
                           validator: (user) {
                             if (user == null || user.isEmpty) {
-                              return 'Por favor, digite sua senha';
+                               saveUserService.saveUser(
+                                  context, _userController.text);
                             }
                             return null;
                           },
@@ -107,9 +107,12 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () async {
                             if (_userController.text.isNotEmpty &&
                                 _passwordController.text.isNotEmpty) {
-                              saveUserService.saveUser(
-                                  context, _userController.text);
-                              login();
+                              await LoginFunction.login(
+                                context,
+                                widget.url,
+                                _userController,
+                                _passwordController,
+                              );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -143,93 +146,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  Future<void> login() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
-    try {
-      var url = Uri.parse(widget.url);
-      var username = _userController.text;
-      var password = _passwordController.text;
-      var md5Password = md5.convert(utf8.encode(password)).toString();
-      var authorization = Uri.parse(widget.url + '/ideia/secure/login?');
-
-      // print('URL recebida da ConfigPage: $url');
-      // print('Username: ${_userController.text}');
-      // print('Password: ${_passwordController.text}');
-
-      var response = await http.post(
-        authorization,
-        headers: {
-          'auth-user': username,
-          'auth-pass': md5Password,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        var token = jsonDecode(response.body)['data']['token'];
-        await sharedPreferences.setString(
-          'token',
-          "Token ${jsonDecode(response.body)['data']['token']}",
-        );
-        // print(response.body);
-        print('Token ' + jsonDecode(response.body)['data']['token']);
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => Home(
-              url: widget.url + '/ideia/secure',
-              token: token,
-            ),
-          ),
-        );
-      } else if (response.statusCode == 404) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'Sem conexão com o servidor!',
-              style: TextStyle(
-                fontSize: 13,
-                color: Style.tertiaryColor,
-              ),
-            ),
-            backgroundColor: Style.errorColor,
-          ),
-        );
-        print('Url não encontrada');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'Login inválido',
-              style: TextStyle(
-                fontSize: 13,
-                color: Style.tertiaryColor,
-              ),
-            ),
-            backgroundColor: Style.errorColor,
-          ),
-        );
-        print('Acesso inválido');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Não foi possível iniciar a sessão',
-            style: TextStyle(
-              fontSize: 13,
-              color: Style.tertiaryColor,
-            ),
-          ),
-          backgroundColor: Style.errorColor,
-        ),
-      );
-      print('Erro durante a solicitação HTTP: $e');
-    }
   }
 }

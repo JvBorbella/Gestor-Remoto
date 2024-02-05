@@ -1,6 +1,5 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/Data.dart';
 import 'package:projeto/Front/components/Home/Elements/Conteudo-FilialCard.dart';
 import 'package:projeto/Front/components/Home/Elements/ModalButtom.dart';
 import 'package:projeto/Front/components/Home/Elements/TextButton.dart';
@@ -32,7 +31,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    dados();
+    fetchData();
   }
 
   @override
@@ -142,41 +141,19 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Future<void> dados() async {
+  Future<void> fetchData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    try {
-      var token = widget.token;
-      var UrlRequisition =
-          Uri.parse(widget.url + '/monitorvendasempresas/hoje?');
 
-      var response = await http.post(
-        UrlRequisition,
-        headers: {
-          'auth-token': token,
-        },
-      );
+    String? fetchedData = await DataService.fetchData(widget.token, widget.url);
 
-      if (response.statusCode == 200) {
-        var jsonData = json.decode(response.body);
-
-        if (jsonData.containsKey('data') &&
-            jsonData['data'].containsKey('monitorvendasempresas') &&
-            jsonData['data']['monitorvendasempresas'].isNotEmpty) {
-          setState(() {
-            empresa = jsonData['data']['monitorvendasempresas'][0]['empresa_nome'];
-            isLoading = false; // Marcamos como carregado
-          });
-          print('Código da empresa: $empresa');
-        } else {
-          print('Dados ausentes no JSON.');
-        }
-
-        print('Response body: ${response.body}');
-      }
-    } catch (e) {
-      print('Erro durante a requisição: $e');
+    if (fetchedData != null) {
+      setState(() {
+        empresa = fetchedData;
+        isLoading = false; // Marcamos como carregado
+      });
+      print('Código da empresa: $empresa');
     }
+
     print('Valor da variável empresa: $empresa');
   }
 }
-
