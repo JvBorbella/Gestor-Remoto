@@ -26,7 +26,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String urlController = '';
   List<MonitorVendasEmpresaHoje> empresasHoje = [];
-  List<MonitorVendasEmpresaHoje> empresasOntem = [];
+  List<MonitorVendasEmpresaOntem> empresasOntem = [];
   late double valorOntem;
   bool isLoading = true;
   int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
@@ -132,7 +132,7 @@ class _HomeState extends State<Home> {
                           ),
                           ConteudoFilialCard(
                             valorHoje: empresasHoje[index].valorHoje,
-                            valorOntem: valorOntem,
+                            valorOntem: empresasOntem[index].valorOntem,
                           ),
                         ],
                       ),
@@ -159,16 +159,15 @@ class _HomeState extends State<Home> {
     if (fetchedData != null) {
       setState(() {
         empresasHoje = fetchedData;
-        empresasOntem = fetchedData;
         isLoading = false; // Marcamos como carregado
       });
     }
-    MonitorVendasEmpresaOntem? fetchedDataOntem =
+    List<MonitorVendasEmpresaOntem>? fetchedDataOntem =
         await DataServiceOntem.fetchDataOntem(widget.token, widget.url);
 
     if (fetchedDataOntem != null) {
       setState(() {
-        valorOntem = fetchedDataOntem.valorOntem;
+        empresasOntem = fetchedDataOntem;
         isLoading = false; // Marcamos como carregado
       });
     }

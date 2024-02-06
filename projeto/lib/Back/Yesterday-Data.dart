@@ -15,8 +15,9 @@ class MonitorVendasEmpresaOntem {
 }
 
 class DataServiceOntem {
-  static Future<MonitorVendasEmpresaOntem?> fetchDataOntem(String token, String url) async {
+  static Future<List<MonitorVendasEmpresaOntem>?> fetchDataOntem(String token, String url) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    List<MonitorVendasEmpresaOntem>? empresasOntem;
 
     try {
       var urlOntem = Uri.parse('$url/monitorvendasempresas/ontem');
@@ -34,9 +35,9 @@ class DataServiceOntem {
         if (jsonData.containsKey('data') &&
             jsonData['data'].containsKey('monitorvendasempresas') &&
             jsonData['data']['monitorvendasempresas'].isNotEmpty) {
-          // Criando uma instância da classe MonitorVendasEmpresa com base nos dados JSON
-          return MonitorVendasEmpresaOntem.fromJson(
-              jsonData['data']['monitorvendasempresas'][0]);
+          empresasOntem = (jsonData['data']['monitorvendasempresas'] as List)
+              .map((e) => MonitorVendasEmpresaOntem.fromJson(e))
+              .toList();
         } else {
           print('Dados ausentes no JSON.');
         }
@@ -46,7 +47,7 @@ class DataServiceOntem {
     } catch (e) {
       print('Erro durante a requisição: $e');
     }
-    return null;
+    return empresasOntem;
   }
 }
 
