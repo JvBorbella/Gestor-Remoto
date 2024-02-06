@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Back/Data.dart';
+import 'package:projeto/Back/Today-Data.dart';
 import 'package:projeto/Back/UrlProvider.dart';
 import 'package:projeto/Front/components/Home/Elements/Values-of-Days.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConteudoFilialCard extends StatefulWidget {
-  const ConteudoFilialCard({Key? key}) : super(key: key);
+  final double valorHoje;
+  final double valorOntem;
+  const ConteudoFilialCard({Key? key, required this.valorHoje, required this.valorOntem}) : super(key: key);
 
   @override
   State<ConteudoFilialCard> createState() => _ConteudoFilialCardState();
 }
 
 class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
-  late String valorHoje;
   bool isLoading = true;
 
   @override
@@ -37,7 +38,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Hoje',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: 'RS 000.000,00')
+                    ValuesDays(text: widget.valorHoje.toString())
                   ],
                 ),
                 Column(
@@ -46,7 +47,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Ontem',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: 'RS 000.000,00')
+                    ValuesDays(text: widget.valorOntem.toString())
                   ],
                 ),
                 Column(

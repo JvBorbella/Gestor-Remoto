@@ -17,7 +17,7 @@ class _FilialCardState extends State<FilialCard> {
       // Código do card
       child: Container(
         //Margem externa e altura do card que está sendo definida na página home.dart
-        margin: EdgeInsets.only(right: 20.0, left: 20.0,),
+        margin: EdgeInsets.only(right: 20.0, left: 20.0, bottom: 15.0),
         decoration: BoxDecoration(
             //Estilização do card
             color: Color(0xffffffff),

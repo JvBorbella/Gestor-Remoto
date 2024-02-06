@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Back/Data.dart';
+import 'package:projeto/Back/Today-Data.dart';
+import 'package:projeto/Back/Yesterday-Data.dart';
 import 'package:projeto/Front/components/Home/Elements/Conteudo-FilialCard.dart';
 import 'package:projeto/Front/components/Home/Elements/ModalButtom.dart';
 import 'package:projeto/Front/components/Home/Elements/TextButton.dart';
@@ -24,7 +25,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String urlController = '';
-  late String empresa;
+  List<MonitorVendasEmpresaHoje> empresasHoje = [];
+  List<MonitorVendasEmpresaHoje> empresasOntem = [];
+  late double valorOntem;
   bool isLoading = true;
   int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
 
@@ -116,23 +119,29 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 10,
               ),
-              FilialCard(
-                children: [
-                  Column(
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: empresasHoje.length,
+                itemBuilder: (context, index) {
+                  return FilialCard(
                     children: [
-                      TextBUtton(
-                        text: empresa,
+                      Column(
+                        children: [
+                          TextBUtton(
+                            text: empresasHoje[index].empresaNome,
+                          ),
+                          ConteudoFilialCard(
+                            valorHoje: empresasHoje[index].valorHoje,
+                            valorOntem: valorOntem,
+                          ),
+                        ],
                       ),
-                      ConteudoFilialCard(),
                     ],
-                  ),
-                ],
+                  );
+                },
               ),
               SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                height: 15,
+                height: 45,
               ),
             ],
           ),
@@ -144,16 +153,24 @@ class _HomeState extends State<Home> {
   Future<void> fetchData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    String? fetchedData = await DataService.fetchData(widget.token, widget.url);
+    List<MonitorVendasEmpresaHoje>? fetchedData =
+        await DataService.fetchData(widget.token, widget.url);
 
     if (fetchedData != null) {
       setState(() {
-        empresa = fetchedData;
+        empresasHoje = fetchedData;
+        empresasOntem = fetchedData;
         isLoading = false; // Marcamos como carregado
       });
-      print('Código da empresa: $empresa');
     }
+    MonitorVendasEmpresaOntem? fetchedDataOntem =
+        await DataServiceOntem.fetchDataOntem(widget.token, widget.url);
 
-    print('Valor da variável empresa: $empresa');
+    if (fetchedDataOntem != null) {
+      setState(() {
+        valorOntem = fetchedDataOntem.valorOntem;
+        isLoading = false; // Marcamos como carregado
+      });
+    }
   }
 }
