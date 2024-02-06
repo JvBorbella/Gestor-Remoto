@@ -34,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     _userController.text = '';
     _passwordController.text = '';
 
+    _loadSavedUrl();
     saveUserService.listenAndSaveUser(context, _userController);
   }
 
@@ -41,6 +42,15 @@ class _LoginPageState extends State<LoginPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _loadSavedUser();
+    _loadSavedUrl();
+  }
+
+  Future<void> _loadSavedUrl() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUrl = sharedPreferences.getString('saveUrl') ?? '';
+    setState(() {
+      urlController = savedUrl;
+    });
   }
 
   Future<void> _loadSavedUser() async {
@@ -80,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _userController,
                           validator: (user) {
                             if (user == null || user.isEmpty) {
-                               saveUserService.saveUser(
+                              saveUserService.saveUser(
                                   context, _userController.text);
                             }
                             return null;
