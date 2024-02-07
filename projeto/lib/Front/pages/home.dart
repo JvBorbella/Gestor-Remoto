@@ -28,14 +28,14 @@ class _HomeState extends State<Home> {
   String urlController = '';
   List<MonitorVendasEmpresaHoje> empresasHoje = [];
   List<MonitorVendasEmpresaOntem> empresasOntem = [];
-  late double vendadia;
+  late double vendadia = 0.0;
   bool isLoading = true;
   int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    loadData();
   }
 
   @override
@@ -124,25 +124,32 @@ class _HomeState extends State<Home> {
               shrinkWrap: true,
               itemCount: empresasHoje.length,
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    FilialCard(
-                      children: [
-                        Column(
-                          children: [
-                            TextBUtton(
-                              text: empresasHoje[index].empresaNome,
-                            ),
-                            ConteudoFilialCard(
-                              valorHoje: empresasHoje[index].valorHoje,
-                              valorOntem: empresasOntem[index].valorOntem,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                );
+                // Verifica se empresasOntem possui elementos antes de acessá-los
+                if (index < empresasOntem.length) {
+                  return Column(
+                    children: [
+                      FilialCard(
+                        children: [
+                          Column(
+                            children: [
+                              TextBUtton(
+                                text: empresasHoje[index].empresaNome,
+                              ),
+                              ConteudoFilialCard(
+                                valorHoje: empresasHoje[index].valorHoje,
+                                valorOntem: empresasOntem[index].valorOntem,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                } else {
+                  // Trate o caso em que não há dados em empresasOntem para este índice
+                  return Text(
+                      'Dados de ontem não encontrados para esta empresa.');
+                }
               },
             ),
           ],
@@ -151,18 +158,33 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Future<void> loadData() async {
+    // Utiliza Future.wait para buscar os dados de forma paralela
+    await Future.wait([
+      fetchData(),
+      fetchDataOntem(),
+      fetchDataValorHoje(),
+    ]);
+    // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   Future<void> fetchData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
     List<MonitorVendasEmpresaHoje>? fetchedData =
         await DataService.fetchData(widget.token, widget.url);
 
     if (fetchedData != null) {
       setState(() {
         empresasHoje = fetchedData;
-        isLoading = false; // Marcamos como carregado
       });
     }
+  }
+
+  Future<void> fetchDataOntem() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     List<MonitorVendasEmpresaOntem>? fetchedDataOntem =
         await DataServiceOntem.fetchDataOntem(widget.token, widget.url);
 
@@ -171,6 +193,10 @@ class _HomeState extends State<Home> {
         empresasOntem = fetchedDataOntem;
       });
     }
+  }
+
+  Future<void> fetchDataValorHoje() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     double? fetchedDataValorHoje =
         await DataServiceValorHoje.fetchDataValorHoje(widget.token, widget.url);
 

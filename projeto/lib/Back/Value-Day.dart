@@ -35,10 +35,7 @@ class DataServiceValorHoje {
         if (jsonData.containsKey('vendadia')) {
           vendadia = double.parse(jsonData['vendadia'].toString());
         } else {
-          print('Campo vendadia ausente no JSON.');
         }
-
-        print('Response body: ${responseValorHoje.body}');
       }
     } catch (e) {
       print('Erro durante a requisição: $e');

@@ -41,8 +41,6 @@ class DataServiceOntem {
         } else {
           print('Dados ausentes no JSON.');
         }
-
-        print('Response body: ${responseOntem.body}');
       }
     } catch (e) {
       print('Erro durante a requisição: $e');
