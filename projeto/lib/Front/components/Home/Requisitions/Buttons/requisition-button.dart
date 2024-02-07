@@ -5,10 +5,11 @@ import 'package:projeto/Front/pages/solicitacion.dart';
 class RequisitionButtom extends StatefulWidget {
   //Variável para que seja definido o texto do button na página em que está sendo chamado
   final String text;
+  final int solicitacoesremotas;
 
   const RequisitionButtom({
     Key? key,
-    required this.text,
+    required this.text, required this.solicitacoesremotas
   }) : super(key: key);
 
   @override
@@ -60,7 +61,7 @@ class _RequisitionButtomState extends State<RequisitionButtom> {
   //caso seja diferente de 0, o usuário será direcionado à outra página
   void checkRequisitionsAndNavigate(BuildContext context) {
     //chamando a váriável do widget onde está sendo definido o número de requisições
-    int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
+    int numberOfRequisitions = widget.solicitacoesremotas;
 
     //Verificação
     if (numberOfRequisitions == 0) {

@@ -29,8 +29,9 @@ class _HomeState extends State<Home> {
   List<MonitorVendasEmpresaHoje> empresasHoje = [];
   List<MonitorVendasEmpresaOntem> empresasOntem = [];
   late double vendadia = 0.0;
+  late int solicitacoesremotas = -1; // Valor padrão indicando que os dados ainda não foram carregados
+ // Valor padrão de carregamento
   bool isLoading = true;
-  int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
 
   @override
   void initState() {
@@ -73,7 +74,7 @@ class _HomeState extends State<Home> {
                         Row(
                           children: [
                             Padding(
-                              padding: numberOfRequisitions <= 0
+                              padding: solicitacoesremotas <= 0
                                   ? EdgeInsets.only(left: 30)
                                   : EdgeInsets.all(0),
                             ),
@@ -87,7 +88,7 @@ class _HomeState extends State<Home> {
                             SizedBox(
                               width: 2,
                             ),
-                            NumberOfRequisitions(),
+                            NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas),
                           ],
                         ),
                         SizedBox(
@@ -95,7 +96,7 @@ class _HomeState extends State<Home> {
                         ),
                         Row(
                           children: [
-                            TextRequisition(),
+                            TextRequisition(solicitacoesremotas: solicitacoesremotas,),
                           ],
                         ),
                         SizedBox(
@@ -107,6 +108,7 @@ class _HomeState extends State<Home> {
                           children: [
                             RequisitionButtom(
                               text: 'Liberação remota',
+                              solicitacoesremotas: solicitacoesremotas,
                             )
                           ],
                         ),
@@ -166,9 +168,15 @@ class _HomeState extends State<Home> {
       fetchDataValorHoje(),
     ]);
     // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
-    setState(() {
-      isLoading = false;
-    });
+   setState(() {
+  isLoading = false;
+  // Verifica se os dados de solicitacoesremotas foram carregados corretamente
+  if (solicitacoesremotas != -1) {
+    solicitacoesremotas = NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas).solicitacoesremotas;
+    print(solicitacoesremotas);
+  }
+});
+
   }
 
   Future<void> fetchData() async {
