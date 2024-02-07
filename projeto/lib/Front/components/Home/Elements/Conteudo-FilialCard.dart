@@ -38,7 +38,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Hoje',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: widget.valorHoje.toString())
+                    ValuesDays(text: 'RS ' + widget.valorHoje.toString())
                   ],
                 ),
                 Column(
@@ -47,7 +47,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Ontem',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: widget.valorOntem.toString())
+                    ValuesDays(text: 'RS ' + widget.valorOntem.toString())
                   ],
                 ),
                 Column(

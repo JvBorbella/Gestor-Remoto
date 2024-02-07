@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
   String urlController = '';
   List<MonitorVendasEmpresaHoje> empresasHoje = [];
   List<MonitorVendasEmpresaOntem> empresasOntem = [];
-  late double valorOntem;
   bool isLoading = true;
   int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
 
@@ -49,102 +48,102 @@ class _HomeState extends State<Home> {
 
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          child: ListView(
-            children: [
-              Navbar(
-                children: [
-                  NavbarButton(),
-                ],
-                text: 'Página inicial',
-              ),
-              TotalCard(),
-              RequisitionCard(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 2,
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: numberOfRequisitions <= 0
-                                    ? EdgeInsets.only(left: 30)
-                                    : EdgeInsets.all(0),
-                              ),
-                              Text(
-                                'Requisições',
-                                style: TextStyle(
-                                    color: Style.primaryColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                width: 2,
-                              ),
-                              NumberOfRequisitions(),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 7,
-                          ),
-                          Row(
-                            children: [
-                              TextRequisition(),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              RequisitionButtom(
-                                text: 'Liberação remota',
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: empresasHoje.length,
-                itemBuilder: (context, index) {
-                  return FilialCard(
-                    children: [
-                      Column(
-                        children: [
-                          TextBUtton(
-                            text: empresasHoje[index].empresaNome,
-                          ),
-                          ConteudoFilialCard(
-                            valorHoje: empresasHoje[index].valorHoje,
-                            valorOntem: empresasOntem[index].valorOntem,
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-              SizedBox(
-                height: 45,
-              ),
-            ],
-          ),
+        body: ListView(
+          children: [
+            Navbar(
+              children: [
+                NavbarButton(),
+              ],
+              text: 'Página inicial',
+            ),
+            TotalCard(),
+            RequisitionCard(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 2,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: numberOfRequisitions <= 0
+                                  ? EdgeInsets.only(left: 30)
+                                  : EdgeInsets.all(0),
+                            ),
+                            Text(
+                              'Requisições',
+                              style: TextStyle(
+                                  color: Style.primaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            NumberOfRequisitions(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 7,
+                        ),
+                        Row(
+                          children: [
+                            TextRequisition(),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            RequisitionButtom(
+                              text: 'Liberação remota',
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ListView.builder( 
+              physics: NeverScrollableScrollPhysics(),       
+              shrinkWrap: true,   
+              itemCount: empresasHoje.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    FilialCard(
+                      children: [
+                        Column(
+                          children: [
+                            TextBUtton(
+                              text: empresasHoje[index].empresaNome,
+                            ),
+                            ConteudoFilialCard(
+                              valorHoje: empresasHoje[index].valorHoje,
+                              valorOntem: empresasOntem[index].valorOntem,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -168,7 +167,6 @@ class _HomeState extends State<Home> {
     if (fetchedDataOntem != null) {
       setState(() {
         empresasOntem = fetchedDataOntem;
-        isLoading = false; // Marcamos como carregado
       });
     }
   }
