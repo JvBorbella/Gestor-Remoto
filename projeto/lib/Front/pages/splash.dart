@@ -49,9 +49,9 @@ class _SplashState extends State<Splash> {
                 Row(
                   children: [
                     Image.network(
-                      'https://ideiatecnologia.com.br/wp-content/webp-express/webp-images/uploads/2023/11/imagem_2023-11-13_202733151.png.webp',
+                      'https://bdc.ideiatecnologia.com.br/wp/wp-content/uploads/2024/02/IDEIA-LOGO-AZUL-e1707321339855.png',
                       color: Style.tertiaryColor,
-                      height: 90,
+                      height: MediaQuery.of(context).size.width * 0.25,
                     ),
                   ],
                 ),

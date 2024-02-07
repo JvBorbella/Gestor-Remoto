@@ -23,9 +23,9 @@ class _FormCardState extends State<FormCard> {
         children: [
           // Imagem usada nas telas de login e config.
           Image.network(
-                'https://ideiatecnologia.com.br/wp-content/webp-express/webp-images/uploads/2023/11/imagem_2023-11-13_202733151.png.webp',
+                'https://bdc.ideiatecnologia.com.br/wp/wp-content/uploads/2024/02/IDEIA-LOGO-AZUL-e1707321339855.png',
                 color: Style.primaryColor,
-                height: 90,
+                height: 75,
               ),
               //Área do container com os widgets de form.
           Container(

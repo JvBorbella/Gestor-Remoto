@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Back/Today-Data.dart';
+import 'package:projeto/Back/Value-Day.dart';
 import 'package:projeto/Back/Yesterday-Data.dart';
 import 'package:projeto/Front/components/Home/Elements/Conteudo-FilialCard.dart';
 import 'package:projeto/Front/components/Home/Elements/ModalButtom.dart';
@@ -27,6 +28,7 @@ class _HomeState extends State<Home> {
   String urlController = '';
   List<MonitorVendasEmpresaHoje> empresasHoje = [];
   List<MonitorVendasEmpresaOntem> empresasOntem = [];
+  late double vendadia;
   bool isLoading = true;
   int numberOfRequisitions = NumberOfRequisitions().numberOfRequisitions;
 
@@ -56,7 +58,7 @@ class _HomeState extends State<Home> {
               ],
               text: 'Página inicial',
             ),
-            TotalCard(),
+            TotalCard(vendadia: vendadia),
             RequisitionCard(
               children: [
                 Row(
@@ -117,9 +119,9 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 10,
             ),
-            ListView.builder( 
-              physics: NeverScrollableScrollPhysics(),       
-              shrinkWrap: true,   
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               itemCount: empresasHoje.length,
               itemBuilder: (context, index) {
                 return Column(
@@ -167,6 +169,14 @@ class _HomeState extends State<Home> {
     if (fetchedDataOntem != null) {
       setState(() {
         empresasOntem = fetchedDataOntem;
+      });
+    }
+    double? fetchedDataValorHoje =
+        await DataServiceValorHoje.fetchDataValorHoje(widget.token, widget.url);
+
+    if (fetchedDataValorHoje != null) {
+      setState(() {
+        vendadia = fetchedDataValorHoje;
       });
     }
   }

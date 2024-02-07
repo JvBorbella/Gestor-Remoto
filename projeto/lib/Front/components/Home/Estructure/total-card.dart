@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 
 class TotalCard extends StatefulWidget {
-  const TotalCard({super.key});
+  final double vendadia;
+
+  const TotalCard({Key? key, required this.vendadia});
 
   @override
   State<TotalCard> createState() => _TotalCardState();
@@ -28,7 +30,7 @@ class _TotalCardState extends State<TotalCard> {
             Row(
               children: [
                 Text(
-                  'Total de hoje -',
+                  'Total de hoje - RS ' + widget.vendadia.toString(),
                   style: TextStyle(
                       color: Color(0xffFFFFFF),
                       fontWeight: FontWeight.bold,
