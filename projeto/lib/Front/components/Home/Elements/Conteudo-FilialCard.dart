@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Back/Today-Data.dart';
-import 'package:projeto/Back/UrlProvider.dart';
 import 'package:projeto/Front/components/Home/Elements/Values-of-Days.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
 class ConteudoFilialCard extends StatefulWidget {

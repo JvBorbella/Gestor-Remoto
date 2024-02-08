@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SaveUserService {
   Future<void> saveUser(BuildContext context, String username) async {
-    if (username != null && username.isNotEmpty) {
+    if (username.isNotEmpty) {
       try {
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         await sharedPreferences.setString('saveUser', username);

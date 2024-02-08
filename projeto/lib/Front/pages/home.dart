@@ -14,7 +14,6 @@ import 'package:projeto/Front/components/Home/Requisitions/Elements/text-requisi
 import 'package:projeto/Front/components/Home/Estructure/total-card.dart';
 import 'package:projeto/Front/components/Home/Estructure/filial-card.dart';
 import 'package:projeto/Front/components/Style.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   final token;
@@ -183,7 +182,6 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchData() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     List<MonitorVendasEmpresaHoje>? fetchedData =
         await DataService.fetchData(widget.token, widget.url);
 
@@ -195,7 +193,6 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataOntem() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     List<MonitorVendasEmpresaOntem>? fetchedDataOntem =
         await DataServiceOntem.fetchDataOntem(widget.token, widget.url);
 
@@ -207,7 +204,6 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataValorHoje() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     double? fetchedDataValorHoje =
         await DataServiceValorHoje.fetchDataValorHoje(widget.token, widget.url);
 
@@ -219,7 +215,6 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataRequisicoes() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int? fetchedDataRequisicoes =
         await DataServiceValorHoje.fetchDataRequisicoes(widget.token, widget.url);
 

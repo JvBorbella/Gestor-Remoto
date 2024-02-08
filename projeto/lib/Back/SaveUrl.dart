@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Back/Logined.dart';
 import 'package:projeto/Front/pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

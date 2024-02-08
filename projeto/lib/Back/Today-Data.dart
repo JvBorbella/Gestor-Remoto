@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MonitorVendasEmpresaHoje {
   late String empresaNome;
@@ -21,7 +20,6 @@ class MonitorVendasEmpresaHoje {
 class DataService {
   static Future<List<MonitorVendasEmpresaHoje>?> fetchData(
       String token, String url) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     List<MonitorVendasEmpresaHoje>? empresasHoje;
 
     try {
