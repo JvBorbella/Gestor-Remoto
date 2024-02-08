@@ -25,7 +25,6 @@ class SaveUrlService {
           builder: (context) => LoginPage(url: url),
         ),
       );
-      print(response);
     });
   }
 }

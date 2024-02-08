@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     String savedUrl = sharedPreferences.getString('saveUrl') ?? '';
     setState(() {
       urlController = savedUrl;
+      print(urlController);
     });
   }
 
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                                 _passwordController.text.isNotEmpty) {
                               await LoginFunction.login(
                                 context,
-                                widget.url,
+                                urlController,
                                 _userController,
                                 _passwordController,
                               );
