@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:projeto/Back/Today-Data.dart';
 import 'package:projeto/Back/Value-Day.dart';
 import 'package:projeto/Back/Yesterday-Data.dart';
@@ -32,6 +33,7 @@ class _HomeState extends State<Home> {
   late int solicitacoesremotas = -1; // Valor padrão indicando que os dados ainda não foram carregados
  // Valor padrão de carregamento
   bool isLoading = true;
+  NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   @override
   void initState() {
@@ -166,6 +168,7 @@ class _HomeState extends State<Home> {
       fetchData(),
       fetchDataOntem(),
       fetchDataValorHoje(),
+      fetchDataRequisicoes(),
     ]);
     // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
    setState(() {
@@ -211,6 +214,18 @@ class _HomeState extends State<Home> {
     if (fetchedDataValorHoje != null) {
       setState(() {
         vendadia = fetchedDataValorHoje;
+      });
+    }
+  }
+
+  Future<void> fetchDataRequisicoes() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int? fetchedDataRequisicoes =
+        await DataServiceValorHoje.fetchDataRequisicoes(widget.token, widget.url);
+
+    if (fetchedDataRequisicoes != null) {
+      setState(() {
+        solicitacoesremotas = fetchedDataRequisicoes;
       });
     }
   }

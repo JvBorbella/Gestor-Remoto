@@ -4,6 +4,7 @@ import 'package:projeto/Back/UrlProvider.dart';
 import 'package:projeto/Front/components/Home/Elements/Values-of-Days.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class ConteudoFilialCard extends StatefulWidget {
   final double valorHoje;
@@ -16,6 +17,7 @@ class ConteudoFilialCard extends StatefulWidget {
 
 class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
   bool isLoading = true;
+   NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   @override
   void initState() {
@@ -38,7 +40,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Hoje',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: 'RS ' + widget.valorHoje.toString())
+                    ValuesDays(text: currencyFormat.format(widget.valorHoje))
                   ],
                 ),
                 Column(
@@ -47,7 +49,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Ontem',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: 'RS ' + widget.valorOntem.toString())
+                    ValuesDays(text: currencyFormat.format(widget.valorOntem))
                   ],
                 ),
                 Column(

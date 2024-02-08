@@ -1,6 +1,7 @@
 //Código do card que armazenará o valor total de vendas na página inicial
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TotalCard extends StatefulWidget {
   final double vendadia;
@@ -12,6 +13,8 @@ class TotalCard extends StatefulWidget {
 }
 
 class _TotalCardState extends State<TotalCard> {
+  NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -30,7 +33,7 @@ class _TotalCardState extends State<TotalCard> {
             Row(
               children: [
                 Text(
-                  'Total de hoje - RS ' + widget.vendadia.toString(),
+                  'Total de hoje - ' + currencyFormat.format(widget.vendadia),
                   style: TextStyle(
                       color: Color(0xffFFFFFF),
                       fontWeight: FontWeight.bold,

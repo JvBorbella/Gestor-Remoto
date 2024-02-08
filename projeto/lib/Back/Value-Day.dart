@@ -47,6 +47,35 @@ class DataServiceValorHoje {
     }
     return vendadia;
   }
+
+   static Future<int?> fetchDataRequisicoes(String token, String url) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int? solicitacoesremotas;
+
+    try {
+      var urlRequisicoes = Uri.parse('$url/monitorvendas');
+
+      var responseRequisicoes = await http.post(
+        urlRequisicoes,
+        headers: {
+          'auth-token': token,
+        },
+      );
+
+      if (responseRequisicoes.statusCode == 200) {
+        var jsonData = json.decode(responseRequisicoes.body);
+
+        if (jsonData.containsKey('solicitacoesremotas')) {
+          solicitacoesremotas = int.parse(jsonData['solicitacoesremotas'].toString());
+          print(solicitacoesremotas);
+        } else {
+        }
+      }
+    } catch (e) {
+      print('Erro durante a requisição: $e');
+    }
+    return solicitacoesremotas;
+  }
 }
 
 
