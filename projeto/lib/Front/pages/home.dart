@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/Back/Today-Data.dart';
 import 'package:projeto/Back/Value-Day.dart';
+import 'package:projeto/Back/Value-Month.dart';
+import 'package:projeto/Back/Value-Week.dart';
 import 'package:projeto/Back/Yesterday-Data.dart';
 import 'package:projeto/Front/components/Home/Elements/Conteudo-FilialCard.dart';
 import 'package:projeto/Front/components/Home/Elements/ModalButtom.dart';
@@ -28,8 +30,11 @@ class _HomeState extends State<Home> {
   String urlController = '';
   List<MonitorVendasEmpresaHoje> empresasHoje = [];
   List<MonitorVendasEmpresaOntem> empresasOntem = [];
+  List<MonitorVendasEmpresaSemana> empresasSemana = [];
+  List<MonitorVendasEmpresaMes> empresasMes = [];
   late double vendadia = 0.0;
-  late int solicitacoesremotas = -1; // Valor padrão indicando que os dados ainda não foram carregados
+  late int ticket = -1;
+  late int solicitacoesremotas = -1;
  // Valor padrão de carregamento
   bool isLoading = true;
   NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
@@ -110,6 +115,8 @@ class _HomeState extends State<Home> {
                             RequisitionButtom(
                               text: 'Liberação remota',
                               solicitacoesremotas: solicitacoesremotas,
+                              url: widget.url,
+                              token: widget.token,
                             )
                           ],
                         ),
@@ -136,7 +143,14 @@ class _HomeState extends State<Home> {
                           Column(
                             children: [
                               TextBUtton(
-                                text: empresasHoje[index].empresaNome,
+                                url: widget.url,
+                                token: widget.token,
+                                empresaNome: empresasHoje[index].empresaNome,
+                                valorHoje: empresasHoje[index].valorHoje,
+                                valorOntem: empresasOntem[index].valorOntem,
+                                valorSemana: empresasSemana[index].valorSemana,
+                                valorMes: empresasMes[index].valorMes,
+                                ticket: empresasHoje[index].ticket,
                               ),
                               ConteudoFilialCard(
                                 valorHoje: empresasHoje[index].valorHoje,
@@ -168,6 +182,8 @@ class _HomeState extends State<Home> {
       fetchDataOntem(),
       fetchDataValorHoje(),
       fetchDataRequisicoes(),
+      fetchDataSemana(),
+      fetchDataMes(),
     ]);
     // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
    setState(() {
@@ -175,7 +191,9 @@ class _HomeState extends State<Home> {
   // Verifica se os dados de solicitacoesremotas foram carregados corretamente
   if (solicitacoesremotas != -1) {
     solicitacoesremotas = NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas).solicitacoesremotas;
-    print(solicitacoesremotas);
+  } else if (ticket != -1) {
+    ticket = ticket;
+    print(ticket);
   }
 });
 
@@ -199,6 +217,28 @@ class _HomeState extends State<Home> {
     if (fetchedDataOntem != null) {
       setState(() {
         empresasOntem = fetchedDataOntem;
+      });
+    }
+  }
+
+  Future<void> fetchDataSemana() async {
+    List<MonitorVendasEmpresaSemana>? fetchedDataSemana =
+        await DataServiceSemana.fetchDataSemana(widget.token, widget.url);
+
+    if (fetchedDataSemana != null) {
+      setState(() {
+        empresasSemana = fetchedDataSemana;
+      });
+    }
+  }
+
+  Future<void> fetchDataMes() async {
+    List<MonitorVendasEmpresaMes>? fetchedDataMes =
+        await DataServiceMes.fetchDataMes(widget.token, widget.url);
+
+    if (fetchedDataMes != null) {
+      setState(() {
+        empresasMes = fetchedDataMes;
       });
     }
   }

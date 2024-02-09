@@ -2,9 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:projeto/Front/pages/sales.dart';
 
 class TextBUtton extends StatefulWidget {
-  final String text;
+  final String empresaNome;
+  final double valorHoje;
+  final double valorOntem;
+  final double valorSemana;
+  final double valorMes;
+  final String url;
+  final token;
+  final int ticket;
 
-  const TextBUtton({Key? key, required this.text}) : super(key: key);
+  const TextBUtton(
+      {Key? key,
+      required this.empresaNome,
+      this.token,
+      this.url = '',
+      required this.valorHoje,
+      required this.valorOntem,
+      required this.valorSemana,
+      required this.valorMes,
+      required this.ticket,
+      })
+      : super(key: key);
 
   @override
   State<TextBUtton> createState() => _TextButtonState();
@@ -25,7 +43,16 @@ class _TextButtonState extends State<TextBUtton> {
             onPressed: () {
               //Redirecionamento executada ao clicar no button
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Sales()),
+                MaterialPageRoute(
+                    builder: (context) => Sales(
+                        url: widget.url,
+                        token: widget.token,
+                        empresaNome: widget.empresaNome,
+                        valorHoje: widget.valorHoje,
+                        valorOntem: widget.valorOntem,
+                        valorSemana: widget.valorSemana,
+                        valorMes: widget.valorMes,
+                        ticket: widget.ticket)),
               );
             },
             //Aparência do button
@@ -33,7 +60,7 @@ class _TextButtonState extends State<TextBUtton> {
               width: MediaQuery.of(context).size.width,
               child: Text(
                 //Texto do button está sendo definido na página home.Dart
-                widget.text,
+                widget.empresaNome,
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

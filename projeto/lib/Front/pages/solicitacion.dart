@@ -11,7 +11,8 @@ import 'package:projeto/Front/pages/home.dart';
 
 class Solicitacion extends StatefulWidget {
   final token;
-  const Solicitacion({Key? key, this.token}) : super(key: key);
+  final String url;
+  const Solicitacion({Key? key, this.token, this.url = ''}) : super(key: key);
 
   @override
   State<Solicitacion> createState() => _SolicitacionState();
@@ -26,12 +27,15 @@ class _SolicitacionState extends State<Solicitacion> {
           child: ListView(
             children: [
               //Chamando a navbar e os elementos internos dela.
-             Navbar(children: [
+              Navbar(children: [
                 //Chamando os elementos internos da navbar
                 ButtonNavbar(
-                    destination: Home(),
-                    Icons: Icons.arrow_back_ios_new,
+                  destination: Home(
+                    url: widget.url,
+                    token: widget.token,
                   ),
+                  Icons: Icons.arrow_back_ios_new,
+                ),
               ], text: 'Solicitações'),
               SizedBox(
                 height: Style.ContentInternalSpace,
@@ -46,7 +50,7 @@ class _SolicitacionState extends State<Solicitacion> {
                     child: Expanded(
                       child: Column(
                         //Alinhamento interno
-                        
+
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -69,7 +73,7 @@ class _SolicitacionState extends State<Solicitacion> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              //Propriedade Expanded para que seja realizada a quebra de texto 
+                              //Propriedade Expanded para que seja realizada a quebra de texto
                               Expanded(
                                 child: TextSolicitacion(
                                   text:
@@ -89,7 +93,8 @@ class _SolicitacionState extends State<Solicitacion> {
                               //Button para autorizar requisição
                               LiberationButtom(
                                 text: 'Autorizar',
-                                destination: Home(),
+                                destination:
+                                    Home(url: widget.url, token: widget.token),
                               ),
                             ],
                           ),

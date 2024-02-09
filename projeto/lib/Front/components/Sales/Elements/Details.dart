@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Style.dart';
 
 class Details extends StatefulWidget {
-  const Details({super.key});
+  final int ticket;
+
+  const Details({Key? key, required this.ticket});
 
   @override
   State<Details> createState() => _DetailsState();
@@ -133,7 +135,7 @@ class _DetailsState extends State<Details> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          '0',
+                          widget.ticket.toString(),
                           style: TextStyle(
                               color: Style.tertiaryColor,
                               fontSize: 12,

@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:projeto/Front/components/Sales/Elements/Text-Values.dart';
 import 'package:projeto/Front/components/Style.dart';
 
 class Values extends StatefulWidget {
-  const Values({super.key});
+  final double valorHoje;
+  final double valorOntem;
+  final double valorSemana;
+  final double valorMes;
+
+  const Values({Key? key, required this.valorHoje, required this.valorOntem, required this.valorSemana, required this.valorMes});
 
   @override
   State<Values> createState() => _ValuesState();
 }
 
 class _ValuesState extends State<Values> {
+  NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -27,7 +35,7 @@ class _ValuesState extends State<Values> {
                       'Hoje',
                       style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: '(Valor)')
+                    TextValues(text: currencyFormat.format(widget.valorHoje))
                   ],
                 ),
                 Column(
@@ -36,7 +44,7 @@ class _ValuesState extends State<Values> {
                       'Ontem',
                       style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: '(Valor)')
+                    TextValues(text: currencyFormat.format(widget.valorOntem))
                   ],
                 ),
               ],
@@ -51,19 +59,19 @@ class _ValuesState extends State<Values> {
                 Column(
                   children: [
                     Text(
-                      'Semana passada',
+                      'Semana',
                       style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: '(Valor)')
+                    TextValues(text: currencyFormat.format(widget.valorSemana))
                   ],
                 ),
                 Column(
                   children: [
                     Text(
-                      'Mês passado',
+                      'Mês',
                       style: TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: '(Valor)')
+                    TextValues(text: currencyFormat.format(widget.valorMes))
                   ],
                 ),
               ],

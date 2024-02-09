@@ -5,11 +5,16 @@ class RequisitionButtom extends StatefulWidget {
   //Variável para que seja definido o texto do button na página em que está sendo chamado
   final String text;
   final int solicitacoesremotas;
+  final token;
+  final String url;
 
-  const RequisitionButtom({
-    Key? key,
-    required this.text, required this.solicitacoesremotas
-  }) : super(key: key);
+  const RequisitionButtom(
+      {Key? key,
+      required this.text,
+      required this.solicitacoesremotas,
+      this.token,
+      this.url = ''})
+      : super(key: key);
 
   @override
   State<RequisitionButtom> createState() => _RequisitionButtomState();
@@ -78,7 +83,8 @@ class _RequisitionButtomState extends State<RequisitionButtom> {
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => Solicitacion(),
+          builder: (context) =>
+              Solicitacion(url: widget.url, token: widget.token),
         ),
       );
     }
