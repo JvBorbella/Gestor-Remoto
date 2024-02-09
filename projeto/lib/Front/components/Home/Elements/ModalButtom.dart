@@ -52,9 +52,7 @@ class _NavbarButtonState extends State<NavbarButton> {
                     //Buttom de sair
                     TextButton(
                       onPressed: () async {
-                        Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
+                        _sair();
                       },
                       child: Container(
                         width: 100,
@@ -111,6 +109,14 @@ class _NavbarButtonState extends State<NavbarButton> {
   void _closeModal() {
     //Função para fechar o modal
     Navigator.of(modalContext).pop();
+  }
+
+  void _sair() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+        (route) => false);
   }
 
   @override
