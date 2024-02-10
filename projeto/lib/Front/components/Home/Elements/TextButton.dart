@@ -5,8 +5,8 @@ class TextBUtton extends StatefulWidget {
   final String empresaNome;
   final double valorHoje;
   final double valorOntem;
-  final double valorSemana;
-  final double valorMes;
+  // final double valorSemana;
+  // final double valorMes;
   final String url;
   final token;
   final int ticket;
@@ -18,8 +18,8 @@ class TextBUtton extends StatefulWidget {
       this.url = '',
       required this.valorHoje,
       required this.valorOntem,
-      required this.valorSemana,
-      required this.valorMes,
+      // required this.valorSemana,
+      // required this.valorMes,
       required this.ticket,
       })
       : super(key: key);
@@ -50,8 +50,8 @@ class _TextButtonState extends State<TextBUtton> {
                         empresaNome: widget.empresaNome,
                         valorHoje: widget.valorHoje,
                         valorOntem: widget.valorOntem,
-                        valorSemana: widget.valorSemana,
-                        valorMes: widget.valorMes,
+                        // valorSemana: widget.valorSemana,
+                        // valorMes: widget.valorMes,
                         ticket: widget.ticket)),
               );
             },

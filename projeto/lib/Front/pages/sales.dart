@@ -13,8 +13,8 @@ class Sales extends StatefulWidget {
   final String empresaNome;
   final double valorHoje;
   final double valorOntem;
-  final double valorSemana;
-  final double valorMes;
+  // final double valorSemana;
+  // final double valorMes;
   final int ticket;
 
   const Sales(
@@ -25,8 +25,9 @@ class Sales extends StatefulWidget {
       required this.empresaNome,
       required this.valorOntem,
       required this.ticket,
-      required this.valorSemana,
-      required this.valorMes,})
+      // required this.valorSemana,
+      // required this.valorMes,
+      })
       : super(key: key);
 
   @override
@@ -69,8 +70,9 @@ class _SalesState extends State<Sales> {
                   Values(
                       valorHoje: widget.valorHoje,
                       valorOntem: widget.valorOntem,
-                      valorSemana: widget.valorSemana,
-                      valorMes: widget.valorMes,),
+                      // valorSemana: widget.valorSemana,
+                      // valorMes: widget.valorMes,
+                      ),
                   SizedBox(
                     height: Style.ContentInternalSpace,
                   ),

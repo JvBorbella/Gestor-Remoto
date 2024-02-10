@@ -148,8 +148,8 @@ class _HomeState extends State<Home> {
                                 empresaNome: empresasHoje[index].empresaNome,
                                 valorHoje: empresasHoje[index].valorHoje,
                                 valorOntem: empresasOntem[index].valorOntem,
-                                valorSemana: empresasSemana[index].valorSemana,
-                                valorMes: empresasMes[index].valorMes,
+                                // valorSemana: empresasSemana[index].valorSemana,
+                                // valorMes: empresasMes[index].valorMes,
                                 ticket: empresasHoje[index].ticket,
                               ),
                               ConteudoFilialCard(
@@ -182,8 +182,8 @@ class _HomeState extends State<Home> {
       fetchDataOntem(),
       fetchDataValorHoje(),
       fetchDataRequisicoes(),
-      fetchDataSemana(),
-      fetchDataMes(),
+      // fetchDataSemana(),
+      // fetchDataMes(),
     ]);
     // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
    setState(() {

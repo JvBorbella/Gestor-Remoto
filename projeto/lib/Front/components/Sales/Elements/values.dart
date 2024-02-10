@@ -6,17 +6,24 @@ import 'package:projeto/Front/components/Style.dart';
 class Values extends StatefulWidget {
   final double valorHoje;
   final double valorOntem;
-  final double valorSemana;
-  final double valorMes;
+  // final double valorSemana;
+  // final double valorMes;
 
-  const Values({Key? key, required this.valorHoje, required this.valorOntem, required this.valorSemana, required this.valorMes});
+  const Values(
+      {Key? key,
+      required this.valorHoje,
+      required this.valorOntem,
+      // required this.valorSemana,
+      // required this.valorMes
+      });
 
   @override
   State<Values> createState() => _ValuesState();
 }
 
 class _ValuesState extends State<Values> {
-  NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  NumberFormat currencyFormat =
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +40,8 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Hoje',
-                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
+                      style:
+                          TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: currencyFormat.format(widget.valorHoje))
                   ],
@@ -42,7 +50,8 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Ontem',
-                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
+                      style:
+                          TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: currencyFormat.format(widget.valorOntem))
                   ],
@@ -60,18 +69,20 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Semana',
-                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
+                      style:
+                          TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorSemana))
+                    TextValues(text: 'RS 000.000,00')
                   ],
                 ),
                 Column(
                   children: [
                     Text(
                       'Mês',
-                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
+                      style:
+                          TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorMes))
+                    TextValues(text: 'RS 000.000,00')
                   ],
                 ),
               ],
@@ -96,7 +107,8 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Meta de hoje',
-                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
+                      style:
+                          TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],
@@ -105,7 +117,8 @@ class _ValuesState extends State<Values> {
                   children: [
                     Text(
                       'Meta acum.',
-                      style: TextStyle(fontSize: 9, color: Style.quarantineColor),
+                      style:
+                          TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     TextValues(text: '(Valor)')
                   ],
