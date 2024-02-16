@@ -5,7 +5,8 @@ class Details extends StatefulWidget {
   final int ticketHoje;
   final int ticketOntem;
 
-  const Details({Key? key, required this.ticketHoje, required this.ticketOntem});
+  const Details(
+      {Key? key, required this.ticketHoje, required this.ticketOntem});
 
   @override
   State<Details> createState() => _DetailsState();
@@ -48,7 +49,7 @@ class _DetailsState extends State<Details> {
                     ),
                     Container(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Column(
@@ -192,7 +193,7 @@ class _DetailsState extends State<Details> {
                             ),
                             Container(
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Column(

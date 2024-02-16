@@ -61,7 +61,10 @@ class _HomeState extends State<Home> {
 
     return SafeArea(
       child: Scaffold(
-        body: ListView(
+        body: RefreshIndicator(
+          onRefresh: () => _refreshData(),
+          child: 
+         ListView(
           children: [
             Navbar(
               children: [
@@ -202,6 +205,7 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+        ),
       ),
     );
   }
@@ -229,6 +233,18 @@ class _HomeState extends State<Home> {
       } else if (ticketOntem != -1) {
         ticketOntem = ticketOntem;
       }
+    });
+  }
+
+   Future<void> _refreshData() async {
+    // Aqui você pode chamar os métodos para recarregar os dados
+    // Exemplo: await loadData();
+    setState(() {
+      isLoading = true; // Define isLoading como true para mostrar o indicador de carregamento
+    });
+    await loadData();
+    setState(() {
+      isLoading = false; // Define isLoading como false para parar o indicador de carregamento
     });
   }
 
