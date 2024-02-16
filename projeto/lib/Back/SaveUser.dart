@@ -11,7 +11,6 @@ class SaveUserService {
 
       }
     } else {
-      print('Username is null or empty. Not saving.');
     }
   }
 

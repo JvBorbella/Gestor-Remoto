@@ -50,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
     String savedUrl = sharedPreferences.getString('saveUrl') ?? '';
     setState(() {
       urlController = savedUrl;
-      print(urlController);
     });
   }
 

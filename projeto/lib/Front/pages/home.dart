@@ -33,16 +33,20 @@ class _HomeState extends State<Home> {
   List<MonitorVendasEmpresaSemana> empresasSemana = [];
   List<MonitorVendasEmpresaMes> empresasMes = [];
   late double vendadia = 0.0;
-  late int ticket = -1;
+  late int ticketHoje = -1;
+  late int ticketOntem = -1;
   late int solicitacoesremotas = -1;
- // Valor padrão de carregamento
+  // Valor padrão de carregamento
   bool isLoading = true;
-  NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  NumberFormat currencyFormat =
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   @override
   void initState() {
     super.initState();
     loadData();
+    fetchDataSemana();
+    fetchDataMes();
   }
 
   @override
@@ -94,7 +98,8 @@ class _HomeState extends State<Home> {
                             SizedBox(
                               width: 2,
                             ),
-                            NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas),
+                            NumberOfRequisitions(
+                                solicitacoesremotas: solicitacoesremotas),
                           ],
                         ),
                         SizedBox(
@@ -102,7 +107,9 @@ class _HomeState extends State<Home> {
                         ),
                         Row(
                           children: [
-                            TextRequisition(solicitacoesremotas: solicitacoesremotas,),
+                            TextRequisition(
+                              solicitacoesremotas: solicitacoesremotas,
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -142,6 +149,8 @@ class _HomeState extends State<Home> {
                         children: [
                           Column(
                             children: [
+                              if (empresasSemana.isNotEmpty &&
+                                  empresasMes.isNotEmpty)
                               TextBUtton(
                                 url: widget.url,
                                 token: widget.token,
@@ -150,12 +159,34 @@ class _HomeState extends State<Home> {
                                 valorOntem: empresasOntem[index].valorOntem,
                                 valorSemana: empresasSemana[index].valorSemana,
                                 valorMes: empresasMes[index].valorMes,
-                                ticket: empresasHoje[index].ticket,
-                              ),
-                              ConteudoFilialCard(
+                                ticketHoje: empresasHoje[index].ticketHoje,
+                                ticketOntem: empresasOntem[index].ticketOntem,
+                              ) else TextBUtton(
+                                url: widget.url,
+                                token: widget.token,
+                                empresaNome: empresasHoje[index].empresaNome,
                                 valorHoje: empresasHoje[index].valorHoje,
                                 valorOntem: empresasOntem[index].valorOntem,
+                                valorSemana: 0,
+                                valorMes: 0,
+                                ticketHoje: empresasHoje[index].ticketHoje,
+                                ticketOntem: empresasOntem[index].ticketOntem,
                               ),
+                              if (empresasSemana.isNotEmpty &&
+                                  empresasMes.isNotEmpty)
+                                ConteudoFilialCard(
+                                  valorHoje: empresasHoje[index].valorHoje,
+                                  valorOntem: empresasOntem[index].valorOntem,
+                                  valorSemana: empresasSemana[index].valorSemana,
+                                  valorMes: empresasMes[index].valorMes,
+                                )
+                              else
+                                ConteudoFilialCard(
+                                  valorHoje: empresasHoje[index].valorHoje,
+                                  valorOntem: empresasOntem[index].valorOntem,
+                                  valorSemana: 0,
+                                  valorMes: 0,
+                                )
                             ],
                           ),
                         ],
@@ -182,21 +213,23 @@ class _HomeState extends State<Home> {
       fetchDataOntem(),
       fetchDataValorHoje(),
       fetchDataRequisicoes(),
-      fetchDataSemana(),
-      fetchDataMes(),
+      // fetchDataSemana(),
+      // fetchDataMes(),
     ]);
     // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
-   setState(() {
-  isLoading = false;
-  // Verifica se os dados de solicitacoesremotas foram carregados corretamente
-  if (solicitacoesremotas != -1) {
-    solicitacoesremotas = NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas).solicitacoesremotas;
-  } else if (ticket != -1) {
-    ticket = ticket;
-    print(ticket);
-  }
-});
-
+    setState(() {
+      isLoading = false;
+      // Verifica se os dados de solicitacoesremotas foram carregados corretamente
+      if (solicitacoesremotas != -1) {
+        solicitacoesremotas =
+            NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas)
+                .solicitacoesremotas;
+      } else if (ticketHoje != -1) {
+        ticketHoje = ticketHoje;
+      } else if (ticketOntem != -1) {
+        ticketOntem = ticketOntem;
+      }
+    });
   }
 
   Future<void> fetchData() async {
@@ -256,7 +289,8 @@ class _HomeState extends State<Home> {
 
   Future<void> fetchDataRequisicoes() async {
     int? fetchedDataRequisicoes =
-        await DataServiceValorHoje.fetchDataRequisicoes(widget.token, widget.url);
+        await DataServiceValorHoje.fetchDataRequisicoes(
+            widget.token, widget.url);
 
     if (fetchedDataRequisicoes != null) {
       setState(() {

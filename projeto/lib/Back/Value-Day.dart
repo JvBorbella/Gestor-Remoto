@@ -18,7 +18,7 @@ class MonitorVendasValorHoje {
 class DataServiceValorHoje {
   static Future<double?> fetchDataValorHoje(String token, String url) async {
     double? vendadia;
-    int? solicitacoesremotas;
+
 
     try {
       var urlValorHoje = Uri.parse('$url/monitorvendas');
@@ -35,8 +35,6 @@ class DataServiceValorHoje {
 
         if (jsonData.containsKey('vendadia')) {
           vendadia = double.parse(jsonData['vendadia'].toString());
-          solicitacoesremotas = int.parse(jsonData['solicitacoesremotas'].toString());
-          print(solicitacoesremotas);
         } else {
         }
       }
@@ -64,7 +62,6 @@ class DataServiceValorHoje {
 
         if (jsonData.containsKey('solicitacoesremotas')) {
           solicitacoesremotas = int.parse(jsonData['solicitacoesremotas'].toString());
-          print(solicitacoesremotas);
         } else {
         }
       }

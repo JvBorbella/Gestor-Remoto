@@ -4,18 +4,18 @@ import 'package:http/http.dart' as http;
 class MonitorVendasEmpresaHoje {
   late String empresaNome;
   late double valorHoje;
-  late int ticket;
+  late int ticketHoje;
 
   MonitorVendasEmpresaHoje(
       {required this.empresaNome,
       required this.valorHoje,
-      required this.ticket});
+      required this.ticketHoje});
 
   factory MonitorVendasEmpresaHoje.fromJson(Map<String, dynamic> json) {
     return MonitorVendasEmpresaHoje(
       empresaNome: json['empresa_nome'],
       valorHoje: json['valortotal'],
-      ticket: json['ticket'],
+      ticketHoje: json['ticket'],
     );
   }
 }

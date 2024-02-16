@@ -5,7 +5,15 @@ import 'package:intl/intl.dart';
 class ConteudoFilialCard extends StatefulWidget {
   final double valorHoje;
   final double valorOntem;
-  const ConteudoFilialCard({Key? key, required this.valorHoje, required this.valorOntem}) : super(key: key);
+  final double valorSemana;
+  final double valorMes;
+  const ConteudoFilialCard(
+      {Key? key,
+      required this.valorHoje,
+      required this.valorOntem,
+      required this.valorSemana,
+      required this.valorMes})
+      : super(key: key);
 
   @override
   State<ConteudoFilialCard> createState() => _ConteudoFilialCardState();
@@ -13,13 +21,15 @@ class ConteudoFilialCard extends StatefulWidget {
 
 class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
   bool isLoading = true;
-   NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  NumberFormat currencyFormat =
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   @override
   void initState() {
     super.initState();
     // fetchData();
   }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -51,10 +61,20 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                 Column(
                   children: [
                     Text(
-                      'Meta',
+                      'Semana',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: 'RS 000.000,00')
+                    if (widget.valorSemana == 0)
+                      Container(
+                        width: 10,
+                        height: 10,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
+                    else
+                      ValuesDays(
+                          text: currencyFormat.format(widget.valorSemana)),
                   ],
                 ),
               ],
@@ -75,21 +95,30 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Projeção de venda',
+                      'Vendas no mês',
                       style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
                           color: Color(0xffA6A6A6)),
                     ),
-                    Text(
-                      'RS 0.000.000,00',
-                      style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width < 600
-                              ? MediaQuery.of(context).size.width * 0.07
-                              : MediaQuery.of(context).size.width * 0.018,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff00568e)),
-                    ),
+                    if (widget.valorMes == 0)
+                      Container(
+                        width: 35,
+                        height: 35,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
+                    else
+                      Text(
+                        currencyFormat.format(widget.valorMes),
+                        style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width < 600
+                                ? MediaQuery.of(context).size.width * 0.07
+                                : MediaQuery.of(context).size.width * 0.018,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff00568e)),
+                      ),
                   ],
                 ),
               ],

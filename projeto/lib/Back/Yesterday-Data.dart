@@ -3,18 +3,21 @@ import 'package:http/http.dart' as http;
 
 class MonitorVendasEmpresaOntem {
   late double valorOntem;
+  late int ticketOntem;
 
-  MonitorVendasEmpresaOntem({required this.valorOntem});
+  MonitorVendasEmpresaOntem({required this.valorOntem, required this.ticketOntem});
 
   factory MonitorVendasEmpresaOntem.fromJson(Map<String, dynamic> json) {
     return MonitorVendasEmpresaOntem(
       valorOntem: json['valortotal'],
+      ticketOntem: json['ticket'],
     );
   }
 }
 
 class DataServiceOntem {
-  static Future<List<MonitorVendasEmpresaOntem>?> fetchDataOntem(String token, String url) async {
+  static Future<List<MonitorVendasEmpresaOntem>?> fetchDataOntem(
+      String token, String url) async {
     List<MonitorVendasEmpresaOntem>? empresasOntem;
 
     try {
@@ -46,4 +49,3 @@ class DataServiceOntem {
     return empresasOntem;
   }
 }
-

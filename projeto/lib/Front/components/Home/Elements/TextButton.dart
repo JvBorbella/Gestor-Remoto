@@ -9,7 +9,8 @@ class TextBUtton extends StatefulWidget {
   final double valorMes;
   final String url;
   final token;
-  final int ticket;
+  final int ticketHoje;
+  final int ticketOntem;
 
   const TextBUtton(
       {Key? key,
@@ -20,7 +21,8 @@ class TextBUtton extends StatefulWidget {
       required this.valorOntem,
       required this.valorSemana,
       required this.valorMes,
-      required this.ticket,
+      required this.ticketHoje,
+      required this.ticketOntem,
       })
       : super(key: key);
 
@@ -52,7 +54,9 @@ class _TextButtonState extends State<TextBUtton> {
                         valorOntem: widget.valorOntem,
                         valorSemana: widget.valorSemana,
                         valorMes: widget.valorMes,
-                        ticket: widget.ticket)),
+                        ticketHoje: widget.ticketHoje,
+                        ticketOntem: widget.ticketOntem,
+                        )),
               );
             },
             //Aparência do button
