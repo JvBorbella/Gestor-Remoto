@@ -61,7 +61,11 @@ class _TextButtonState extends State<TextBUtton> {
             },
             //Aparência do button
             child: Container(
+              margin: EdgeInsets.all(8),
               width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20)
+              ),
               child: Text(
                 //Texto do button está sendo definido na página home.Dart
                 widget.empresaNome,

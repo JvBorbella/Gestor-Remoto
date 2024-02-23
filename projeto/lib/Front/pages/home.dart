@@ -33,6 +33,9 @@ class _HomeState extends State<Home> {
   List<MonitorVendasEmpresaSemana> empresasSemana = [];
   List<MonitorVendasEmpresaMes> empresasMes = [];
   late double vendadia = 0.0;
+  late double vendadiaanterior = 0.0;
+  late double vendasemana = 0.0;
+  late double vendames = 0.0;
   late int ticketHoje = -1;
   late int ticketOntem = -1;
   late int solicitacoesremotas = -1;
@@ -63,148 +66,249 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: () => _refreshData(),
-          child: 
-         ListView(
-          children: [
-            Navbar(
-              children: [
-                NavbarButton(),
-              ],
-              text: 'Página inicial',
-            ),
-            TotalCard(vendadia: vendadia),
-            RequisitionCard(
-              children: [
-                Row(
+          child: ListView(
+            children: [
+              Navbar(
+                children: [
+                  NavbarButton(),
+                ],
+                text: 'Página inicial',
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                decoration: BoxDecoration(),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Column(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Row(
+                        Column(
                           children: [
-                            Padding(
-                              padding: solicitacoesremotas <= 0
-                                  ? EdgeInsets.only(left: 30)
-                                  : EdgeInsets.all(0),
-                            ),
                             Text(
-                              'Requisições',
+                              'Total de hoje',
                               style: TextStyle(
-                                  color: Style.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                                color: Style.primaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
-                            SizedBox(
-                              width: 2,
-                            ),
-                            NumberOfRequisitions(
-                                solicitacoesremotas: solicitacoesremotas),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 7,
-                        ),
-                        Row(
-                          children: [
-                            TextRequisition(
-                              solicitacoesremotas: solicitacoesremotas,
+                            TotalCard(
+                              text: '',
+                              children: vendadia,
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        Column(
                           children: [
-                            RequisitionButtom(
-                              text: 'Liberação remota',
-                              solicitacoesremotas: solicitacoesremotas,
-                              url: widget.url,
-                              token: widget.token,
-                            )
+                            Text(
+                              'Total de ontem',
+                              style: TextStyle(
+                                color: Style.primaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            TotalCard(
+                              text: '',
+                              children: vendadiaanterior,
+                            ),
                           ],
                         ),
                       ],
                     ),
-                  ],
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: empresasHoje.length,
-              itemBuilder: (context, index) {
-                // Verifica se empresasOntem possui elementos antes de acessá-los
-                if (index < empresasOntem.length) {
-                  return Column(
-                    children: [
-                      FilialCard(
-                        children: [
-                          Column(
-                            children: [
-                              if (empresasSemana.isNotEmpty &&
-                                  empresasMes.isNotEmpty)
-                              TextBUtton(
-                                url: widget.url,
-                                token: widget.token,
-                                empresaNome: empresasHoje[index].empresaNome,
-                                valorHoje: empresasHoje[index].valorHoje,
-                                valorOntem: empresasOntem[index].valorOntem,
-                                valorSemana: empresasSemana[index].valorSemana,
-                                valorMes: empresasMes[index].valorMes,
-                                ticketHoje: empresasHoje[index].ticketHoje,
-                                ticketOntem: empresasOntem[index].ticketOntem,
-                              ) else TextBUtton(
-                                url: widget.url,
-                                token: widget.token,
-                                empresaNome: empresasHoje[index].empresaNome,
-                                valorHoje: empresasHoje[index].valorHoje,
-                                valorOntem: empresasOntem[index].valorOntem,
-                                valorSemana: 0,
-                                valorMes: 0,
-                                ticketHoje: empresasHoje[index].ticketHoje,
-                                ticketOntem: empresasOntem[index].ticketOntem,
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              'Total da semana',
+                              style: TextStyle(
+                                color: Style.primaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
                               ),
-                              if (empresasSemana.isNotEmpty &&
-                                  empresasMes.isNotEmpty)
-                                ConteudoFilialCard(
-                                  valorHoje: empresasHoje[index].valorHoje,
-                                  valorOntem: empresasOntem[index].valorOntem,
-                                  valorSemana: empresasSemana[index].valorSemana,
-                                  valorMes: empresasMes[index].valorMes,
-                                )
-                              else
-                                ConteudoFilialCard(
-                                  valorHoje: empresasHoje[index].valorHoje,
-                                  valorOntem: empresasOntem[index].valorOntem,
-                                  valorSemana: 0,
-                                  valorMes: 0,
-                                )
+                              textAlign: TextAlign.center,
+                            ),
+                            TotalCard(
+                              text: '',
+                              children: vendasemana,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              'Total do mês',
+                              style: TextStyle(
+                                color: Style.primaryColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            TotalCard(
+                              text: '',
+                              children: vendames,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
+                ),
+              ),
+              RequisitionCard(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: solicitacoesremotas <= 0
+                                    ? EdgeInsets.only(left: 30)
+                                    : EdgeInsets.all(0),
+                              ),
+                              Text(
+                                'Requisições',
+                                style: TextStyle(
+                                    color: Style.primaryColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              NumberOfRequisitions(
+                                  solicitacoesremotas: solicitacoesremotas),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 7,
+                          ),
+                          Row(
+                            children: [
+                              TextRequisition(
+                                solicitacoesremotas: solicitacoesremotas,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              RequisitionButtom(
+                                text: 'Liberação remota',
+                                solicitacoesremotas: solicitacoesremotas,
+                                url: widget.url,
+                                token: widget.token,
+                              )
                             ],
                           ),
                         ],
                       ),
                     ],
-                  );
-                } else {
-                  // Trate o caso em que não há dados em empresasOntem para este índice
-                  return Text(
-                      'Dados de ontem não encontrados para esta empresa.');
-                }
-              },
-            ),
-          ],
-        ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: empresasHoje.length,
+                itemBuilder: (context, index) {
+                  // Verifica se empresasOntem possui elementos antes de acessá-los
+                  if (index < empresasOntem.length) {
+                    return Column(
+                      children: [
+                        FilialCard(
+                          children: [
+                            Column(
+                              children: [
+                                if (empresasSemana.isNotEmpty &&
+                                    empresasMes.isNotEmpty)
+                                  TextBUtton(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    empresaNome:
+                                        empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                    ticketHoje: empresasHoje[index].ticketHoje,
+                                    ticketOntem:
+                                        empresasOntem[index].ticketOntem,
+                                  )
+                                else
+                                  TextBUtton(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    empresaNome:
+                                        empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorSemana: 0,
+                                    valorMes: 0,
+                                    ticketHoje: empresasHoje[index].ticketHoje,
+                                    ticketOntem:
+                                        empresasOntem[index].ticketOntem,
+                                  ),
+                                if (empresasSemana.isNotEmpty &&
+                                    empresasMes.isNotEmpty)
+                                  ConteudoFilialCard(
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                  )
+                                else
+                                  ConteudoFilialCard(
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorSemana: 0,
+                                    valorMes: 0,
+                                  )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    // Trate o caso em que não há dados em empresasOntem para este índice
+                    return Text(
+                        'Dados de ontem não encontrados para esta empresa.');
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -236,15 +340,17 @@ class _HomeState extends State<Home> {
     });
   }
 
-   Future<void> _refreshData() async {
+  Future<void> _refreshData() async {
     // Aqui você pode chamar os métodos para recarregar os dados
     // Exemplo: await loadData();
     setState(() {
-      isLoading = true; // Define isLoading como true para mostrar o indicador de carregamento
+      isLoading =
+          true; // Define isLoading como true para mostrar o indicador de carregamento
     });
     await loadData();
     setState(() {
-      isLoading = false; // Define isLoading como false para parar o indicador de carregamento
+      isLoading =
+          false; // Define isLoading como false para parar o indicador de carregamento
     });
   }
 
@@ -293,12 +399,15 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataValorHoje() async {
-    double? fetchedDataValorHoje =
+    Map<String, double?>? fetchedDataValorHoje =
         await DataServiceValorHoje.fetchDataValorHoje(widget.token, widget.url);
 
     if (fetchedDataValorHoje != null) {
       setState(() {
-        vendadia = fetchedDataValorHoje;
+        vendadia = fetchedDataValorHoje['vendadia'] ?? 0.0;
+        vendadiaanterior = fetchedDataValorHoje['vendadiaanterior'] ?? 0.0;
+        vendasemana = fetchedDataValorHoje['vendasemana'] ?? 0.0;
+        vendames = fetchedDataValorHoje['vendames'] ?? 0.0;
       });
     }
   }

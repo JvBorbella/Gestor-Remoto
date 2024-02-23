@@ -28,7 +28,7 @@ class _FilialCardState extends State<FilialCard> {
           
           children: widget.children,
         ),
-        padding: EdgeInsets.only(bottom: 10,),
+        padding: EdgeInsets.only(bottom: 10, top: 5),
       ),
     );
   }
