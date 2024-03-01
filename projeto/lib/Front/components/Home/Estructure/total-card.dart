@@ -61,7 +61,7 @@ class _TotalCardState extends State<TotalCard> {
         ),
         //espaçamento interno
         padding: EdgeInsets.all(10.0),
-        width: MediaQuery.of(context).size.width * 0.45,
+        width: MediaQuery.of(context).size.width * 0.41,
       ),
     );
   }

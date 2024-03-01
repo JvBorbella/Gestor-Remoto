@@ -2,7 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Style.dart';
 
 class Informations extends StatefulWidget {
-  const Informations({super.key});
+  final url;
+  final token;
+  final String usuarioLogin;
+  final String empresaNome;
+  final String imagem;
+
+  const Informations({
+    Key? key,
+    this.token,
+    this.url = '',
+    required this.usuarioLogin,
+    required this.empresaNome,
+    required this.imagem,
+  });
 
   @override
   State<Informations> createState() => _InformationsState();
@@ -14,46 +27,46 @@ class _InformationsState extends State<Informations> {
     return Material(
       child: Container(
         //Código dos elementos que ficam dentro do card na tela de solicitações
-        child: Row(
-          //Alinhamento
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                //Imagem do usuário solicitante.
-                Container(
-                  child: ClipOval(
-                    child: Image.network(
-                      'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
-                      width: 70,
-                      height: 70,
+        child: Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Container(
+                      child: widget.imagem.isNotEmpty
+                          ? Image.network(widget.imagem, fit: BoxFit.scaleDown,) // Exibe a imagem
+                          : CircularProgressIndicator(),
+                      width: 19
+                      ),
+                ],
+              ),
+              SizedBox(
+                width: 10, // Espaçamento entre a imagem e os outros elementos
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.usuarioLogin,
+                    style: TextStyle(
                       color: Style.primaryColor,
-                      fit: BoxFit.cover,
+                      fontSize: MediaQuery.of(context).size.width * 0.035,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Style.primaryColor),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-              ],
-            ),
-            //Espaçamento lateral pros outros elementos.
-            SizedBox(
-              width: 10,
-            ),
-            //Alinhamento das informações do usuário
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('(Data)'),
-                Text('(Empresa)'),
-                Text('(Usuário)'),
-              ],
-            )
-          ],
+                  Text(widget.empresaNome,
+                      style: TextStyle(
+                        color: Style.primaryColor,
+                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

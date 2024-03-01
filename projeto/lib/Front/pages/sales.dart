@@ -39,8 +39,6 @@ class Sales extends StatefulWidget {
 class _SalesState extends State<Sales> {
   @override
   Widget build(BuildContext context) {
-    print(widget.url);
-    print(widget.token);
     return SafeArea(
       child: Scaffold(
         body: Container(

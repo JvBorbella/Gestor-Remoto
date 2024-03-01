@@ -2,15 +2,27 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Usuarios {
-  late double valorOntem;
-  late int ticketOntem;
+  late String empresaNome;
+  late String usuarioLogin;
+  late String imagem;
+  late String liberacaoremotaId;
+  late String mensagem;
 
-  Usuarios({required this.valorOntem, required this.ticketOntem});
+  Usuarios({
+    required this.empresaNome,
+    required this.usuarioLogin,
+    required this.imagem,
+    required this.liberacaoremotaId,
+    required this.mensagem,
+  });
 
   factory Usuarios.fromJson(Map<String, dynamic> json) {
     return Usuarios(
-      valorOntem: json['valortotal'],
-      ticketOntem: json['ticket'],
+      empresaNome: json['empresa_nome'],
+      usuarioLogin: json['usuario_login'],
+      imagem: json['imagem'],
+      liberacaoremotaId: json['liberacaoremota_id'],
+      mensagem: json['mensagem'],
     );
   }
 }
@@ -33,15 +45,15 @@ class DataServiceUsuarios {
       if (responseUsuario.statusCode == 200) {
         var jsonData = json.decode(responseUsuario.body);
 
-        // if (jsonData.containsKey('data') &&
-        //     jsonData['data'].containsKey('monitorvendasempresas') &&
-        //     jsonData['data']['monitorvendasempresas'].isNotEmpty) {
-        //   usuarios = (jsonData['data']['monitorvendasempresas'] as List)
-        //       .map((e) => usuarios.fromJson(e))
-        //       .toList();
-        // } else {
-        //   print('Dados ausentes no JSON.');
-        // }
+        if (jsonData.containsKey('data') &&
+            jsonData['data'].containsKey('liberacaoremota') &&
+            jsonData['data']['liberacaoremota'].isNotEmpty) {
+          usuarios = (jsonData['data']['liberacaoremota'] as List)
+              .map((e) => Usuarios.fromJson(e))
+              .toList();
+        } else {
+          print('Dados ausentes no JSON.');
+        }
       }
     } catch (e) {
       print('Erro durante a requisição: $e');
