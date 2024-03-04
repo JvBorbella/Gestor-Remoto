@@ -7,6 +7,7 @@ class Informations extends StatefulWidget {
   final String usuarioLogin;
   final String empresaNome;
   final String imagem;
+  final String urlBasic;
 
   const Informations({
     Key? key,
@@ -15,6 +16,7 @@ class Informations extends StatefulWidget {
     required this.usuarioLogin,
     required this.empresaNome,
     required this.imagem,
+    this.urlBasic = '',
   });
 
   @override
@@ -35,11 +37,21 @@ class _InformationsState extends State<Informations> {
               Column(
                 children: [
                   Container(
+                    child: ClipOval(
                       child: widget.imagem.isNotEmpty
-                          ? Image.network(widget.imagem, fit: BoxFit.scaleDown,) // Exibe a imagem
+                          ? Image.network(
+                              widget.urlBasic + widget.imagem,
+                              fit: BoxFit.cover,
+                            ) // Exibe a imagem
                           : CircularProgressIndicator(),
-                      width: 19
-                      ),
+                    ),
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        border:
+                            Border.all(width: 2, color: Style.primaryColor)),
+                  ),
                 ],
               ),
               SizedBox(

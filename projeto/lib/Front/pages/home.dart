@@ -20,7 +20,14 @@ import 'package:projeto/Front/components/Style.dart';
 class Home extends StatefulWidget {
   final token;
   final String url;
-  const Home({Key? key, this.token, this.url = ''}) : super(key: key);
+  final String urlBasic;
+
+  const Home({
+    Key? key,
+    this.token,
+    this.url = '',
+    this.urlBasic = '',
+  }) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -223,6 +230,7 @@ class _HomeState extends State<Home> {
                                 solicitacoesremotas: solicitacoesremotas,
                                 url: widget.url,
                                 token: widget.token,
+                                urlBasic: widget.urlBasic,
                               )
                             ],
                           ),

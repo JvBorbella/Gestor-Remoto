@@ -7,13 +7,16 @@ class RequisitionButtom extends StatefulWidget {
   final int solicitacoesremotas;
   final token;
   final String url;
+  final String urlBasic;
 
   const RequisitionButtom(
       {Key? key,
       required this.text,
       required this.solicitacoesremotas,
       this.token,
-      this.url = ''})
+      this.url = '',
+      this.urlBasic = '',
+      })
       : super(key: key);
 
   @override
@@ -84,7 +87,7 @@ class _RequisitionButtomState extends State<RequisitionButtom> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) =>
-              Solicitacion(url: widget.url, token: widget.token),
+              Solicitacion(url: widget.url, token: widget.token, urlBasic: widget.urlBasic),
         ),
       );
     }

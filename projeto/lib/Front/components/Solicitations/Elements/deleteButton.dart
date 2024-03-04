@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Back/Profiles-Requisitions.dart';
 import 'package:projeto/Front/pages/home.dart';
 
 class Delete extends StatefulWidget {
-  const Delete({super.key});
+  final String token;
+  final String url;
+  final String liberacaoremotaId;
+
+  const Delete(
+      {Key? key,
+      required this.token,
+      required this.url,
+      required this.liberacaoremotaId})
+      : super(key: key);
 
   @override
   State<Delete> createState() => _DeleteState();
@@ -21,20 +31,12 @@ class _DeleteState extends State<Delete> {
           children: [
             TextButton(
               //Função que está sendo executada ao clicar no button (Temporária)
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => Home()),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    content: Text(
-                      'Solicitação excluída!',
-                      style: TextStyle(
-                        fontSize: 13,
-                      ),
-                    ),
-                  ),
+              onPressed: () async {
+                await RejectRequisition.rejectrequisition(
+                  context,
+                  widget.url,
+                  widget.token,
+                  widget.liberacaoremotaId,
                 );
               },
               //Estilização

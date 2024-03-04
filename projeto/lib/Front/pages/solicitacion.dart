@@ -13,7 +13,14 @@ import 'package:projeto/Front/pages/home.dart';
 class Solicitacion extends StatefulWidget {
   final token;
   final String url;
-  const Solicitacion({Key? key, this.token, this.url = ''}) : super(key: key);
+  final String urlBasic;
+
+  const Solicitacion({
+    Key? key,
+    this.token,
+    this.url = '',
+    this.urlBasic = '',
+  }) : super(key: key);
 
   @override
   State<Solicitacion> createState() => _SolicitacionState();
@@ -79,15 +86,21 @@ class _SolicitacionState extends State<Solicitacion> {
                               //Chamando os elementos para dentro do card
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   //Chamando o código que armazenará as informações do usuário
                                   Informations(
                                     empresaNome: usuarios[index].empresaNome,
                                     usuarioLogin: usuarios[index].usuarioLogin,
                                     imagem: usuarios[index].imagem,
+                                    urlBasic: widget.urlBasic,
                                   ),
-                                  Delete()
+                                  Delete(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    liberacaoremotaId: usuarios[index].liberacaoremotaId
+                                  )
                                 ],
                               ),
                               SizedBox(
@@ -102,8 +115,7 @@ class _SolicitacionState extends State<Solicitacion> {
                                   //Propriedade Expanded para que seja realizada a quebra de texto
                                   Expanded(
                                     child: TextSolicitacion(
-                                      text:
-                                          usuarios[index].mensagem,
+                                      text: usuarios[index].mensagem,
                                     ),
                                   ),
                                 ],
@@ -119,8 +131,9 @@ class _SolicitacionState extends State<Solicitacion> {
                                   //Button para autorizar requisição
                                   LiberationButtom(
                                     text: 'Autorizar',
-                                    destination: Home(
-                                        url: widget.url, token: widget.token),
+                                    liberacaoremotaId: usuarios[index].liberacaoremotaId,
+                                    url: widget.url,
+                                    token: widget.token,
                                   ),
                                 ],
                               ),
@@ -141,9 +154,7 @@ class _SolicitacionState extends State<Solicitacion> {
 
   Future<void> loadData() async {
     // Utiliza Future.wait para buscar os dados de forma paralela
-    await Future.wait([
-      fetchDatausuarios()
-    ]);
+    await Future.wait([fetchDatausuarios()]);
     // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
     setState(() {
       isLoading = false;

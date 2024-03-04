@@ -40,6 +40,7 @@ class LoginFunction {
           MaterialPageRoute(
             builder: (context) => Home(
               url: '$url/ideia/secure',
+              urlBasic: url,
               token: token,
             ),
           ),
