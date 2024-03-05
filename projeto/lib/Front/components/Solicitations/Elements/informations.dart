@@ -43,7 +43,13 @@ class _InformationsState extends State<Informations> {
                               widget.urlBasic + widget.imagem,
                               fit: BoxFit.cover,
                             ) // Exibe a imagem
-                          : CircularProgressIndicator(),
+                          : Image.network(
+                              'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                              width: 70,
+                              height: 70,
+                              color: Style.primaryColor,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     width: 50,
                     height: 50,
@@ -72,7 +78,7 @@ class _InformationsState extends State<Informations> {
                   Text(widget.empresaNome,
                       style: TextStyle(
                         color: Style.primaryColor,
-                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontSize: MediaQuery.of(context).size.width * 0.025,
                         fontWeight: FontWeight.bold,
                       )),
                 ],

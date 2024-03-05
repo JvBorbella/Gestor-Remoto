@@ -25,10 +25,12 @@ class _DeleteState extends State<Delete> {
       //Código do button de excluir solicitação
       child: Container(
         child: Row(
-          //Alinhamento do button
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            Stack(
+              children: [
+
+              ],
+            ),
             TextButton(
               //Função que está sendo executada ao clicar no button (Temporária)
               onPressed: () async {
@@ -47,8 +49,6 @@ class _DeleteState extends State<Delete> {
             )
           ],
         ),
-        //Tamanho do container que armazena o button.
-        width: MediaQuery.of(context).size.width * 0.3,
       ),
     );
   }

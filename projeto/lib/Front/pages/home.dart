@@ -309,9 +309,64 @@ class _HomeState extends State<Home> {
                       ],
                     );
                   } else {
-                    // Trate o caso em que não há dados em empresasOntem para este índice
-                    return Text(
-                        'Dados de ontem não encontrados para esta empresa.');
+                    return Column(
+                      children: [
+                        FilialCard(
+                          children: [
+                            Column(
+                              children: [
+                                if (empresasSemana.isNotEmpty &&
+                                    empresasMes.isNotEmpty)
+                                  TextBUtton(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    empresaNome:
+                                        empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: 0,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                    ticketHoje: empresasHoje[index].ticketHoje,
+                                    ticketOntem:
+                                        0,
+                                  )
+                                else
+                                  TextBUtton(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    empresaNome:
+                                        empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: 0,
+                                    valorSemana: 0,
+                                    valorMes: 0,
+                                    ticketHoje: empresasHoje[index].ticketHoje,
+                                    ticketOntem:
+                                       0,
+                                  ),
+                                if (empresasSemana.isNotEmpty &&
+                                    empresasMes.isNotEmpty)
+                                  ConteudoFilialCard(
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: 0,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                  )
+                                else
+                                  ConteudoFilialCard(
+                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorOntem: 0,
+                                    valorSemana: 0,
+                                    valorMes: 0,
+                                  )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
                   }
                 },
               ),

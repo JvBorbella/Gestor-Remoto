@@ -37,6 +37,7 @@ class DataServiceUsuarios {
 
     try {
       var urlUsuarios = Uri.parse('$url/actions');
+      // var urlUsuarios = Uri.parse('$url/action/D96B6131-C72B-421B-8C6F-5CA094495AED');
 
       var responseUsuario = await http.post(
         urlUsuarios,
@@ -74,7 +75,7 @@ class AcceptRequisition {
   ) async {
 
     try {
-      var accept = Uri.parse('$url/ideia/secure/confirmaction/$liberacaoremotaId');
+      var accept = Uri.parse('$url/confirmaction/$liberacaoremotaId');
 
       var responseAccept = await http.post(
         accept,
@@ -128,12 +129,12 @@ class RejectRequisition {
   ) async {
 
     try {
-      var reject = Uri.parse('$url/ideia/secure/cancelaction/$liberacaoremotaId');
+      var reject = Uri.parse('$url/cancelaction/$liberacaoremotaId');
 
       var responseReject = await http.post(
         reject,
         headers: {
-          'auth-toke': token,
+          'auth-token': token,
         },
       );
 

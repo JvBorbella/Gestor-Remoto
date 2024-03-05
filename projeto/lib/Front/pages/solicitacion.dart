@@ -32,7 +32,6 @@ class _SolicitacionState extends State<Solicitacion> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadData();
   }
@@ -48,134 +47,148 @@ class _SolicitacionState extends State<Solicitacion> {
     }
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          child: ListView(
-            children: [
-              //Chamando a navbar e os elementos internos dela.
-              Navbar(children: [
-                //Chamando os elementos internos da navbar
-                ButtonNavbar(
-                  destination: Home(
-                    url: widget.url,
-                    token: widget.token,
-                  ),
-                  Icons: Icons.arrow_back_ios_new,
-                ),
-              ], text: 'Solicitações'),
-              SizedBox(
-                height: Style.ContentInternalSpace,
-              ),
-              // Spacer para preencher o espaço entre Navbar e RequisitionCard
-              Spacer(),
-              //Chamando o card que receberá as informações do usuário
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: usuarios.length,
-                itemBuilder: (context, index) {
-                  return RequisitionCard(
-                    children: [
-                      Container(
-                        //Propriedade Expanded adicionada dentro do card para fazer com que os elementos se distribuam conforme a largura do mesmo.
-                        child: Expanded(
-                          child: Column(
-                            //Alinhamento interno
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              //Chamando os elementos para dentro do card
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  //Chamando o código que armazenará as informações do usuário
-                                  Informations(
-                                    empresaNome: usuarios[index].empresaNome,
-                                    usuarioLogin: usuarios[index].usuarioLogin,
-                                    imagem: usuarios[index].imagem,
-                                    urlBasic: widget.urlBasic,
-                                  ),
-                                  Delete(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    liberacaoremotaId: usuarios[index].liberacaoremotaId
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: Style.ContentInternalSpace,
-                              ),
-                              //Chamando o texto referente à solicitação
-                              Row(
-                                //Alinhamento
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  //Propriedade Expanded para que seja realizada a quebra de texto
-                                  Expanded(
-                                    child: TextSolicitacion(
-                                      text: usuarios[index].mensagem,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Style.ContentInternalButtonSpace,
-                              ),
-                              //Chamando o button de autorização
-                              Row(
-                                //Alinhamento
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  //Button para autorizar requisição
-                                  LiberationButtom(
-                                    text: 'Autorizar',
-                                    liberacaoremotaId: usuarios[index].liberacaoremotaId,
-                                    url: widget.url,
-                                    token: widget.token,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+        body: RefreshIndicator(
+          onRefresh: _refreshData,
+          child: usuarios.isEmpty
+              ? Column(
+                  children: [
+                    Navbar(children: [
+                      ButtonNavbar(
+                        destination: Home(
+                          url: widget.url,
+                          token: widget.token,
                         ),
+                        Icons: Icons.arrow_back_ios_new,
                       ),
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
+                    ], text: 'Solicitações'),
+                    Expanded(
+                        child: Center(
+                      child: Text(
+                        'Não há mais solicitações!',
+                        style: TextStyle(
+                          color: Style.quarantineColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ))
+                  ],
+                )
+              : ListView(
+                  children: [
+                    Navbar(children: [
+                      ButtonNavbar(
+                        destination: Home(
+                          url: widget.url,
+                          token: widget.token,
+                        ),
+                        Icons: Icons.arrow_back_ios_new,
+                      ),
+                    ], text: 'Solicitações'),
+                    SizedBox(
+                      height: Style.ContentInternalSpace,
+                    ),
+                    Spacer(),
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: usuarios.length,
+                      itemBuilder: (context, index) {
+                        return RequisitionCard(
+                          children: [
+                            Container(
+                              child: Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Informations(
+                                              empresaNome:
+                                                  usuarios[index].empresaNome,
+                                              usuarioLogin:
+                                                  usuarios[index].usuarioLogin,
+                                              imagem: usuarios[index].imagem,
+                                              urlBasic: widget.urlBasic,
+                                            ),
+                                            Delete(
+                                                url: widget.url,
+                                                token: widget.token,
+                                                liberacaoremotaId:
+                                                    usuarios[index]
+                                                        .liberacaoremotaId)
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Style.ContentInternalSpace,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: TextSolicitacion(
+                                            text: usuarios[index].mensagem,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Style.ContentInternalButtonSpace,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        LiberationButtom(
+                                          text: 'Autorizar',
+                                          liberacaoremotaId:
+                                              usuarios[index].liberacaoremotaId,
+                                          url: widget.url,
+                                          token: widget.token,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
         ),
       ),
     );
   }
 
   Future<void> loadData() async {
-    // Utiliza Future.wait para buscar os dados de forma paralela
-    await Future.wait([fetchDatausuarios()]);
-    // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
+    await fetchDatausuarios();
     setState(() {
       isLoading = false;
-      // Verifica se os dados de solicitacoesremotas foram carregados corretamente
-      if (usuarios.isEmpty) {
-        usuarios == usuarios;
-      }
     });
   }
 
   Future<void> _refreshData() async {
-    // Aqui você pode chamar os métodos para recarregar os dados
-    // Exemplo: await loadData();
     setState(() {
-      isLoading =
-          true; // Define isLoading como true para mostrar o indicador de carregamento
+      isLoading = true;
+      usuarios.clear(); // Limpa a lista de usuários antes de recarregar
     });
     await loadData();
     setState(() {
-      isLoading =
-          false; // Define isLoading como false para parar o indicador de carregamento
+      isLoading = false;
     });
   }
 

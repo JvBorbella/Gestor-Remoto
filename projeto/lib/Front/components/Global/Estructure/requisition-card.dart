@@ -34,11 +34,15 @@ class _RequisitionCardState extends State<RequisitionCard> {
             child: Column(
               //Coluna para agrupar os objetos que serão chamado através da variável
               children: [
-                Row(
-                  //Alinhamento dos objetos
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: widget.children,
+                Stack(
+                  children: [
+                    Row(
+                      //Alinhamento dos objetos
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: widget.children,
+                    ),
+                  ],
                 ),
               ],
             ),

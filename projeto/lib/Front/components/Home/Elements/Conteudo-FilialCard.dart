@@ -55,7 +55,12 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Ontem',
                       style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
                     ),
-                    ValuesDays(text: currencyFormat.format(widget.valorOntem))
+                     if (widget.valorOntem == 0)
+                      ValuesDays(
+                          text: currencyFormat.format(widget.valorOntem))
+                    else
+                      ValuesDays(
+                          text: currencyFormat.format(widget.valorOntem)),
                   ],
                 ),
                 Column(
