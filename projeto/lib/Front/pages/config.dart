@@ -22,10 +22,17 @@ class _ConfigPageState extends State<ConfigPage> {
   final SaveUrlService saveUrlService = SaveUrlService();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadSavedUrl();
-  }
+void initState() {
+  super.initState();
+  urlController.text = widget.initialUrl;
+}
+
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   _loadSavedUrl();
+  // }
 
   Future<void> _loadSavedUrl() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

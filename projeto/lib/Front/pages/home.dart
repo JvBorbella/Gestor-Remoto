@@ -322,7 +322,7 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorHoje: 0,
                                     valorOntem: 0,
                                     valorSemana:
                                         empresasSemana[index].valorSemana,
@@ -337,7 +337,7 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorHoje: 0,
                                     valorOntem: 0,
                                     valorSemana: 0,
                                     valorMes: 0,
@@ -465,6 +465,7 @@ class _HomeState extends State<Home> {
     Map<String, double?>? fetchedDataValorHoje =
         await DataServiceValorHoje.fetchDataValorHoje(widget.token, widget.url);
 
+    // ignore: unnecessary_null_comparison
     if (fetchedDataValorHoje != null) {
       setState(() {
         vendadia = fetchedDataValorHoje['vendadia'] ?? 0.0;

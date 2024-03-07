@@ -93,22 +93,17 @@ class _LoginPageState extends State<LoginPage> {
                               saveUserService.saveUser(
                                   context, _userController.text);
                             }
-                            return null;
                           },
                         ),
                         SizedBox(
                           height: Style.inputSpace,
                         ),
                         Input(
-                            text: 'Senha',
-                            type: TextInputType.text,
-                            obscureText: true,
-                            controller: _passwordController,
-                            validator: (senha) {
-                              if (senha == null || senha.isEmpty) {
-                                return 'Por favor, digite sua senha';
-                              }
-                            }),
+                          text: 'Senha',
+                          type: TextInputType.text,
+                          obscureText: true,
+                          controller: _passwordController,
+                        ),
                         SizedBox(
                           height: Style.InputToButtonSpace,
                         ),
