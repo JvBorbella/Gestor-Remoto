@@ -6,15 +6,18 @@ import 'package:http/http.dart' as http;
 class MonitorVendasEmpresaMes {
   //Definindo o tipo da variável.
   double valorMes;
+  String empresaNome;
 
   MonitorVendasEmpresaMes({
     required this.valorMes,
+    required this.empresaNome
   });
 
   factory MonitorVendasEmpresaMes.fromJson(Map<String, dynamic> json) {
     return MonitorVendasEmpresaMes(
       //Atribuindo o dado do json a ela.
       valorMes: json['valortotal'],
+      empresaNome: json['empresa_nome'],
     );
   }
 }

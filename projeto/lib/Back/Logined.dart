@@ -20,7 +20,7 @@ class LoginFunction {
     //Chamando o SharedPreferences para armazenar o token resgatado no json se a requisição post do login for bem sucedida.
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-  //Tentando fazer a requisição ao servidor.
+    //Tentando fazer a requisição ao servidor.
     try {
       //Definindo variáveis que serão utilizadas na requisição
 
@@ -33,55 +33,59 @@ class LoginFunction {
       var authorization = Uri.parse('$url/ideia/secure/login?');
       //authorization: define a url que fará a requisição post ao servidor.
 
-  //response: variável definida para receber a resposta da requisição post do servidor.
+      //response: variável definida para receber a resposta da requisição post do servidor.
       var response = await http.post(
         authorization, //passando a url da requisição
-        headers: { //passando os parâmetros na header da requisição.
+        headers: {
+          //passando os parâmetros na header da requisição.
           'auth-user': username,
           'auth-pass': md5Password,
         },
       );
 
+      print(response.statusCode);
+
       //Caso o servidor aceite a conexão, o token será resgatado no json e armazenado no sharedpreferences.
-      if (response.statusCode == 200) { 
-        var token = jsonDecode(response.body)['data']['token'];
-        await sharedPreferences.setString(
-          'token',
-          "Token ${jsonDecode(response.body)['data']['token']}",
-        );
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        if (responseBody['success'] == true) {
+          var token = responseBody['data']['token'];
+          await sharedPreferences.setString(
+            'token',
+            "Token ${responseBody['data']['token']}",
+          );
 
-        //Feito o processo acima, a função redireciona para a página Homa(), passando para ela os dados que serão utilizados.
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => Home(
-              url: '$url/ideia/secure', //url: url montada.
-              urlBasic: url, //urlBasic: url base passada na página de Config()
-              token: token, //token resgatado após o login
+          // Feito o processo acima, a função redireciona para a página Home(), passando para ela os dados que serão utilizados.
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => Home(
+                url: '$url/ideia/secure', // URL montada.
+                urlBasic: url, // URL base passada na página de Config().
+                token: token, // Token resgatado após o login.
+              ),
             ),
-          ),
-        );
-
-        //Trataiva de erros.
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              behavior: SnackBarBehavior.floating,
+              content: Text(
+                responseBody['message'],
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Style.tertiaryColor,
+                ),
+              ),
+              backgroundColor: Style.errorColor,
+            ),
+          );
+        }
       } else if (response.statusCode == 404) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
             content: Text(
               'Sem conexão com o servidor!',
-              style: TextStyle(
-                fontSize: 13,
-                color: Style.tertiaryColor,
-              ),
-            ),
-            backgroundColor: Style.errorColor,
-          ),
-        );
-      } else if (response.statusCode == 401) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              'Login inválido!',
               style: TextStyle(
                 fontSize: 13,
                 color: Style.tertiaryColor,

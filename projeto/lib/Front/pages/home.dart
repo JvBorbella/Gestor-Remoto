@@ -328,8 +328,7 @@ class _HomeState extends State<Home> {
                                         empresasSemana[index].valorSemana,
                                     valorMes: empresasMes[index].valorMes,
                                     ticketHoje: empresasHoje[index].ticketHoje,
-                                    ticketOntem:
-                                        0,
+                                    ticketOntem: 0,
                                   )
                                 else
                                   TextBUtton(
@@ -342,8 +341,7 @@ class _HomeState extends State<Home> {
                                     valorSemana: 0,
                                     valorMes: 0,
                                     ticketHoje: empresasHoje[index].ticketHoje,
-                                    ticketOntem:
-                                       0,
+                                    ticketOntem: 0,
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
@@ -370,6 +368,130 @@ class _HomeState extends State<Home> {
                   }
                 },
               ),
+              if (empresasHoje.isEmpty &
+                  empresasOntem.isEmpty &
+                  empresasMes.isEmpty &
+                  empresasSemana.isEmpty)
+                Center(
+                  child: Text('Não há dados de vendas'),
+                ),
+              if (empresasHoje.isEmpty)
+                ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasOntem.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          FilialCard(
+                            children: [
+                              Column(
+                                children: [
+                                  TextBUtton(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    empresaNome:
+                                        empresasOntem[index].empresaNome,
+                                    valorHoje: 0,
+                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                    ticketHoje: 0,
+                                    ticketOntem:
+                                        empresasOntem[index].ticketOntem,
+                                  ),
+                                  ConteudoFilialCard(
+                                    valorHoje: 0,
+                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
+              if (empresasHoje.isEmpty & empresasOntem.isEmpty)
+                ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasSemana.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          FilialCard(
+                            children: [
+                              Column(
+                                children: [
+                                  TextBUtton(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    empresaNome:
+                                        empresasSemana[index].empresaNome,
+                                    valorHoje: 0,
+                                    valorOntem: 0,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                    ticketHoje: 0,
+                                    ticketOntem: 0,
+                                  ),
+                                  ConteudoFilialCard(
+                                    valorHoje: 0,
+                                    valorOntem: 0,
+                                    valorSemana:
+                                        empresasSemana[index].valorSemana,
+                                    valorMes: empresasMes[index].valorMes,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
+              if (empresasHoje.isEmpty &
+                  empresasOntem.isEmpty &
+                  empresasSemana.isEmpty)
+                ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasMes.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          FilialCard(
+                            children: [
+                              Column(
+                                children: [
+                                  TextBUtton(
+                                    url: widget.url,
+                                    token: widget.token,
+                                    empresaNome: empresasMes[index].empresaNome,
+                                    valorHoje: 0,
+                                    valorOntem: 0,
+                                    valorSemana: 0,
+                                    valorMes: empresasMes[index].valorMes,
+                                    ticketHoje: 0,
+                                    ticketOntem: 0,
+                                  ),
+                                  ConteudoFilialCard(
+                                    valorHoje: 0,
+                                    valorOntem: 0,
+                                    valorSemana: 0,
+                                    valorMes: empresasMes[index].valorMes,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
             ],
           ),
         ),

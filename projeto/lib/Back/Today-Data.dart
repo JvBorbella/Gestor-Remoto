@@ -9,10 +9,11 @@ class MonitorVendasEmpresaHoje {
   late double valorHoje;
   late int ticketHoje;
 
-  MonitorVendasEmpresaHoje(
-      {required this.empresaNome,
-      required this.valorHoje,
-      required this.ticketHoje});
+  MonitorVendasEmpresaHoje({
+    required this.empresaNome,
+    required this.valorHoje,
+    required this.ticketHoje,
+  });
 
   //Método para acessar os campos presentes no json e atrivuí-los a cada variável dentro da class MonitorVendasEmpresaHoje.
   factory MonitorVendasEmpresaHoje.fromJson(Map<String, dynamic> json) {

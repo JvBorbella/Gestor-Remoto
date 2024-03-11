@@ -6,14 +6,18 @@ import 'package:http/http.dart' as http;
 class MonitorVendasEmpresaSemana {
   //Definindo o tipo da variável que irá receber o dado.
   late double valorSemana;
+  late String empresaNome;
 
-  MonitorVendasEmpresaSemana(
-      {required this.valorSemana,});
+  MonitorVendasEmpresaSemana({
+    required this.valorSemana,
+    required this.empresaNome,
+  });
 
   factory MonitorVendasEmpresaSemana.fromJson(Map<String, dynamic> json) {
     return MonitorVendasEmpresaSemana(
       //Atribuindo a ela o dado vindo do json.
       valorSemana: json['valortotal'],
+      empresaNome: json['empresa_nome'],
     );
   }
 }
@@ -33,7 +37,8 @@ class DataServiceSemana {
       var responseSemana = await http.post(
         urlSemana,
         headers: {
-          'auth-token': token, //Passando o token na header para a requisição ser aceita.
+          'auth-token':
+              token, //Passando o token na header para a requisição ser aceita.
         },
       );
 
@@ -47,12 +52,12 @@ class DataServiceSemana {
           empresasSemana = (jsonData['data']['monitorvendasempresas'] as List)
               .map((e) => MonitorVendasEmpresaSemana.fromJson(e))
               .toList(); // Caso sejam encontrados, serão passados como uma lista para a instância empresasSemana.
-        //Caso não sejam encontrados, exibirá essa mensagem no console.
+          //Caso não sejam encontrados, exibirá essa mensagem no console.
         } else {
           print('Dados ausentes no JSON.');
         }
       }
-    //Se a tentativa de requisição não for aceita, o erro será exibido no console.
+      //Se a tentativa de requisição não for aceita, o erro será exibido no console.
     } catch (e) {
       print('Erro durante a requisição: $e');
     }
