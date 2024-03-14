@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class Navbar extends StatefulWidget {
   final String text;
@@ -16,7 +17,7 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        color: Color(0xff00568e),
+        color: Style.primaryColor,
         height: 70,
         //Stack usado para que os elementos se sobreponham e seus respectivos tamanhos não influenciem no alinhamento
         child: Stack(

@@ -5,12 +5,14 @@ class Delete extends StatefulWidget {
   final String token;
   final String url;
   final String liberacaoremotaId;
+  final String message;
 
   const Delete(
       {Key? key,
       required this.token,
       required this.url,
-      required this.liberacaoremotaId})
+      required this.liberacaoremotaId,
+      required this.message,})
       : super(key: key);
 
   @override
@@ -38,6 +40,8 @@ class _DeleteState extends State<Delete> {
                   widget.url,
                   widget.token,
                   widget.liberacaoremotaId,
+                  widget.message,
+
                 );
               },
               //Estilização

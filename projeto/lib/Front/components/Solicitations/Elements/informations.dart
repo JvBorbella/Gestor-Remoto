@@ -67,20 +67,34 @@ class _InformationsState extends State<Informations> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.usuarioLogin,
-                    style: TextStyle(
-                      color: Style.primaryColor,
-                      fontSize: MediaQuery.of(context).size.width * 0.035,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.3, // largura desejada
+                    child: Text(
+                      widget.usuarioLogin,
+                      style: TextStyle(
+                        color: Style.primaryColor,
+                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow
+                          .clip, // corta o texto no limite da largura
+                      softWrap:
+                          true, // permite a quebra de linha conforme necessário
                     ),
                   ),
-                  Text(widget.empresaNome,
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4, // largura desejada
+                    child: Text(
+                      widget.empresaNome,
                       style: TextStyle(
                         color: Style.primaryColor,
                         fontSize: MediaQuery.of(context).size.width * 0.025,
                         fontWeight: FontWeight.bold,
-                      )),
+                      ),
+                      overflow: TextOverflow.clip, // corta o texto no limite da largura
+                      softWrap: true, // permite a quebra de linha conforme necessário
+                    ),
+                  ),
                 ],
               )
             ],

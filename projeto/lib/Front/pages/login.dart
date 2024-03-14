@@ -65,17 +65,18 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               //Chamando a navbar
               Navbar(children: [
                 //Chamando os elementos internos da navbar
               ], text: 'Login'),
-              //expanded para preencher o espaço de tela completo abaixo da navbar
-              Expanded(
+              Container(
+                height: MediaQuery.of(context).size.height * 0.9,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     //Chamando o container com os elementos para login
                     FormCard(

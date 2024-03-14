@@ -6,7 +6,9 @@ class Details extends StatefulWidget {
   final int ticketOntem;
 
   const Details(
-      {Key? key, required this.ticketHoje, required this.ticketOntem});
+      {Key? key, 
+      required this.ticketHoje,
+       required this.ticketOntem});
 
   @override
   State<Details> createState() => _DetailsState();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class ValuesDays extends StatefulWidget {
   final String text;
@@ -20,7 +21,7 @@ class _ValuesDaysState extends State<ValuesDays> {
             fontSize: MediaQuery.of(context).size.width < 600
                 ? MediaQuery.of(context).size.width * 0.032
                 : MediaQuery.of(context).size.width * 0.012,
-            color: Color(0xff00568e),
+            color: Style.primaryColor,
             fontWeight: FontWeight.bold),
       ),
     );

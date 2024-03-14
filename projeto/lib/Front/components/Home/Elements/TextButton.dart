@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/sales.dart';
 
 class TextBUtton extends StatefulWidget {
@@ -72,7 +73,7 @@ class _TextButtonState extends State<TextBUtton> {
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff00568e)),
+                    color: Style.primaryColor),
                 textAlign: TextAlign.center,
               ),
             ),

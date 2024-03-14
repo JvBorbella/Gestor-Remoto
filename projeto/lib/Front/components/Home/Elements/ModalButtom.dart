@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/login.dart';
 
 class NavbarButton extends StatefulWidget {
@@ -37,7 +38,7 @@ class _NavbarButtonState extends State<NavbarButton> {
                       'Deseja sair da aplicação?',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Color(0xff00568e),
+                        color: Style.primaryColor,
                       ),
                     ),
                   ],
@@ -59,11 +60,11 @@ class _NavbarButtonState extends State<NavbarButton> {
                         padding: EdgeInsets.all(15),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Color(0xff00568e)),
+                            color: Style.primaryColor),
                         child: Text(
                           'Sair',
                           style: TextStyle(
-                            color: Color(0xfffffffff),
+                            color: Style.tertiaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
@@ -82,13 +83,13 @@ class _NavbarButtonState extends State<NavbarButton> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border:
-                              Border.all(width: 2, color: Color(0xff42B9F0)),
-                          color: Color(0xffffffff),
+                              Border.all(width: 2, color: Style.secondaryColor),
+                          color: Style.tertiaryColor,
                         ),
                         child: Text(
                           'Cancelar',
                           style: TextStyle(
-                            color: Color(0xff42B9F0),
+                            color: Style.secondaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
@@ -126,7 +127,7 @@ class _NavbarButtonState extends State<NavbarButton> {
         height: 70,
         width: 70,
         //Área externa do button que abre o modal
-        color: Color(0xff00568e),
+        color: Style.primaryColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -139,7 +140,7 @@ class _NavbarButtonState extends State<NavbarButton> {
                 //Estilização do Buttom
                 child: Icon(
                   Icons.exit_to_app,
-                  color: Color(0xfffffffff),
+                  color: Style.tertiaryColor,
                 ),
               ),
             ),

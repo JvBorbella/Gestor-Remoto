@@ -7,7 +7,7 @@ class MonitorVendasEmpresaHoje {
   //Definindo o tipo das variáveis que estão recebendo os dados
   late String empresaNome;
   late double valorHoje;
-  late int ticketHoje;
+  late double ticketHoje;
 
   MonitorVendasEmpresaHoje({
     required this.empresaNome,
@@ -19,8 +19,8 @@ class MonitorVendasEmpresaHoje {
   factory MonitorVendasEmpresaHoje.fromJson(Map<String, dynamic> json) {
     return MonitorVendasEmpresaHoje(
       empresaNome: json['empresa_nome'],
-      valorHoje: json['valortotal'],
-      ticketHoje: json['ticket'],
+      valorHoje: (json['valortotal'] ?? 0).toDouble(), // Conversão para double
+      ticketHoje: (json['ticket'] ?? 0).toDouble(), // Conversão para double
     );
   }
 }
@@ -64,7 +64,7 @@ class DataService {
       }
     } catch (e) {
       //Caso a tentativa de requisição não seja bem-sucedida, será exibido o erro no console.
-      print('Erro durante a requisição: $e');
+      print('Erro durante a requisição ValorHoje: $e');
     }
     return empresasHoje;
   }

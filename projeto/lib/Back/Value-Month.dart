@@ -58,7 +58,7 @@ class DataServiceMes {
       }
       //Caso ocorra algum erro na requisição post, o mesmo será exibido no console.
     } catch (e) {
-      print('Erro durante a requisição: $e');
+      print('Erro durante a requisição ValorMes: $e');
     }
     return empresasMes;
   }

@@ -43,8 +43,8 @@ class _HomeState extends State<Home> {
   late double vendadiaanterior = 0.0;
   late double vendasemana = 0.0;
   late double vendames = 0.0;
-  late int ticketHoje = -1;
-  late int ticketOntem = -1;
+  // late int ticketHoje = -1;
+  // late int ticketOntem = -1;
   late int solicitacoesremotas = -1;
   // Valor padrão de carregamento
   bool isLoading = true;
@@ -68,6 +68,8 @@ class _HomeState extends State<Home> {
         ),
       );
     }
+
+
 
     return SafeArea(
       child: Scaffold(
@@ -268,9 +270,8 @@ class _HomeState extends State<Home> {
                                     valorSemana:
                                         empresasSemana[index].valorSemana,
                                     valorMes: empresasMes[index].valorMes,
-                                    ticketHoje: empresasHoje[index].ticketHoje,
-                                    ticketOntem:
-                                        empresasOntem[index].ticketOntem,
+                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
+                                    ticketOntem: empresasOntem[index].ticketOntem.toInt(),
                                   )
                                 else
                                   TextBUtton(
@@ -282,9 +283,8 @@ class _HomeState extends State<Home> {
                                     valorOntem: empresasOntem[index].valorOntem,
                                     valorSemana: 0,
                                     valorMes: 0,
-                                    ticketHoje: empresasHoje[index].ticketHoje,
-                                    ticketOntem:
-                                        empresasOntem[index].ticketOntem,
+                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
+                                    ticketOntem: empresasOntem[index].ticketOntem.toInt(),
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
@@ -322,12 +322,12 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: 0,
+                                    valorHoje: empresasHoje[index].valorHoje,
                                     valorOntem: 0,
                                     valorSemana:
                                         empresasSemana[index].valorSemana,
                                     valorMes: empresasMes[index].valorMes,
-                                    ticketHoje: empresasHoje[index].ticketHoje,
+                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
                                     ticketOntem: 0,
                                   )
                                 else
@@ -336,11 +336,11 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: 0,
+                                    valorHoje: empresasHoje[index].valorHoje,
                                     valorOntem: 0,
                                     valorSemana: 0,
                                     valorMes: 0,
-                                    ticketHoje: empresasHoje[index].ticketHoje,
+                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
                                     ticketOntem: 0,
                                   ),
                                 if (empresasSemana.isNotEmpty &&
@@ -368,13 +368,6 @@ class _HomeState extends State<Home> {
                   }
                 },
               ),
-              if (empresasHoje.isEmpty &
-                  empresasOntem.isEmpty &
-                  empresasMes.isEmpty &
-                  empresasSemana.isEmpty)
-                Center(
-                  child: Text('Não há dados de vendas'),
-                ),
               if (empresasHoje.isEmpty)
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
@@ -398,8 +391,7 @@ class _HomeState extends State<Home> {
                                         empresasSemana[index].valorSemana,
                                     valorMes: empresasMes[index].valorMes,
                                     ticketHoje: 0,
-                                    ticketOntem:
-                                        empresasOntem[index].ticketOntem,
+                                    ticketOntem: empresasOntem[index].ticketOntem.toInt(),
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
@@ -415,7 +407,7 @@ class _HomeState extends State<Home> {
                         ],
                       );
                     }),
-              if (empresasHoje.isEmpty & empresasOntem.isEmpty)
+              if (empresasHoje.isEmpty && empresasOntem.isEmpty)
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -454,8 +446,8 @@ class _HomeState extends State<Home> {
                         ],
                       );
                     }),
-              if (empresasHoje.isEmpty &
-                  empresasOntem.isEmpty &
+              if (empresasHoje.isEmpty &&
+                  empresasOntem.isEmpty &&
                   empresasSemana.isEmpty)
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
@@ -492,6 +484,13 @@ class _HomeState extends State<Home> {
                         ],
                       );
                     }),
+              if (empresasHoje.isEmpty &&
+                  empresasOntem.isEmpty &&
+                  empresasMes.isEmpty &&
+                  empresasSemana.isEmpty)
+                Center(
+                  child: Text('Não há dados de vendas'),
+                ),
             ],
           ),
         ),
@@ -517,11 +516,13 @@ class _HomeState extends State<Home> {
         solicitacoesremotas =
             NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas)
                 .solicitacoesremotas;
-      } else if (ticketHoje != -1) {
-        ticketHoje = ticketHoje;
-      } else if (ticketOntem != -1) {
-        ticketOntem = ticketOntem;
-      }
+      } 
+      // else if (ticketHoje != -1) {
+      //   ticketHoje = ticketHoje;
+      // } 
+      // else if (ticketOntem != -1) {
+      //   ticketOntem = ticketOntem;
+      // }
     });
   }
 

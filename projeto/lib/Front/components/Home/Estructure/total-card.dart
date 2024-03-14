@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class TotalCard extends StatefulWidget {
   // final double vendadia;
@@ -38,7 +39,7 @@ class _TotalCardState extends State<TotalCard> {
         //     EdgeInsets.only(top: 5.0, right: 20.0, left: 20.0, bottom: 10.0),
         //Estilização
         decoration: BoxDecoration(
-          color: Color(0xFF00568e),
+          color: Style.primaryColor,
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Column(

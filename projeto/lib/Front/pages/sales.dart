@@ -61,7 +61,7 @@ class _SalesState extends State<Sales> {
                   //Chamando elementos para dentro do card
                   Text(
                     widget.empresaNome,
-                    style: TextStyle(fontSize: 22, color: Color(0xffA6A6A6)),
+                    style: TextStyle(fontSize: 22, color: Style.quarantineColor),
                   ),
                   SizedBox(
                     height: Style.ContentInternalSpace,

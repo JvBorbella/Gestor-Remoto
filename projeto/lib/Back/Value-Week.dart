@@ -59,7 +59,7 @@ class DataServiceSemana {
       }
       //Se a tentativa de requisição não for aceita, o erro será exibido no console.
     } catch (e) {
-      print('Erro durante a requisição: $e');
+      print('Erro durante a requisição ValorSemana: $e');
     }
     return empresasSemana;
   }

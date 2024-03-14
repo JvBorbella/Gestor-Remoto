@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class MonitorVendasEmpresaOntem {
   //Definindo o tipo das variáveis.
   late double valorOntem;
-  late int ticketOntem;
+  late double ticketOntem;
   late String empresaNome;
 
   MonitorVendasEmpresaOntem({
@@ -18,8 +18,8 @@ class MonitorVendasEmpresaOntem {
   factory MonitorVendasEmpresaOntem.fromJson(Map<String, dynamic> json) {
     return MonitorVendasEmpresaOntem(
       //Atribuindo os dados do json a essas variáveis.
-      valorOntem: json['valortotal'],
-      ticketOntem: json['ticket'],
+      valorOntem: (json['valortotal'] ?? 0).toDouble(),
+      ticketOntem: (json['ticket'] ?? 0).toDouble(),
       empresaNome: json['empresa_nome'],
     );
   }
@@ -59,7 +59,7 @@ class DataServiceOntem {
         }
       }
     } catch (e) {
-      print('Erro durante a requisição: $e');
+      print('Erro durante a requisição ValorOntem: $e');
     }
     return empresasOntem;
   }

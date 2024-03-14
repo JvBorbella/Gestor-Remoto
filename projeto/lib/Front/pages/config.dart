@@ -22,11 +22,10 @@ class _ConfigPageState extends State<ConfigPage> {
   final SaveUrlService saveUrlService = SaveUrlService();
 
   @override
-void initState() {
-  super.initState();
-  urlController.text = widget.initialUrl;
-}
-
+  void initState() {
+    super.initState();
+    urlController.text = widget.initialUrl;
+  }
 
   // @override
   // void didChangeDependencies() {
@@ -46,20 +45,20 @@ void initState() {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               //Chamando a navbar
               Navbar(children: [
-                //Chamando elementos dentro da navbar
+                //Chamando os elementos internos da navbar
               ], text: 'Configurações'),
-              //Conteúdo da página abaixo da navbar
-              Expanded(
+              Container(
+                height: MediaQuery.of(context).size.height * 0.9,
                 child: Column(
-                  //Alinhamento
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //Chamando o form Container
+                    //Chamando o container com os elementos para login
                     FormCard(
                       children: [
                         SizedBox(
@@ -86,9 +85,11 @@ void initState() {
                                 ButtonConfig(
                                   text: 'Salvar',
                                   onPressed: () {
-                                    saveUrlService.saveUrl(context, urlController.text);
+                                    saveUrlService.saveUrl(
+                                        context, urlController.text);
                                   },
-                                  height: MediaQuery.of(context).size.width * 0.05,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.05,
                                 ),
                                 SizedBox(
                                   width: Style.ButtonSpace,
@@ -99,11 +100,13 @@ void initState() {
                                     String url = urlController.text;
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => LoginPage(url: url),
+                                        builder: (context) =>
+                                            LoginPage(url: url),
                                       ),
                                     );
                                   },
-                                  height: MediaQuery.of(context).size.width * 0.05,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.05,
                                 ),
                               ],
                             ),

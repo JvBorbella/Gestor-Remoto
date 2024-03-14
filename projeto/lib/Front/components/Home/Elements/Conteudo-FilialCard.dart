@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Home/Elements/Values-of-Days.dart';
 import 'package:intl/intl.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class ConteudoFilialCard extends StatefulWidget {
   final double valorHoje;
@@ -44,16 +45,16 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                   children: [
                     Text(
                       'Hoje',
-                      style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 12, color: Style.quarantineColor),
                     ),
-                    ValuesDays(text: currencyFormat.format(widget.valorHoje))
+                    ValuesDays(text: currencyFormat.format(widget.valorHoje.toInt()))
                   ],
                 ),
                 Column(
                   children: [
                     Text(
                       'Ontem',
-                      style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 12, color: Style.quarantineColor),
                     ),
                      if (widget.valorOntem == 0)
                       ValuesDays(
@@ -67,7 +68,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                   children: [
                     Text(
                       'Semana',
-                      style: TextStyle(fontSize: 12, color: Color(0xffA6A6A6)),
+                      style: TextStyle(fontSize: 12, color: Style.quarantineColor),
                     ),
                     if (widget.valorSemana == 0)
                       Container(
@@ -104,7 +105,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xffA6A6A6)),
+                          color: Style.quarantineColor),
                     ),
                     if (widget.valorMes == 0)
                       Container(
@@ -122,7 +123,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                                 ? MediaQuery.of(context).size.width * 0.07
                                 : MediaQuery.of(context).size.width * 0.018,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xff00568e)),
+                            color: Style.primaryColor),
                       ),
                   ],
                 ),

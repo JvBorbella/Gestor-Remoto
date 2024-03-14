@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class RequisitionCard extends StatefulWidget {
   //Variável para permitir preencher o card com objetos externos
@@ -25,8 +26,8 @@ class _RequisitionCardState extends State<RequisitionCard> {
             margin: EdgeInsets.only(right: 20.0, left: 20.0),
             //Estilização
             decoration: BoxDecoration(
-              color: Color(0xffFFFEFE),
-              border: Border.all(width: 4, color: Color(0xff00568e)),
+              color: Style.tertiaryColor,
+              border: Border.all(width: 4, color: Style.primaryColor),
               borderRadius: BorderRadius.circular(10.0),
             ),
             //Espaçamento interno do card

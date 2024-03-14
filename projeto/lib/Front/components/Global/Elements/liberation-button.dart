@@ -8,13 +8,15 @@ class LiberationButtom extends StatefulWidget {
   final String liberacaoremotaId;
   final String url;
   final String token;
+  final String message;
 
   const LiberationButtom(
       {Key? key,
       required this.text,
       required this.liberacaoremotaId,
       required this.url,
-      required this.token
+      required this.token,
+      required this.message
       })
       : super(key: key);
 
@@ -44,7 +46,8 @@ class _LiberationButtomState extends State<LiberationButtom> {
                   context,
                   widget.url,
                   widget.token,
-                  widget.liberacaoremotaId
+                  widget.liberacaoremotaId,
+                  widget.message
                 );
               },
               //Texto retornado, que foi definido na página em que o button está sendo chamado

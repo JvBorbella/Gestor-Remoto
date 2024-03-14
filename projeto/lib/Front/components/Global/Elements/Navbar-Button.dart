@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/Style.dart';
 
 class ButtonNavbar extends StatefulWidget {
   final Widget destination;
@@ -18,7 +19,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
         width: 70,
         //Área externa do button  
         decoration: BoxDecoration(
-          color: Color(0xff00568e),
+          color: Style.primaryColor,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +35,7 @@ class _ButtonNavbarState extends State<ButtonNavbar> {
                 //Estilização do Buttom
                 child: Icon(
                   widget.Icons,
-                  color: Color(0xfffffffff),
+                  color: Style.tertiaryColor,
                 ),
               ),
             ),

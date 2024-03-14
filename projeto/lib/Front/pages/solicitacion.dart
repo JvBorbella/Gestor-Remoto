@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto/Back/Profiles-Requisitions.dart';
 import 'package:projeto/Front/components/Global/Elements/Navbar-Button.dart';
 import 'package:projeto/Front/components/Global/Elements/liberation-button.dart';
+import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Solicitations/Elements/Text-Solicitacion.dart';
 import 'package:projeto/Front/components/Solicitations/Elements/deleteButton.dart';
 import 'package:projeto/Front/components/Solicitations/Elements/informations.dart';
@@ -9,6 +10,7 @@ import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Global/Estructure/requisition-card.dart';
 import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Solicitacion extends StatefulWidget {
   final token;
@@ -27,6 +29,8 @@ class Solicitacion extends StatefulWidget {
 }
 
 class _SolicitacionState extends State<Solicitacion> {
+  TextEditingController _messageController = TextEditingController();
+  // final _messageController = TextEditingController();
   List<Usuarios> usuarios = [];
   bool isLoading = true;
 
@@ -36,8 +40,17 @@ class _SolicitacionState extends State<Solicitacion> {
     loadData();
   }
 
+  Future<void> _loadSavedMessage() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedMessage = sharedPreferences.getString('saveMessage') ?? '';
+    setState(() {
+      _messageController.text = savedMessage;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+  String mensagemresposta = _messageController.text;
     if (isLoading) {
       return Scaffold(
         body: Center(
@@ -120,9 +133,9 @@ class _SolicitacionState extends State<Solicitacion> {
                                             Delete(
                                                 url: widget.url,
                                                 token: widget.token,
-                                                liberacaoremotaId:
-                                                    usuarios[index]
-                                                        .liberacaoremotaId)
+                                                liberacaoremotaId: usuarios[index].liberacaoremotaId,
+                                                message: mensagemresposta,
+                                                )
                                           ],
                                         ),
                                       ],
@@ -144,6 +157,23 @@ class _SolicitacionState extends State<Solicitacion> {
                                       ],
                                     ),
                                     SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Input(
+                                          text: 'Resposta',
+                                          type: TextInputType.text,
+                                          controller: _messageController,
+                                        )),
+                                      ],
+                                    ),
+                                    SizedBox(
                                       height: Style.ContentInternalButtonSpace,
                                     ),
                                     Row(
@@ -156,6 +186,8 @@ class _SolicitacionState extends State<Solicitacion> {
                                               usuarios[index].liberacaoremotaId,
                                           url: widget.url,
                                           token: widget.token,
+                                          message: _loadSavedMessage().toString(),
+                                         
                                         ),
                                       ],
                                     ),

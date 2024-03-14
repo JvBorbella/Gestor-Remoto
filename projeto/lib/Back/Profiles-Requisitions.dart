@@ -13,6 +13,7 @@ class Usuarios {
   late String imagem;
   late String liberacaoremotaId;
   late String mensagem;
+  late String mensagemResposta;
 
   Usuarios({
     required this.empresaNome,
@@ -20,6 +21,7 @@ class Usuarios {
     required this.imagem,
     required this.liberacaoremotaId,
     required this.mensagem,
+    required this.mensagemResposta,
   });
 
   //Método para acessar os campos presentes no json e atrivuí-los a cada variável dentro da class Usuarios.
@@ -31,6 +33,7 @@ class Usuarios {
       imagem: json['imagem'],
       liberacaoremotaId: json['liberacaoremota_id'],
       mensagem: json['mensagem'],
+      mensagemResposta: json['mensagemresposta'],
     );
   }
 }
@@ -84,20 +87,25 @@ class AcceptRequisition {
     //Recebendo dados que serão necessários para realizar a função.
     String url,
     String token,
-    String liberacaoremotaId
+    String liberacaoremotaId,
+    String message,
   ) async {
 
     //Tentativa de requisição post para efetuar a liberação.
     try {
       //Definindo a url que fará a requisição post, sendo atribuida a ela o id da solicitação que está sendo autorizada.
       var accept = Uri.parse('$url/confirmaction/$liberacaoremotaId');
+      var mensagemresposta = jsonEncode(message);
+      print('texto digitado: $mensagemresposta');
 
       var responseAccept = await http.post( //Variável que irá receber a resposta da requisição.
         accept,
         headers: { //Passando o token na header da requisição post.
           'auth-token': token,
         },
+        body: mensagemresposta,
       );
+      
 
       //Caso a requisição seja aceita, será exibida a seguinte mensagem.
       if (responseAccept.statusCode == 200) {
@@ -144,6 +152,8 @@ class RejectRequisition {
     String url,
     String token,
     String liberacaoremotaId,
+    // TextEditingController message,
+    String message,
   ) async {
 
     //Tentativa de requisição post para efetuar a exclusão da solicitação.
@@ -155,6 +165,9 @@ class RejectRequisition {
         reject,
         headers: { //Passando o token na header da requisição post.
           'auth-token': token,
+        },
+        body: {
+          'mensagemresposta': message, // Envia a mensagem de resposta para o servidor
         },
       );
 

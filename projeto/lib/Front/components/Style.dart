@@ -7,7 +7,7 @@ class Style {
   static const Color quarantineColor = Color(0xffA6A6A6);
   static const Color sucefullColor = Colors.green;
   static const Color errorColor = Colors.red;
-  static const Color warningColor = Colors.yellow;
+  static const Color warningColor = Color(0xffFFD700);
   static const double inputSpace = 25.0; 
   static const double InputToButtonSpace = 50.0; 
   static const double ButtonSpace = 15.0; 
