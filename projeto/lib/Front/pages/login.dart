@@ -91,8 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _userController,
                           validator: (user) {
                             if (user == null || user.isEmpty) {
-                              saveUserService.saveUser(
-                                  context, _userController.text);
+                              saveUserService.saveUser(context, _userController.text);
                             }
                           },
                         ),

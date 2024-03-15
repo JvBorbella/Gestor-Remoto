@@ -13,7 +13,12 @@ class Input extends StatefulWidget {
   final validator;
 
   const Input(
-      {Key? key, required this.text, required this.type, this.obscureText, this.controller, this.validator})
+      {Key? key,
+      required this.text,
+      required this.type,
+      this.obscureText,
+      this.controller,
+      this.validator})
       : super(key: key);
 
   @override
@@ -36,7 +41,8 @@ class _InputState extends State<Input> {
   Widget build(BuildContext context) {
     return Material(
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
         child: Container(
           margin: EdgeInsets.only(left: 5.0, right: 5),
           child: Column(
@@ -65,6 +71,9 @@ class _InputState extends State<Input> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                // onChanged: (text) {
+                //   print('Texto digitado: $text');
+                // },
               ),
             ],
           ),

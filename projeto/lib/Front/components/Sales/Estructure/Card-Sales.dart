@@ -19,7 +19,7 @@ class _CardSaleState extends State<CardSale> {
         margin: EdgeInsets.all(12),
         padding: EdgeInsets.all(0),
         decoration: BoxDecoration(
-          border: Border.all(width: 4, color: Style.primaryColor),
+          border: Border.all(width: 2, color: Style.primaryColor),
           borderRadius: BorderRadius.circular(10),
         ),
         //Parte do código para que sejam atribuidos os widgets definidos no código da tela que ficarão dentro do card

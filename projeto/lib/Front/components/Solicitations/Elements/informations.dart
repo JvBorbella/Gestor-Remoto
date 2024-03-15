@@ -68,7 +68,7 @@ class _InformationsState extends State<Informations> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.3, // largura desejada
+                    width: MediaQuery.of(context).size.width * 0.4, // largura desejada
                     child: Text(
                       widget.usuarioLogin,
                       style: TextStyle(

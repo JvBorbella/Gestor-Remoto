@@ -47,12 +47,14 @@ class DataServiceUsuarios {
 
     //Realizando a tentativa post para obter o json com os dados
     try {
-      var urlUsuarios = Uri.parse('$url/actions'); //Definindo a url que fará a requisição.
+      var urlUsuarios =
+          Uri.parse('$url/actions'); //Definindo a url que fará a requisição.
 
       //Variável que vai receber a resposta do servidor.
       var responseUsuario = await http.post(
         urlUsuarios, //Passando a url para a requisição.
-        headers: { //Passando o token na header.
+        headers: {
+          //Passando o token na header.
           'auth-token': token,
         },
       );
@@ -69,11 +71,13 @@ class DataServiceUsuarios {
           usuarios = (jsonData['data']['liberacaoremota'] as List)
               .map((e) => Usuarios.fromJson(e))
               .toList();
-        } else { //Caso não sejam encontrados os campos no json, será exibido essa mensagem no console.
+        } else {
+          //Caso não sejam encontrados os campos no json, será exibido essa mensagem no console.
           print('Dados ausentes no JSON.');
         }
       }
-    } catch (e) { //Caso a tentativa de requisição não seja bem-sucedida, será exibido o tipo do erro no console.
+    } catch (e) {
+      //Caso a tentativa de requisição não seja bem-sucedida, será exibido o tipo do erro no console.
       print('Erro durante a requisição: $e');
     }
     return usuarios;
@@ -83,49 +87,51 @@ class DataServiceUsuarios {
 //Classe com a função para aceitar a solicitação.
 class AcceptRequisition {
   static Future<void> acceptrequisition(
-    BuildContext context, 
+    BuildContext context,
     //Recebendo dados que serão necessários para realizar a função.
     String url,
     String token,
     String liberacaoremotaId,
-    String message,
+    String _textController,
   ) async {
-
     //Tentativa de requisição post para efetuar a liberação.
     try {
       //Definindo a url que fará a requisição post, sendo atribuida a ela o id da solicitação que está sendo autorizada.
       var accept = Uri.parse('$url/confirmaction/$liberacaoremotaId');
-      var mensagemresposta = jsonEncode(message);
+      var mensagemresposta = jsonEncode(_textController);
       print('texto digitado: $mensagemresposta');
 
-      var responseAccept = await http.post( //Variável que irá receber a resposta da requisição.
+      var responseAccept = await http.post(
+        //Variável que irá receber a resposta da requisição.
         accept,
-        headers: { //Passando o token na header da requisição post.
+        headers: {
+          //Passando o token na header da requisição post.
           'auth-token': token,
         },
         body: mensagemresposta,
       );
-      
 
       //Caso a requisição seja aceita, será exibida a seguinte mensagem.
       if (responseAccept.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Solicitação aceita',
-            style: TextStyle(
-              fontSize: 13,
-              color: Style.tertiaryColor,
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Solicitação aceita',
+              style: TextStyle(
+                fontSize: 13,
+                color: Style.tertiaryColor,
+              ),
             ),
+            backgroundColor: Style.sucefullColor,
           ),
-          backgroundColor: Style.sucefullColor,
-        ),
-      );
-      } else { //Caso não seja, será exibido o erro no console.
+        );
+      } else {
+        //Caso não seja, será exibido o erro no console.
         print('Erro durante o post $e');
       }
-    } catch (e) { //Se a tentativa de liberação não dê certo, será exibida essa mensagem.
+    } catch (e) {
+      //Se a tentativa de liberação não dê certo, será exibida essa mensagem.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -152,44 +158,46 @@ class RejectRequisition {
     String url,
     String token,
     String liberacaoremotaId,
-    // TextEditingController message,
-    String message,
+    String _textController,
   ) async {
-
     //Tentativa de requisição post para efetuar a exclusão da solicitação.
     try {
       //Definindo a url que fará a requisição post, sendo atribuida a ela o id da solicitação que está sendo excluída.
       var reject = Uri.parse('$url/cancelaction/$liberacaoremotaId');
+      var mensagemresposta = jsonEncode(_textController);
+      print('texto digitado: $mensagemresposta');
 
-      var responseReject = await http.post( //Variável que irá receber a resposta da requisição.
+      var responseReject = await http.post(
+        //Variável que irá receber a resposta da requisição.
         reject,
-        headers: { //Passando o token na header da requisição post.
+        headers: {
+          //Passando o token na header da requisição post.
           'auth-token': token,
         },
-        body: {
-          'mensagemresposta': message, // Envia a mensagem de resposta para o servidor
-        },
+        body: mensagemresposta, // Envia a mensagem de resposta para o servidor
       );
 
       //Caso a requisição post seja aceita, será exibida a seguinte mensagem.
       if (responseReject.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Solicitação remota excluída',
-            style: TextStyle(
-              fontSize: 13,
-              color: Style.tertiaryColor,
+          SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Solicitação remota excluída',
+              style: TextStyle(
+                fontSize: 13,
+                color: Style.tertiaryColor,
+              ),
             ),
+            backgroundColor: Style.warningColor,
           ),
-          backgroundColor: Style.warningColor,
-        ),
-      );
-      } else { //Caso não seja, será exibido o erro no console.
+        );
+      } else {
+        //Caso não seja, será exibido o erro no console.
         print('Erro durante o post $e');
       }
-    } catch (e) { //Se a tentativa de exclusão não dê certo, será exibida essa mensagem.
+    } catch (e) {
+      //Se a tentativa de exclusão não dê certo, será exibida essa mensagem.
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
@@ -207,4 +215,3 @@ class RejectRequisition {
     }
   }
 }
-

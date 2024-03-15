@@ -10,7 +10,6 @@ import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
 import 'package:projeto/Front/components/Global/Estructure/requisition-card.dart';
 import 'package:projeto/Front/components/Style.dart';
 import 'package:projeto/Front/pages/home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Solicitacion extends StatefulWidget {
   final token;
@@ -29,8 +28,6 @@ class Solicitacion extends StatefulWidget {
 }
 
 class _SolicitacionState extends State<Solicitacion> {
-  TextEditingController _messageController = TextEditingController();
-  // final _messageController = TextEditingController();
   List<Usuarios> usuarios = [];
   bool isLoading = true;
 
@@ -40,17 +37,8 @@ class _SolicitacionState extends State<Solicitacion> {
     loadData();
   }
 
-  Future<void> _loadSavedMessage() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String savedMessage = sharedPreferences.getString('saveMessage') ?? '';
-    setState(() {
-      _messageController.text = savedMessage;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-  String mensagemresposta = _messageController.text;
     if (isLoading) {
       return Scaffold(
         body: Center(
@@ -106,6 +94,9 @@ class _SolicitacionState extends State<Solicitacion> {
                       shrinkWrap: true,
                       itemCount: usuarios.length,
                       itemBuilder: (context, index) {
+                        TextEditingController _textController =
+                            TextEditingController();
+                        _textController.text = '';
                         return RequisitionCard(
                           children: [
                             Container(
@@ -120,7 +111,7 @@ class _SolicitacionState extends State<Solicitacion> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             Informations(
                                               empresaNome:
@@ -130,11 +121,17 @@ class _SolicitacionState extends State<Solicitacion> {
                                               imagem: usuarios[index].imagem,
                                               urlBasic: widget.urlBasic,
                                             ),
-                                            Delete(
-                                                url: widget.url,
-                                                token: widget.token,
-                                                liberacaoremotaId: usuarios[index].liberacaoremotaId,
-                                                message: mensagemresposta,
+                                            Delete(onPressed: () async {
+                                              await RejectRequisition
+                                                  .rejectrequisition(
+                                                context,
+                                                widget.url,
+                                                widget.token,
+                                                usuarios[index]
+                                                    .liberacaoremotaId,
+                                                _textController.text,
+                                              );
+                                            } // Usando o valor
                                                 )
                                           ],
                                         ),
@@ -167,10 +164,12 @@ class _SolicitacionState extends State<Solicitacion> {
                                       children: [
                                         Expanded(
                                           child: Input(
-                                          text: 'Resposta',
-                                          type: TextInputType.text,
-                                          controller: _messageController,
-                                        )),
+                                            text: 'Resposta',
+                                            type: TextInputType.text,
+                                            controller:
+                                                _textController, // Usando um controlador diferente para cada campo de entrada
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(
@@ -181,14 +180,30 @@ class _SolicitacionState extends State<Solicitacion> {
                                           MainAxisAlignment.center,
                                       children: [
                                         LiberationButtom(
-                                          text: 'Autorizar',
-                                          liberacaoremotaId:
-                                              usuarios[index].liberacaoremotaId,
-                                          url: widget.url,
-                                          token: widget.token,
-                                          message: _loadSavedMessage().toString(),
-                                         
-                                        ),
+                                            text: 'Autorizar',
+                                            onPressed: () async {
+                                              if (_textController.text.isEmpty) {
+                                                await AcceptRequisition
+                                                  .acceptrequisition(
+                                                context,
+                                                widget.url,
+                                                widget.token,
+                                                usuarios[index]
+                                                    .liberacaoremotaId,
+                                                _textController.text,
+                                              );
+                                              }
+                                              await AcceptRequisition
+                                                  .acceptrequisition(
+                                                context,
+                                                widget.url,
+                                                widget.token,
+                                                usuarios[index]
+                                                    .liberacaoremotaId,
+                                                _textController.text,
+                                              );
+                                            } // Usando o valor do controlador específico
+                                            ),
                                       ],
                                     ),
                                   ],

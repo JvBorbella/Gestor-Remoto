@@ -26,8 +26,7 @@ class _RequisitionCardState extends State<RequisitionCard> {
             margin: EdgeInsets.only(right: 20.0, left: 20.0),
             //Estilização
             decoration: BoxDecoration(
-              color: Style.tertiaryColor,
-              border: Border.all(width: 4, color: Style.primaryColor),
+              border: Border.all(width: 1, color: Style.primaryColor),
               borderRadius: BorderRadius.circular(10.0),
             ),
             //Espaçamento interno do card

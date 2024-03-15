@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Back/Profiles-Requisitions.dart';
 
 class LiberationButtom extends StatefulWidget {
   //Variável para definir o texto do button na página em que está sendo chamado
   final String text;
   //Variável para definir o destino ao clicar no button, na página em que está sendo chamado
-  final String liberacaoremotaId;
-  final String url;
-  final String token;
-  final String message;
+  // final String liberacaoremotaId;
+  // final String url;
+  // final String token;
+  // final String message;
+  final onPressed;
 
   const LiberationButtom(
       {Key? key,
       required this.text,
-      required this.liberacaoremotaId,
-      required this.url,
-      required this.token,
-      required this.message
-      })
+      // required this.liberacaoremotaId,
+      // required this.url,
+      // required this.token,
+      // required this.message,
+      this.onPressed})
       : super(key: key);
 
   @override
@@ -41,14 +41,10 @@ class _LiberationButtomState extends State<LiberationButtom> {
           children: [
             TextButton(
               //Função aplicada ao ser clicado
-              onPressed: () async {
-                await AcceptRequisition.acceptrequisition(
-                  context,
-                  widget.url,
-                  widget.token,
-                  widget.liberacaoremotaId,
-                  widget.message
-                );
+              onPressed: () {
+                if (widget.onPressed != null) {
+                  widget.onPressed();
+                }
               },
               //Texto retornado, que foi definido na página em que o button está sendo chamado
               child: Text(

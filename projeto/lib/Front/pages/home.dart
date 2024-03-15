@@ -69,8 +69,6 @@ class _HomeState extends State<Home> {
       );
     }
 
-
-
     return SafeArea(
       child: Scaffold(
         body: RefreshIndicator(
@@ -270,8 +268,11 @@ class _HomeState extends State<Home> {
                                     valorSemana:
                                         empresasSemana[index].valorSemana,
                                     valorMes: empresasMes[index].valorMes,
-                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
-                                    ticketOntem: empresasOntem[index].ticketOntem.toInt(),
+                                    ticketHoje:
+                                        empresasHoje[index].ticketHoje.toInt(),
+                                    ticketOntem: empresasOntem[index]
+                                        .ticketOntem
+                                        .toInt(),
                                   )
                                 else
                                   TextBUtton(
@@ -283,8 +284,11 @@ class _HomeState extends State<Home> {
                                     valorOntem: empresasOntem[index].valorOntem,
                                     valorSemana: 0,
                                     valorMes: 0,
-                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
-                                    ticketOntem: empresasOntem[index].ticketOntem.toInt(),
+                                    ticketHoje:
+                                        empresasHoje[index].ticketHoje.toInt(),
+                                    ticketOntem: empresasOntem[index]
+                                        .ticketOntem
+                                        .toInt(),
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
@@ -327,7 +331,8 @@ class _HomeState extends State<Home> {
                                     valorSemana:
                                         empresasSemana[index].valorSemana,
                                     valorMes: empresasMes[index].valorMes,
-                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
+                                    ticketHoje:
+                                        empresasHoje[index].ticketHoje.toInt(),
                                     ticketOntem: 0,
                                   )
                                 else
@@ -340,7 +345,8 @@ class _HomeState extends State<Home> {
                                     valorOntem: 0,
                                     valorSemana: 0,
                                     valorMes: 0,
-                                    ticketHoje: empresasHoje[index].ticketHoje.toInt(),
+                                    ticketHoje:
+                                        empresasHoje[index].ticketHoje.toInt(),
                                     ticketOntem: 0,
                                   ),
                                 if (empresasSemana.isNotEmpty &&
@@ -391,7 +397,9 @@ class _HomeState extends State<Home> {
                                         empresasSemana[index].valorSemana,
                                     valorMes: empresasMes[index].valorMes,
                                     ticketHoje: 0,
-                                    ticketOntem: empresasOntem[index].ticketOntem.toInt(),
+                                    ticketOntem: empresasOntem[index]
+                                        .ticketOntem
+                                        .toInt(),
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
@@ -516,10 +524,10 @@ class _HomeState extends State<Home> {
         solicitacoesremotas =
             NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas)
                 .solicitacoesremotas;
-      } 
+      }
       // else if (ticketHoje != -1) {
       //   ticketHoje = ticketHoje;
-      // } 
+      // }
       // else if (ticketOntem != -1) {
       //   ticketOntem = ticketOntem;
       // }
