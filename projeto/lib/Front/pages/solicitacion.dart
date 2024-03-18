@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:projeto/Back/Profiles-Requisitions.dart';
 import 'package:projeto/Front/components/Global/Elements/Navbar-Button.dart';
 import 'package:projeto/Front/components/Global/Elements/liberation-button.dart';
-import 'package:projeto/Front/components/Login_Config/Elements/input.dart';
 import 'package:projeto/Front/components/Solicitations/Elements/Text-Solicitacion.dart';
 import 'package:projeto/Front/components/Solicitations/Elements/deleteButton.dart';
 import 'package:projeto/Front/components/Solicitations/Elements/informations.dart';
@@ -163,12 +162,20 @@ class _SolicitacionState extends State<Solicitacion> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Expanded(
-                                          child: Input(
-                                            text: 'Resposta',
-                                            type: TextInputType.text,
-                                            controller:
-                                                _textController, // Usando um controlador diferente para cada campo de entrada
+                                          child: TextFormField(
+                                            decoration: InputDecoration(
+                                              label: Text('Resposta'),
+                                              floatingLabelAlignment:
+                                                  FloatingLabelAlignment.center,
+                                            ),
+                                            controller: _textController,
                                           ),
+                                          // child: Input(
+                                          //   text: 'Resposta',
+                                          //   type: TextInputType.text,
+                                          //   controller:
+                                          //       _textController, // Usando um controlador diferente para cada campo de entrada
+                                          // ),
                                         ),
                                       ],
                                     ),
@@ -182,16 +189,17 @@ class _SolicitacionState extends State<Solicitacion> {
                                         LiberationButtom(
                                             text: 'Autorizar',
                                             onPressed: () async {
-                                              if (_textController.text.isEmpty) {
+                                              if (_textController
+                                                  .text.isEmpty) {
                                                 await AcceptRequisition
-                                                  .acceptrequisition(
-                                                context,
-                                                widget.url,
-                                                widget.token,
-                                                usuarios[index]
-                                                    .liberacaoremotaId,
-                                                _textController.text,
-                                              );
+                                                    .acceptrequisition(
+                                                  context,
+                                                  widget.url,
+                                                  widget.token,
+                                                  usuarios[index]
+                                                      .liberacaoremotaId,
+                                                  _textController.text,
+                                                );
                                               }
                                               await AcceptRequisition
                                                   .acceptrequisition(

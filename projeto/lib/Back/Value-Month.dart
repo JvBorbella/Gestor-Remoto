@@ -16,7 +16,7 @@ class MonitorVendasEmpresaMes {
   factory MonitorVendasEmpresaMes.fromJson(Map<String, dynamic> json) {
     return MonitorVendasEmpresaMes(
       //Atribuindo o dado do json a ela.
-      valorMes: json['valortotal'],
+      valorMes: (json['valortotal'] ?? 0).toDouble(),
       empresaNome: json['empresa_nome'],
     );
   }

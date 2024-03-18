@@ -13,7 +13,7 @@ class Style {
   static const double ButtonSpace = 15.0; 
   static const double ContentInternalSpace = 10.0; 
   static const double ContentInternalButtonSpace = 30.0; 
-  static const double ImageToInputSpace = 50.0; 
+  static const double ImageToInputSpace = 50.0;  
   static const LinearGradient gradient = LinearGradient(
     colors: [
       Color(0xff0B4164),
