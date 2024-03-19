@@ -60,7 +60,7 @@ class _AnimatedTextMoveState extends State<AnimatedTextMove> {
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.w300,
-            color: Style.tertiaryColor,
+            color: Style.primaryColor,
           ),
         ),
       ),

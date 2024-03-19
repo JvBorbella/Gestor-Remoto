@@ -34,7 +34,7 @@ class _SplashState extends State<Splash> {
         //Estilização da tela splash
         decoration: BoxDecoration(
           //Gradiente color usado na tela splash
-          gradient: Style.gradient
+          // gradient: Style.gradient
         ),
         //Conteúdo da tela
         child: Row(
@@ -50,7 +50,7 @@ class _SplashState extends State<Splash> {
                   children: [
                     Image.network(
                       'https://bdc.ideiatecnologia.com.br/wp/wp-content/uploads/2024/02/IDEIA-LOGO-AZUL-e1707321339855.png',
-                      color: Style.tertiaryColor,
+                      color: Style.primaryColor,
                       height: MediaQuery.of(context).size.width * 0.25,
                     ),
                   ],

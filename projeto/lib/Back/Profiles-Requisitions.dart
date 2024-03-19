@@ -164,7 +164,7 @@ class RejectRequisition {
     try {
       //Definindo a url que fará a requisição post, sendo atribuida a ela o id da solicitação que está sendo excluída.
       var reject = Uri.parse('$url/cancelaction/$liberacaoremotaId');
-      var mensagemresposta = jsonEncode(_textController);
+      var mensagemresposta = _textController;
       print('texto digitado: $mensagemresposta');
 
       var responseReject = await http.post(
