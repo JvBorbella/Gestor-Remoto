@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Front/components/splash/elements/text_splash.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/splash/elements/text_splash.dart';
+import 'package:projeto/front/components/Style.dart';
 import 'dart:async';
 
-import 'package:projeto/Front/pages/login.dart';
+import 'package:projeto/front/pages/login.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);

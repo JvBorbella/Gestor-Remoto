@@ -54,7 +54,7 @@ class _DetailsWeekState extends State<DetailsWeek> {
                                 Column(
                                   children: [
                                     Text(
-                                      'Ticket md.',
+                                      'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 8,
@@ -77,7 +77,7 @@ class _DetailsWeekState extends State<DetailsWeek> {
                                 Column(
                                   children: [
                                     Text(
-                                      'Margem.',
+                                      'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 8,
@@ -100,7 +100,7 @@ class _DetailsWeekState extends State<DetailsWeek> {
                                 Column(
                                   children: [
                                     Text(
-                                      'Cupom.',
+                                      'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 8,

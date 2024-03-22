@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/back/request_information.dart';
-import 'package:projeto/front/components/Global/Elements/navbar_button.dart';
-import 'package:projeto/front/components/Global/Elements/button_autorization.dart';
-import 'package:projeto/front/components/requests/Elements/text_request.dart';
-import 'package:projeto/front/components/requests/Elements/delete_button.dart';
-import 'package:projeto/front/components/requests/Elements/informations.dart';
-import 'package:projeto/front/components/Global/Estructure/navbar.dart';
-import 'package:projeto/front/components/Global/Estructure/request_card.dart';
-import 'package:projeto/front/components/Style.dart';
+import 'package:projeto/front/components/global/elements/button_autorization.dart';
+import 'package:projeto/front/components/global/elements/navbar_button.dart';
+import 'package:projeto/front/components/global/structure/navbar.dart';
+import 'package:projeto/front/components/global/structure/request_card.dart';
+import 'package:projeto/front/components/requests/elements/delete_button.dart';
+import 'package:projeto/front/components/requests/elements/informations.dart';
+import 'package:projeto/front/components/requests/elements/text_request.dart';
+import 'package:projeto/front/components/style.dart';
+
 import 'package:projeto/front/pages/home.dart';
 
 class Solicitacion extends StatefulWidget {
@@ -169,12 +170,6 @@ class _SolicitacionState extends State<Solicitacion> {
                                             ),
                                             controller: _textController,
                                           ),
-                                          // child: Input(
-                                          //   text: 'Resposta',
-                                          //   type: TextInputType.text,
-                                          //   controller:
-                                          //       _textController, // Usando um controlador diferente para cada campo de entrada
-                                          // ),
                                         ),
                                       ],
                                     ),

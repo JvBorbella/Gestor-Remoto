@@ -53,7 +53,7 @@ class _DetailsYesterdayState extends State<DetailsYesterday> {
                                 Column(
                                   children: [
                                     Text(
-                                      'Ticket md.',
+                                      'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 8,
@@ -76,7 +76,7 @@ class _DetailsYesterdayState extends State<DetailsYesterday> {
                                 Column(
                                   children: [
                                     Text(
-                                      'Margem.',
+                                      'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 8,
@@ -99,7 +99,7 @@ class _DetailsYesterdayState extends State<DetailsYesterday> {
                                 Column(
                                   children: [
                                     Text(
-                                      'Cupom.',
+                                      'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 8,

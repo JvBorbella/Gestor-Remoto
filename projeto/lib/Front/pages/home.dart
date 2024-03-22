@@ -2,17 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/back/company_sales_monitor.dart';
 import 'package:projeto/back/total_values.dart';
-import 'package:projeto/front/components/Home/Elements/filial_card_content.dart';
-import 'package:projeto/front/components/Home/Elements/modal_button.dart';
-import 'package:projeto/front/components/Home/Elements/text_button.dart';
-import 'package:projeto/front/components/Home/Requisitions/Buttons/request_button.dart';
-import 'package:projeto/front/components/Global/Estructure/navbar.dart';
-import 'package:projeto/front/components/Home/Requisitions/Elements/request_number.dart';
-import 'package:projeto/front/components/Global/Estructure/request_card.dart';
-import 'package:projeto/front/components/Home/Requisitions/Elements/request_card_text.dart';
-import 'package:projeto/front/components/Home/Estructure/total_values_card.dart';
-import 'package:projeto/front/components/Home/Estructure/filial_card.dart';
-import 'package:projeto/front/components/Style.dart';
+import 'package:projeto/front/components/global/structure/navbar.dart';
+import 'package:projeto/front/components/global/structure/request_card.dart';
+
+
+import 'package:projeto/front/components/home/elements/filial_card_content.dart';
+import 'package:projeto/front/components/home/elements/modal_button.dart';
+import 'package:projeto/front/components/home/elements/text_button.dart';
+import 'package:projeto/front/components/home/structure/filial_card.dart';
+import 'package:projeto/front/components/home/structure/total_values_card.dart';
+import 'package:projeto/front/components/request_home/elements/request_button.dart';
+import 'package:projeto/front/components/request_home/elements/request_number.dart';
+import 'package:projeto/front/components/request_home/structure/request_card_text.dart';
+import 'package:projeto/front/components/style.dart';
+
+
+
+
+
 
 class Home extends StatefulWidget {
   final token;
