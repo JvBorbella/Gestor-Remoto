@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Front/components/Splash/Elements/Text-Splash.dart';
+import 'package:projeto/Front/components/splash/elements/text_splash.dart';
 import 'package:projeto/Front/components/Style.dart';
 import 'dart:async';
 

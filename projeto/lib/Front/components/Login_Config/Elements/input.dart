@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/Style.dart';
 
 class Input extends StatefulWidget {
   //Variável para definir o texto do input na página em que é chamado

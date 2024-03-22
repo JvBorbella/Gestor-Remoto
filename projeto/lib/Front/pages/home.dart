@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Back/Today-Data.dart';
-import 'package:projeto/Back/Value-Day.dart';
-import 'package:projeto/Back/Value-Month.dart';
-import 'package:projeto/Back/Value-Week.dart';
-import 'package:projeto/Back/Yesterday-Data.dart';
-import 'package:projeto/Front/components/Home/Elements/Conteudo-FilialCard.dart';
-import 'package:projeto/Front/components/Home/Elements/ModalButtom.dart';
-import 'package:projeto/Front/components/Home/Elements/TextButton.dart';
-import 'package:projeto/Front/components/Home/Requisitions/Buttons/requisition-button.dart';
-import 'package:projeto/Front/components/Global/Estructure/navbar.dart';
-import 'package:projeto/Front/components/Home/Requisitions/Elements/number-requisition.dart';
-import 'package:projeto/Front/components/Global/Estructure/requisition-card.dart';
-import 'package:projeto/Front/components/Home/Requisitions/Elements/text-requisition.dart';
-import 'package:projeto/Front/components/Home/Estructure/total-card.dart';
-import 'package:projeto/Front/components/Home/Estructure/filial-card.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/back/company_sales_monitor.dart';
+import 'package:projeto/back/total_values.dart';
+import 'package:projeto/front/components/Home/Elements/filial_card_content.dart';
+import 'package:projeto/front/components/Home/Elements/modal_button.dart';
+import 'package:projeto/front/components/Home/Elements/text_button.dart';
+import 'package:projeto/front/components/Home/Requisitions/Buttons/request_button.dart';
+import 'package:projeto/front/components/Global/Estructure/navbar.dart';
+import 'package:projeto/front/components/Home/Requisitions/Elements/request_number.dart';
+import 'package:projeto/front/components/Global/Estructure/request_card.dart';
+import 'package:projeto/front/components/Home/Requisitions/Elements/request_card_text.dart';
+import 'package:projeto/front/components/Home/Estructure/total_values_card.dart';
+import 'package:projeto/front/components/Home/Estructure/filial_card.dart';
+import 'package:projeto/front/components/Style.dart';
 
 class Home extends StatefulWidget {
   final token;
@@ -35,10 +32,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String urlController = '';
-  List<MonitorVendasEmpresaHoje> empresasHoje = [];
-  List<MonitorVendasEmpresaOntem> empresasOntem = [];
-  List<MonitorVendasEmpresaSemana> empresasSemana = [];
-  List<MonitorVendasEmpresaMes> empresasMes = [];
+  List<MonitorVendasEmpresa> empresasHoje = [];
+  List<MonitorVendasEmpresa> empresasOntem = [];
+  List<MonitorVendasEmpresa> empresasSemana = [];
+  List<MonitorVendasEmpresa> empresasMes = [];
+  List<MonitorVendasEmpresa> empresasMesAnt = [];
   late double vendadia = 0.0;
   late double vendadiaanterior = 0.0;
   late double vendasemana = 0.0;
@@ -71,12 +69,35 @@ class _HomeState extends State<Home> {
 
     return SafeArea(
       child: Scaffold(
+        drawer: Drawer(
+          width: 250,
+          child: Column(
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    UserAccountsDrawerHeader(
+                        accountName: Text('Teste'),
+                        accountEmail: Text('Teste')),
+                    NavbarButton()
+                  ],
+                ),
+              ),
+              ListTile(),
+            ],
+          ),
+        ),
         body: RefreshIndicator(
           onRefresh: () => _refreshData(),
           child: ListView(
             children: [
               Navbar(
                 children: [
+                  // DrawerButton(
+                  //   style: ButtonStyle(
+                  //     iconColor: MaterialStatePropertyAll(Style.tertiaryColor),
+                  //   ),
+                  // ),
                   NavbarButton(),
                 ],
                 text: 'Página inicial',
@@ -263,16 +284,69 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valorHoje,
-                                    valorOntem: empresasOntem[index].valorOntem,
-                                    valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
+                                    valorHoje: empresasHoje[index].valortotal,
                                     ticketHoje:
-                                        empresasHoje[index].ticketHoje.toInt(),
+                                        empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index]
+                                        .valorcancelamentos,
+                                    cancelamentosHoje:
+                                        empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje:
+                                        empresasHoje[index].ticketmedio,
+                                    margemHoje: empresasHoje[index].margem,
+                                    metaHoje: empresasHoje[index].meta,
+                                    valorOntem: empresasOntem[index].valortotal,
                                     ticketOntem: empresasOntem[index]
-                                        .ticketOntem
+                                        .ticket
                                         .toInt(),
+                                    valorcancelamentosOntem:
+                                        empresasOntem[index]
+                                            .valorcancelamentos,
+                                    cancelamentosOntem:
+                                        empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem:
+                                        empresasOntem[index].ticketmedio,
+                                    margemOntem:
+                                        empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana:
+                                        empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index]
+                                        .ticket
+                                        .toInt(),
+                                    valorcancelamentosSemana:
+                                        empresasSemana[index]
+                                            .valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index]
+                                        .cancelamentos,
+                                    ticketmedioSemana:
+                                        empresasSemana[index].ticketmedio,
+                                    margemSemana:
+                                        empresasSemana[index].margem,
+                                    metaSemana:
+                                        empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMes:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMes:
+                                        empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMes[index].valortotal,
+                                    ticketMesAnt:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMesAnt:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMesAnt:
+                                        empresasMes[index].ticketmedio,
+                                    margemMesAnt: empresasMes[index].margem,
+                                    metaMesAnt: empresasMes[index].meta,
                                   )
                                 else
                                   TextBUtton(
@@ -280,29 +354,70 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valorHoje,
-                                    valorOntem: empresasOntem[index].valorOntem,
-                                    valorSemana: 0,
-                                    valorMes: 0,
+                                    valorHoje: empresasHoje[index].valortotal,
                                     ticketHoje:
-                                        empresasHoje[index].ticketHoje.toInt(),
+                                        empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index]
+                                        .valorcancelamentos,
+                                    cancelamentosHoje:
+                                        empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje:
+                                        empresasHoje[index].ticketmedio,
+                                    margemHoje: empresasHoje[index].margem,
+                                    metaHoje: empresasHoje[index].meta,
+                                    valorOntem: empresasOntem[index].valortotal,
                                     ticketOntem: empresasOntem[index]
-                                        .ticketOntem
+                                        .ticket
                                         .toInt(),
+                                    valorcancelamentosOntem:
+                                        empresasOntem[index]
+                                            .valorcancelamentos,
+                                    cancelamentosOntem:
+                                        empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem:
+                                        empresasOntem[index].ticketmedio,
+                                    margemOntem:
+                                        empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana: 0,
+                                    ticketSemana: 0,
+                                    valorcancelamentosSemana: 0,
+                                    cancelamentosSemana: 0,
+                                    ticketmedioSemana: 0,
+                                    margemSemana: 0,
+                                    metaSemana: 0,
+                                    valorMes: 0,
+                                    ticketMes: 0,
+                                    valorcancelamentosMes: 0,
+                                    cancelamentosMes: 0,
+                                    ticketmedioMes: 0,
+                                    margemMes: 0,
+                                    metaMes: 0,
+                                    valorMesAnt: empresasMes[index].valortotal,
+                                    ticketMesAnt:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMesAnt:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMesAnt:
+                                        empresasMes[index].ticketmedio,
+                                    margemMesAnt: empresasMes[index].margem,
+                                    metaMesAnt: empresasMes[index].meta,
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
                                   ConteudoFilialCard(
-                                    valorHoje: empresasHoje[index].valorHoje,
-                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
                                     valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
+                                        empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
                                   )
                                 else
                                   ConteudoFilialCard(
-                                    valorHoje: empresasHoje[index].valorHoje,
-                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
                                     valorSemana: 0,
                                     valorMes: 0,
                                   )
@@ -326,14 +441,62 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valorHoje,
-                                    valorOntem: 0,
-                                    valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
+                                    valorHoje: empresasHoje[index].valortotal,
                                     ticketHoje:
-                                        empresasHoje[index].ticketHoje.toInt(),
+                                        empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index]
+                                        .valorcancelamentos,
+                                    cancelamentosHoje:
+                                        empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje:
+                                        empresasHoje[index].ticketmedio,
+                                    margemHoje: empresasHoje[index].margem,
+                                    metaHoje: empresasHoje[index].meta,
+                                    valorOntem: 0,
                                     ticketOntem: 0,
+                                    valorcancelamentosOntem: 0,
+                                    cancelamentosOntem: 0,
+                                    ticketmedioOntem: 0,
+                                    margemOntem: 0,
+                                    metaOntem: 0,
+                                    valorSemana:
+                                        empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index]
+                                        .ticket
+                                        .toInt(),
+                                    valorcancelamentosSemana:
+                                        empresasSemana[index]
+                                            .valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index]
+                                        .cancelamentos,
+                                    ticketmedioSemana:
+                                        empresasSemana[index].ticketmedio,
+                                    margemSemana:
+                                        empresasSemana[index].margem,
+                                    metaSemana:
+                                        empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMes:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMes:
+                                        empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMes[index].valortotal,
+                                    ticketMesAnt:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMesAnt:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMesAnt:
+                                        empresasMes[index].ticketmedio,
+                                    margemMesAnt: empresasMes[index].margem,
+                                    metaMesAnt: empresasMes[index].meta,
                                   )
                                 else
                                   TextBUtton(
@@ -341,26 +504,62 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome:
                                         empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valorHoje,
-                                    valorOntem: 0,
-                                    valorSemana: 0,
-                                    valorMes: 0,
+                                    valorHoje: empresasHoje[index].valortotal,
                                     ticketHoje:
-                                        empresasHoje[index].ticketHoje.toInt(),
+                                        empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index]
+                                        .valorcancelamentos,
+                                    cancelamentosHoje:
+                                        empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje:
+                                        empresasHoje[index].ticketmedio,
+                                    margemHoje: empresasHoje[index].margem,
+                                    metaHoje: empresasHoje[index].meta,
+                                    valorOntem: 0,
                                     ticketOntem: 0,
+                                    valorcancelamentosOntem: 0,
+                                    cancelamentosOntem: 0,
+                                    ticketmedioOntem: 0,
+                                    margemOntem: 0,
+                                    metaOntem: 0,
+                                    valorSemana: 0,
+                                    ticketSemana: 0,
+                                    valorcancelamentosSemana: 0,
+                                    cancelamentosSemana: 0,
+                                    ticketmedioSemana: 0,
+                                    margemSemana: 0,
+                                    metaSemana: 0,
+                                    valorMes: 0,
+                                    ticketMes: 0,
+                                    valorcancelamentosMes: 0,
+                                    cancelamentosMes: 0,
+                                    ticketmedioMes: 0,
+                                    margemMes: 0,
+                                    metaMes: 0,
+                                    valorMesAnt: empresasMes[index].valortotal,
+                                    ticketMesAnt:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMesAnt:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMesAnt:
+                                        empresasMes[index].ticketmedio,
+                                    margemMesAnt: empresasMes[index].margem,
+                                    metaMesAnt: empresasMes[index].meta,
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
                                   ConteudoFilialCard(
-                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: 0,
                                     valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
+                                        empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
                                   )
                                 else
                                   ConteudoFilialCard(
-                                    valorHoje: empresasHoje[index].valorHoje,
+                                    valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: 0,
                                     valorSemana: 0,
                                     valorMes: 0,
@@ -392,21 +591,71 @@ class _HomeState extends State<Home> {
                                     empresaNome:
                                         empresasOntem[index].empresaNome,
                                     valorHoje: 0,
-                                    valorOntem: empresasOntem[index].valorOntem,
-                                    valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
                                     ticketHoje: 0,
+                                    valorcancelamentosHoje: 0,
+                                    cancelamentosHoje: 0,
+                                    ticketmedioHoje: 0,
+                                    margemHoje: 0,
+                                    metaHoje: 0,
+                                    valorOntem: empresasOntem[index].valortotal,
                                     ticketOntem: empresasOntem[index]
-                                        .ticketOntem
+                                        .ticket
                                         .toInt(),
+                                    valorcancelamentosOntem:
+                                        empresasOntem[index]
+                                            .valorcancelamentos,
+                                    cancelamentosOntem:
+                                        empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem:
+                                        empresasOntem[index].ticketmedio,
+                                    margemOntem:
+                                        empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana:
+                                        empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index]
+                                        .ticket
+                                        .toInt(),
+                                    valorcancelamentosSemana:
+                                        empresasSemana[index]
+                                            .valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index]
+                                        .cancelamentos,
+                                    ticketmedioSemana:
+                                        empresasSemana[index].ticketmedio,
+                                    margemSemana:
+                                        empresasSemana[index].margem,
+                                    metaSemana:
+                                        empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMes:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMes:
+                                        empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMes[index].valortotal,
+                                    ticketMesAnt:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMesAnt:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMesAnt:
+                                        empresasMes[index].ticketmedio,
+                                    margemMesAnt: empresasMes[index].margem,
+                                    metaMesAnt: empresasMes[index].meta,
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
-                                    valorOntem: empresasOntem[index].valorOntem,
+                                    valorOntem: empresasOntem[index].valortotal,
                                     valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
+                                        empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
                                   )
                                 ],
                               ),
@@ -431,21 +680,66 @@ class _HomeState extends State<Home> {
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
-                                        empresasSemana[index].empresaNome,
+                                        empresasHoje[index].empresaNome,
                                     valorHoje: 0,
-                                    valorOntem: 0,
-                                    valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
                                     ticketHoje: 0,
+                                    valorcancelamentosHoje: 0,
+                                    cancelamentosHoje: 0,
+                                    ticketmedioHoje: 0,
+                                    margemHoje: 0,
+                                    metaHoje: 0,
+                                    valorOntem: 0,
                                     ticketOntem: 0,
+                                    valorcancelamentosOntem: 0,
+                                    cancelamentosOntem: 0,
+                                    ticketmedioOntem: 0,
+                                    margemOntem: 0,
+                                    metaOntem: 0,
+                                    valorSemana:
+                                        empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index]
+                                        .ticket
+                                        .toInt(),
+                                    valorcancelamentosSemana:
+                                        empresasSemana[index]
+                                            .valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index]
+                                        .cancelamentos,
+                                    ticketmedioSemana:
+                                        empresasSemana[index].ticketmedio,
+                                    margemSemana:
+                                        empresasSemana[index].margem,
+                                    metaSemana:
+                                        empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMes:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMes:
+                                        empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMes[index].valortotal,
+                                    ticketMesAnt:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMesAnt:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMesAnt:
+                                        empresasMes[index].ticketmedio,
+                                    margemMesAnt: empresasMes[index].margem,
+                                    metaMesAnt: empresasMes[index].meta,
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
                                     valorOntem: 0,
                                     valorSemana:
-                                        empresasSemana[index].valorSemana,
-                                    valorMes: empresasMes[index].valorMes,
+                                        empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
                                   )
                                 ],
                               ),
@@ -473,17 +767,54 @@ class _HomeState extends State<Home> {
                                     token: widget.token,
                                     empresaNome: empresasMes[index].empresaNome,
                                     valorHoje: 0,
-                                    valorOntem: 0,
-                                    valorSemana: 0,
-                                    valorMes: empresasMes[index].valorMes,
                                     ticketHoje: 0,
+                                    valorcancelamentosHoje: 0,
+                                    cancelamentosHoje: 0,
+                                    ticketmedioHoje: 0,
+                                    margemHoje: 0,
+                                    metaHoje: 0,
+                                    valorOntem: 0,
                                     ticketOntem: 0,
+                                    valorcancelamentosOntem: 0,
+                                    cancelamentosOntem: 0,
+                                    ticketmedioOntem: 0,
+                                    margemOntem: 0,
+                                    metaOntem: 0,
+                                    valorSemana: 0,
+                                    ticketSemana: 0,
+                                    valorcancelamentosSemana: 0,
+                                    cancelamentosSemana: 0,
+                                    ticketmedioSemana: 0,
+                                    margemSemana: 0,
+                                    metaSemana: 0,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMes:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMes:
+                                        empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMes[index].valortotal,
+                                    ticketMesAnt:
+                                        empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMes[index]
+                                        .valorcancelamentos,
+                                    cancelamentosMesAnt:
+                                        empresasMes[index].cancelamentos,
+                                    ticketmedioMesAnt:
+                                        empresasMes[index].ticketmedio,
+                                    margemMesAnt: empresasMes[index].margem,
+                                    metaMesAnt: empresasMes[index].meta,
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
                                     valorOntem: 0,
                                     valorSemana: 0,
-                                    valorMes: empresasMes[index].valorMes,
+                                    valorMes: empresasMes[index].valortotal,
                                   )
                                 ],
                               ),
@@ -511,8 +842,8 @@ class _HomeState extends State<Home> {
     await Future.wait([
       fetchData(),
       fetchDataOntem(),
-      fetchDataValorHoje(),
-      fetchDataRequisicoes(),
+      fetchedDataMonitorVendas(),
+      fetchDataRequests(),
       // fetchDataSemana(),
       // fetchDataMes(),
     ]);
@@ -549,8 +880,8 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchData() async {
-    List<MonitorVendasEmpresaHoje>? fetchedData =
-        await DataService.fetchData(widget.token, widget.url);
+    List<MonitorVendasEmpresa>? fetchedData =
+        await DataServiceHoje.fetchData(widget.token, widget.url);
 
     if (fetchedData != null) {
       setState(() {
@@ -560,7 +891,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataOntem() async {
-    List<MonitorVendasEmpresaOntem>? fetchedDataOntem =
+    List<MonitorVendasEmpresa>? fetchedDataOntem =
         await DataServiceOntem.fetchDataOntem(widget.token, widget.url);
 
     if (fetchedDataOntem != null) {
@@ -571,7 +902,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataSemana() async {
-    List<MonitorVendasEmpresaSemana>? fetchedDataSemana =
+    List<MonitorVendasEmpresa>? fetchedDataSemana =
         await DataServiceSemana.fetchDataSemana(widget.token, widget.url);
 
     if (fetchedDataSemana != null) {
@@ -582,7 +913,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> fetchDataMes() async {
-    List<MonitorVendasEmpresaMes>? fetchedDataMes =
+    List<MonitorVendasEmpresa>? fetchedDataMes =
         await DataServiceMes.fetchDataMes(widget.token, widget.url);
 
     if (fetchedDataMes != null) {
@@ -592,29 +923,29 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> fetchDataValorHoje() async {
-    Map<String, double?>? fetchedDataValorHoje =
-        await DataServiceValorHoje.fetchDataValorHoje(widget.token, widget.url);
+  Future<void> fetchedDataMonitorVendas() async {
+    Map<String, double?>? fetchedDataMonitorVendas =
+        await DataServiceMonitorVendas.fetchDataMonitorVendas(widget.token, widget.url);
 
     // ignore: unnecessary_null_comparison
-    if (fetchedDataValorHoje != null) {
+    if (fetchedDataMonitorVendas != null) {
       setState(() {
-        vendadia = fetchedDataValorHoje['vendadia'] ?? 0.0;
-        vendadiaanterior = fetchedDataValorHoje['vendadiaanterior'] ?? 0.0;
-        vendasemana = fetchedDataValorHoje['vendasemana'] ?? 0.0;
-        vendames = fetchedDataValorHoje['vendames'] ?? 0.0;
+        vendadia = fetchedDataMonitorVendas['vendadia'] ?? 0.0;
+        vendadiaanterior = fetchedDataMonitorVendas['vendadiaanterior'] ?? 0.0;
+        vendasemana = fetchedDataMonitorVendas['vendasemana'] ?? 0.0;
+        vendames = fetchedDataMonitorVendas['vendames'] ?? 0.0;
       });
     }
   }
 
-  Future<void> fetchDataRequisicoes() async {
-    int? fetchedDataRequisicoes =
-        await DataServiceValorHoje.fetchDataRequisicoes(
+  Future<void> fetchDataRequests() async {
+    int? fetchedDataRequests =
+        await DataServiceMonitorVendas.fetchDataRequests(
             widget.token, widget.url);
 
-    if (fetchedDataRequisicoes != null) {
+    if (fetchedDataRequests != null) {
       setState(() {
-        solicitacoesremotas = fetchedDataRequisicoes;
+        solicitacoesremotas = fetchedDataRequests;
       });
     }
   }
