@@ -3,25 +3,25 @@ import 'package:intl/intl.dart';
 import 'package:projeto/Front/components/Sales/Elements/text_card_sales.dart';
 import 'package:projeto/Front/components/Style.dart';
 
-class ValuesWeek extends StatefulWidget {
-  final double valorSemana;
-  final int cancelamentosSemana;
-  final double metaSemana;
-  final double valorcancelamentosSemana;
+class Values extends StatefulWidget {
+  final double valortotal;
+  final int cancelamentos;
+  final double meta;
+  final double valorcancelamentos;
 
-  const ValuesWeek({
+  const Values({
     Key? key,
-    required this.valorSemana,
-    required this.cancelamentosSemana,
-    required this.metaSemana,
-    required this.valorcancelamentosSemana,
+    required this.valortotal,
+    required this.cancelamentos,
+    required this.meta,
+    required this.valorcancelamentos,
   });
 
   @override
-  State<ValuesWeek> createState() => _ValuesWeekState();
+  State<Values> createState() => _ValuesState();
 }
 
-class _ValuesWeekState extends State<ValuesWeek> {
+class _ValuesState extends State<Values> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
@@ -43,7 +43,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorSemana))
+                    TextValues(text: currencyFormat.format(widget.valortotal))
                   ],
                 ),
                 Column(
@@ -53,7 +53,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.metaSemana))
+                    TextValues(text: currencyFormat.format(widget.meta))
                   ],
                 ),
               ],
@@ -73,7 +73,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                       TextValues(
-                          text: widget.cancelamentosSemana.toString())
+                          text: widget.cancelamentos.toString())
                   ],
                 ),
                 Column(
@@ -83,7 +83,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(text: currencyFormat.format(widget.valorcancelamentosSemana))
+                      TextValues(text: currencyFormat.format(widget.valorcancelamentos))
                   ],
                 ),
               ],
@@ -91,41 +91,6 @@ class _ValuesWeekState extends State<ValuesWeek> {
             SizedBox(
               height: 20,
             ),
-            //Linha divisória
-            // Divider(
-            //   color: Style.quarantineColor, // Cor da linha
-            //   height: 20, // Altura da linha
-            //   thickness: 2,
-            // ),
-            // SizedBox(
-            //   height: 0,
-            // ),
-            // //Valores de metas
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta de hoje',
-            //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
-            //         ),
-            //         TextValues(text: '(Valor)')
-            //       ],
-            //     ),
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta acum.',
-            //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
-            //         ),
-            //         TextValues(text: '(Valor)')
-            //       ],
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

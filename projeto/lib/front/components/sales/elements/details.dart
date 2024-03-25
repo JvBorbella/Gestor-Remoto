@@ -2,26 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class DetailsMonth extends StatefulWidget {
-  final int ticketMes;
-  final double ticketmedioMes;
-  final double margemMes;
+class Details extends StatefulWidget {
+  final int ticket;
+  final double ticketmedio;
+  final double margem;
 
-  const DetailsMonth({
+  const Details({
     Key? key,
-    required this.ticketMes,
-    required this.ticketmedioMes,
-    required this.margemMes,
+    required this.ticket,
+    required this.ticketmedio,
+    required this.margem,
   });
 
   @override
-  State<DetailsMonth> createState() => _DetailsMonthState();
+  State<Details> createState() => _DetailsState();
 }
 
-class _DetailsMonthState extends State<DetailsMonth> {
-  NumberFormat currencyFormat =
+class _DetailsState extends State<Details> {
+   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +39,11 @@ class _DetailsMonthState extends State<DetailsMonth> {
                       //Estilização
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                          color: Style.primaryColor,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(5),
-                              bottomRight: Radius.circular(5))),
+                        color: Style.primaryColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(5)),
+                      ),
                       child: Column(
                         children: [
                           Container(
@@ -62,7 +62,7 @@ class _DetailsMonthState extends State<DetailsMonth> {
                                       textAlign: TextAlign.center,
                                     ),
                                     Text(
-                                      (currencyFormat.format(widget.ticketmedioMes)),
+                                      (currencyFormat.format(widget.ticketmedio)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 12,
@@ -85,7 +85,7 @@ class _DetailsMonthState extends State<DetailsMonth> {
                                       textAlign: TextAlign.center,
                                     ),
                                     Text(
-                                      '${widget.margemMes.toStringAsFixed(2)}%',
+                                      '${widget.margem.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 12,
@@ -108,7 +108,7 @@ class _DetailsMonthState extends State<DetailsMonth> {
                                       textAlign: TextAlign.center,
                                     ),
                                     Text(
-                                      widget.ticketMes.toString(),
+                                      widget.ticket.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
                                           fontSize: 12,
