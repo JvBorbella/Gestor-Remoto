@@ -1,29 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/back/company_sales_monitor.dart';
 import 'package:projeto/front/components/Style.dart';
 import 'package:projeto/front/pages/sales.dart';
 
 class TextBUtton extends StatefulWidget {
   final String empresaNome;
+  final double valorHoje;
+  final double valorOntem;
+  final double valorSemana;
+  final double valorMes;
+  final double valorMesAnt;
   final String url;
   final token;
-
-  final List<MonitorVendasEmpresa> empresasHoje;
-  final List<MonitorVendasEmpresa> empresasOntem;
-  final List<MonitorVendasEmpresa> empresasSemana;
-  final List<MonitorVendasEmpresa> empresasMes;
-  final List<MonitorVendasEmpresa> empresasMesAnt;
+  final int ticketHoje;
+  final int ticketOntem;
+  final int ticketSemana;
+  final int ticketMes;
+  final int ticketMesAnt;
+  final double cancelamentosHoje;
+  final double cancelamentosOntem;
+  final double cancelamentosSemana;
+  final double cancelamentosMes;
+  final double cancelamentosMesAnt;
+  final double ticketmedioHoje;
+  final double ticketmedioOntem;
+  final double ticketmedioSemana;
+  final double ticketmedioMes;
+  final double ticketmedioMesAnt;
+  final double margemHoje;
+  final double margemOntem;
+  final double margemSemana;
+  final double margemMes;
+  final double margemMesAnt;
+  final double metaHoje;
+  final double metaOntem;
+  final double metaSemana;
+  final double metaMes;
+  final double metaMesAnt;
+  final double valorcancelamentosHoje;
+  final double valorcancelamentosOntem;
+  final double valorcancelamentosSemana;
+  final double valorcancelamentosMes;
+  final double valorcancelamentosMesAnt;
 
   const TextBUtton({
     Key? key,
     required this.empresaNome,
     this.token,
     this.url = '',
-    required this.empresasHoje,
-    required this.empresasOntem,
-    required this.empresasSemana,
-    required this.empresasMes,
-    required this.empresasMesAnt,
+    required this.valorHoje,
+    required this.valorOntem,
+    required this.valorSemana,
+    required this.valorMes,
+    required this.valorMesAnt,
+    required this.ticketHoje,
+    required this.ticketOntem,
+    required this.ticketSemana,
+    required this.ticketMes,
+    required this.ticketMesAnt,
+    required this.cancelamentosHoje,
+    required this.cancelamentosOntem,
+    required this.cancelamentosSemana,
+    required this.cancelamentosMes,
+    required this.cancelamentosMesAnt,
+    required this.ticketmedioHoje,
+    required this.ticketmedioOntem,
+    required this.ticketmedioSemana,
+    required this.ticketmedioMes,
+    required this.ticketmedioMesAnt,
+    required this.margemHoje,
+    required this.margemOntem,
+    required this.margemSemana,
+    required this.margemMes,
+    required this.margemMesAnt,
+    required this.metaHoje,
+    required this.metaOntem,
+    required this.metaSemana,
+    required this.metaMes,
+    required this.metaMesAnt,
+    required this.valorcancelamentosHoje,
+    required this.valorcancelamentosOntem,
+    required this.valorcancelamentosSemana,
+    required this.valorcancelamentosMes,
+    required this.valorcancelamentosMesAnt,
   }) : super(key: key);
 
   @override
@@ -49,13 +107,42 @@ class _TextButtonState extends State<TextBUtton> {
                     builder: (context) => Sales(
                           url: widget.url,
                                     token: widget.token,
-                                    empresasHoje: widget.empresasHoje,
-                                    empresasOntem: widget.empresasOntem,
-                                    empresasSemana: widget.empresasSemana,
-                                    empresasMes: widget.empresasMes,
-                                    empresasMesAnt: widget.empresasMesAnt,
                                     empresaNome: widget.empresaNome,
-                                    
+                                    valorHoje: widget.valorHoje,
+                                    ticketHoje: widget.ticketHoje,
+                                    valorcancelamentosHoje: widget.valorcancelamentosHoje,
+                                    cancelamentosHoje: widget.cancelamentosHoje,
+                                    ticketmedioHoje: widget.ticketmedioHoje,
+                                    margemHoje: widget.margemHoje,
+                                    metaHoje: widget.metaHoje,
+                                    valorOntem: widget.valorOntem,
+                                    ticketOntem: widget.ticketOntem,
+                                    valorcancelamentosOntem: widget.valorcancelamentosOntem,
+                                    cancelamentosOntem: widget.cancelamentosOntem,
+                                    ticketmedioOntem: widget.ticketmedioOntem,
+                                    margemOntem: widget.margemOntem,
+                                    metaOntem: widget.metaOntem,
+                                    valorSemana: widget.valorSemana,
+                                    ticketSemana: widget.ticketSemana,
+                                    valorcancelamentosSemana: widget.valorcancelamentosSemana,
+                                    cancelamentosSemana: widget.cancelamentosSemana,
+                                    ticketmedioSemana: widget.ticketmedioSemana,
+                                    margemSemana: widget.margemSemana,
+                                    metaSemana: widget.metaSemana,
+                                    valorMes: widget.valorMes,
+                                    ticketMes: widget.ticketMes,
+                                    valorcancelamentosMes: widget.valorcancelamentosMes,
+                                    cancelamentosMes: widget.cancelamentosMes,
+                                    ticketmedioMes: widget.ticketmedioMes,
+                                    margemMes: widget.margemMes,
+                                    metaMes: widget.metaMes,
+                                    valorMesAnt: widget.valorMesAnt,
+                                    ticketMesAnt: widget.ticketMesAnt,
+                                    valorcancelamentosMesAnt: widget.valorcancelamentosMesAnt,
+                                    cancelamentosMesAnt: widget.cancelamentosMesAnt,
+                                    ticketmedioMesAnt: widget.ticketmedioMesAnt,
+                                    margemMesAnt: widget.margemMesAnt,
+                                    metaMesAnt: widget.metaMesAnt,
                         )),
               );
             },

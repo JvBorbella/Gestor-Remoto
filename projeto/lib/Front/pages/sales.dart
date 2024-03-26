@@ -1,79 +1,100 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/back/company_sales_monitor.dart';
 import 'package:projeto/front/components/global/elements/navbar_button.dart';
 import 'package:projeto/front/components/global/structure/navbar.dart';
-import 'package:projeto/front/components/sales/elements/details.dart';
-import 'package:projeto/front/components/sales/elements/values.dart';
-import 'package:projeto/front/components/sales/structure/sales_card.dart';
+import 'package:projeto/front/components/Sales/elements/details_today.dart';
+import 'package:projeto/front/components/Sales/elements/month_details.dart';
+import 'package:projeto/front/components/Sales/elements/week_details.dart';
+import 'package:projeto/front/components/Sales/elements/details_yesterday.dart';
+import 'package:projeto/front/components/Sales/elements/previous_month_details.dart';
+import 'package:projeto/front/components/Sales/elements/previous_month_values.dart';
+import 'package:projeto/front/components/Sales/elements/today_values.dart';
+import 'package:projeto/front/components/Sales/elements/month_values.dart';
+import 'package:projeto/front/components/Sales/elements/week_values.dart';
+import 'package:projeto/front/components/Sales/elements/yesterday_values.dart';
+import 'package:projeto/front/components/Sales/structure/sales_card.dart';
 import 'package:projeto/front/components/Style.dart';
 import 'package:projeto/front/pages/home.dart';
 
-class SalesCard extends StatelessWidget {
-  final String periodTitle;
-  final List<MonitorVendasEmpresa>? salesData;
-
-  SalesCard({required this.periodTitle, required this.salesData});
-
-  @override
-  Widget build(BuildContext context) {
-    return CardSale(
-      children: [
-        Text(
-          periodTitle,
-          style: TextStyle(
-            color: Style.quarantineColor,
-            fontSize: 18,
-          ),
-        ),
-        SizedBox(height: Style.ContentInternalSpace),
-        if (salesData != null && salesData!.isNotEmpty)
-          ...buildSalesWidgets(salesData!),
-        if (salesData == null || salesData!.isEmpty)
-          Text('Dados não disponíveis'),
-      ],
-    );
-  }
-
-  List<Widget> buildSalesWidgets(List<MonitorVendasEmpresa> salesData) {
-    return [
-      // Widget para exibir os valores de vendas
-      Values(
-        valortotal: salesData[0].valortotal,
-        valorcancelamentos: salesData[0].valorcancelamentos,
-        cancelamentos: salesData[0].cancelamentos.toInt(),
-        meta: salesData[0].meta,
-      ),
-      // Widget para exibir os detalhes das vendas
-      Details(
-        ticketmedio: salesData[0].ticketmedio,
-        margem: salesData[0].margem,
-        ticket: salesData[0].ticket.toInt(),
-      ),
-      // Adicione widgets adicionais conforme necessário
-    ];
-  }
-}
-
 class Sales extends StatefulWidget {
   final String empresaNome;
+  final double valorHoje;
+  final double valorOntem;
+  final double valorSemana;
+  final double valorMes;
+  final double valorMesAnt;
   final String url;
   final token;
-  final List<MonitorVendasEmpresa> empresasHoje;
-  final List<MonitorVendasEmpresa> empresasOntem;
-  final List<MonitorVendasEmpresa> empresasSemana;
-  final List<MonitorVendasEmpresa> empresasMes;
-  final List<MonitorVendasEmpresa> empresasMesAnt;
+  final int ticketHoje;
+  final int ticketOntem;
+  final int ticketSemana;
+  final int ticketMes;
+  final int ticketMesAnt;
+  final double cancelamentosHoje;
+  final double cancelamentosOntem;
+  final double cancelamentosSemana;
+  final double cancelamentosMes;
+  final double cancelamentosMesAnt;
+  final double ticketmedioHoje;
+  final double ticketmedioOntem;
+  final double ticketmedioSemana;
+  final double ticketmedioMes;
+  final double ticketmedioMesAnt;
+  final double margemHoje;
+  final double margemOntem;
+  final double margemSemana;
+  final double margemMes;
+  final double margemMesAnt;
+  final double metaHoje;
+  final double metaOntem;
+  final double metaSemana;
+  final double metaMes;
+  final double metaMesAnt;
+  final double valorcancelamentosHoje;
+  final double valorcancelamentosOntem;
+  final double valorcancelamentosSemana;
+  final double valorcancelamentosMes;
+  final double valorcancelamentosMesAnt;
 
   const Sales({
     Key? key,
     required this.empresaNome,
     this.token,
     this.url = '',
-    required this.empresasHoje,
-    required this.empresasOntem,
-    required this.empresasSemana,
-    required this.empresasMes,
-    required this.empresasMesAnt,
+    required this.valorHoje,
+    required this.valorOntem,
+    required this.valorSemana,
+    required this.valorMes,
+    required this.valorMesAnt,
+    required this.ticketHoje,
+    required this.ticketOntem,
+    required this.ticketSemana,
+    required this.ticketMes,
+    required this.ticketMesAnt,
+    required this.cancelamentosHoje,
+    required this.cancelamentosOntem,
+    required this.cancelamentosSemana,
+    required this.cancelamentosMes,
+    required this.cancelamentosMesAnt,
+    required this.ticketmedioHoje,
+    required this.ticketmedioOntem,
+    required this.ticketmedioSemana,
+    required this.ticketmedioMes,
+    required this.ticketmedioMesAnt,
+    required this.margemHoje,
+    required this.margemOntem,
+    required this.margemSemana,
+    required this.margemMes,
+    required this.margemMesAnt,
+    required this.metaHoje,
+    required this.metaOntem,
+    required this.metaSemana,
+    required this.metaMes,
+    required this.metaMesAnt,
+    required this.valorcancelamentosHoje,
+    required this.valorcancelamentosOntem,
+    required this.valorcancelamentosSemana,
+    required this.valorcancelamentosMes,
+    required this.valorcancelamentosMesAnt,
   }) : super(key: key);
 
   @override
@@ -88,7 +109,9 @@ class _SalesState extends State<Sales> {
         body: Container(
           child: ListView(
             children: [
+              //Código da Navbar
               Navbar(children: [
+                //Chamando os elementos internos da navbar
                 ButtonNavbar(
                   destination: Home(
                     url: widget.url,
@@ -97,17 +120,185 @@ class _SalesState extends State<Sales> {
                   Icons: Icons.arrow_back_ios_new,
                 ),
               ], text: 'Vendas'),
+              SizedBox(
+                height: 10,
+              ),
               Text(
                 widget.empresaNome,
-                style: TextStyle(color: Style.quarantineColor, fontSize: 21),
+                style: TextStyle(fontSize: 22, color: Style.quarantineColor),
                 textAlign: TextAlign.center,
               ),
-              SalesCard(periodTitle: 'Hoje', salesData: widget.empresasHoje),
-              SalesCard(periodTitle: 'Ontem', salesData: widget.empresasOntem),
-              SalesCard(periodTitle: 'Semana', salesData: widget.empresasSemana),
-              SalesCard(periodTitle: 'Mês', salesData: widget.empresasMes),
-              SalesCard(periodTitle: 'Mês anteriror',salesData: widget.empresasMesAnt),
-              // Adicione para os outros períodos
+              SizedBox(
+                height: 10,
+              ),
+              //Widget do card dos números detalhados das vendas
+              CardSale(
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  //Chamando elementos para dentro do card
+                  Text('Hoje', style: TextStyle(
+                    color: Style.quarantineColor,
+                    fontSize: 18,
+                  ),),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores
+                  Values(
+                    valorHoje: widget.valorHoje,
+                    valorcancelamentosHoje: widget.valorcancelamentosHoje,
+                    cancelamentosHoje: widget.cancelamentosHoje.toInt(),
+                    metaHoje: widget.metaHoje,
+                  ),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores adicionais - rodapé do card
+                  Details(
+                    ticketmedioHoje: widget.ticketmedioHoje,
+                    margemHoje: widget.margemHoje,
+                    ticketHoje: widget.ticketHoje,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CardSale(
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  //Chamando elementos para dentro do card
+                  Text('Ontem', style: TextStyle(
+                    color: Style.quarantineColor,
+                    fontSize: 18,
+                  ),),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores
+                  ValuesYesterday(
+                    valorOntem: widget.valorOntem,
+                    valorcancelamentosOntem: widget.valorcancelamentosOntem,
+                    cancelamentosOntem: widget.cancelamentosOntem.toInt(),
+                    metaOntem: widget.metaOntem,
+                  ),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores adicionais - rodapé do card
+                  DetailsYesterday(
+                    ticketOntem: widget.ticketOntem,
+                    ticketmedioOntem: widget.ticketmedioOntem,
+                    margemOntem: widget.margemOntem,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CardSale(
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  //Chamando elementos para dentro do card
+                  Text('Semana', style: TextStyle(
+                    color: Style.quarantineColor,
+                    fontSize: 18,
+                  ),),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores
+                  ValuesWeek(
+                    valorSemana: widget.valorSemana,
+                    valorcancelamentosSemana: widget.valorcancelamentosSemana,
+                    cancelamentosSemana: widget.cancelamentosSemana.toInt(),
+                    metaSemana: widget.metaSemana,
+                  ),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores adicionais - rodapé do card
+                  DetailsWeek(
+                    ticketSemana: widget.ticketSemana,
+                    ticketmedioSemana: widget.ticketmedioSemana,
+                    margemSemana: widget.margemSemana,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CardSale(
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  //Chamando elementos para dentro do card
+                  Text('Mês', style: TextStyle(
+                    color: Style.quarantineColor,
+                    fontSize: 18,
+                  ),),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores
+                  ValuesMonth(
+                    valorMes: widget.valorMes,
+                    valorcancelamentosMes: widget.valorcancelamentosMes,
+                    cancelamentosMes: widget.cancelamentosMes.toInt(),
+                    metaMes: widget.metaMes,
+                  ),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores adicionais - rodapé do card
+                  DetailsMonth(
+                    ticketMes: widget.ticketMes,
+                    ticketmedioMes: widget.ticketmedioMes,
+                    margemMes: widget.margemMes,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              CardSale(
+                children: [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  //Chamando elementos para dentro do card
+                  Text('Mês anterior', style: TextStyle(
+                    color: Style.quarantineColor,
+                    fontSize: 18,
+                  ),),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores
+                  PreviousValuesMonth(
+                    valorMesAnt: widget.valorMesAnt,
+                    valorcancelamentosMesAnt: widget.valorcancelamentosMesAnt,
+                    cancelamentosMesAnt: widget.cancelamentosMesAnt.toInt(),
+                    metaMesAnt: widget.metaMesAnt,
+                  ),
+                  SizedBox(
+                    height: Style.ContentInternalSpace,
+                  ),
+                  //Widget dos valores adicionais - rodapé do card
+                  PreviousDetailsMonth(
+                    ticketMesAnt: widget.ticketMesAnt,
+                    ticketmedioMesAnt: widget.ticketmedioMesAnt,
+                    margemMesAnt: widget.margemMesAnt,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
