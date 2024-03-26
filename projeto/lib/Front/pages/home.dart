@@ -4,8 +4,6 @@ import 'package:projeto/back/company_sales_monitor.dart';
 import 'package:projeto/back/total_values.dart';
 import 'package:projeto/front/components/global/structure/navbar.dart';
 import 'package:projeto/front/components/global/structure/request_card.dart';
-
-
 import 'package:projeto/front/components/home/elements/filial_card_content.dart';
 import 'package:projeto/front/components/home/elements/modal_button.dart';
 import 'package:projeto/front/components/home/elements/text_button.dart';
@@ -15,11 +13,6 @@ import 'package:projeto/front/components/request_home/elements/request_button.da
 import 'package:projeto/front/components/request_home/elements/request_number.dart';
 import 'package:projeto/front/components/request_home/structure/request_card_text.dart';
 import 'package:projeto/front/components/style.dart';
-
-
-
-
-
 
 class Home extends StatefulWidget {
   final token;
@@ -62,6 +55,7 @@ class _HomeState extends State<Home> {
     loadData();
     fetchDataSemana();
     fetchDataMes();
+    fetchDataMesAnt();
   }
 
   @override
@@ -343,17 +337,13 @@ class _HomeState extends State<Home> {
                                         empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMes[index].valortotal,
-                                    ticketMesAnt:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMesAnt:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMesAnt:
-                                        empresasMes[index].ticketmedio,
-                                    margemMesAnt: empresasMes[index].margem,
-                                    metaMesAnt: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
                                   )
                                 else
                                   TextBUtton(
@@ -400,17 +390,13 @@ class _HomeState extends State<Home> {
                                     ticketmedioMes: 0,
                                     margemMes: 0,
                                     metaMes: 0,
-                                    valorMesAnt: empresasMes[index].valortotal,
-                                    ticketMesAnt:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMesAnt:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMesAnt:
-                                        empresasMes[index].ticketmedio,
-                                    margemMesAnt: empresasMes[index].margem,
-                                    metaMesAnt: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
@@ -493,17 +479,13 @@ class _HomeState extends State<Home> {
                                         empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMes[index].valortotal,
-                                    ticketMesAnt:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMesAnt:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMesAnt:
-                                        empresasMes[index].ticketmedio,
-                                    margemMesAnt: empresasMes[index].margem,
-                                    metaMesAnt: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
                                   )
                                 else
                                   TextBUtton(
@@ -543,17 +525,13 @@ class _HomeState extends State<Home> {
                                     ticketmedioMes: 0,
                                     margemMes: 0,
                                     metaMes: 0,
-                                    valorMesAnt: empresasMes[index].valortotal,
-                                    ticketMesAnt:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMesAnt:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMesAnt:
-                                        empresasMes[index].ticketmedio,
-                                    margemMesAnt: empresasMes[index].margem,
-                                    metaMesAnt: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
@@ -645,17 +623,13 @@ class _HomeState extends State<Home> {
                                         empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMes[index].valortotal,
-                                    ticketMesAnt:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMesAnt:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMesAnt:
-                                        empresasMes[index].ticketmedio,
-                                    margemMesAnt: empresasMes[index].margem,
-                                    metaMesAnt: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
@@ -729,17 +703,13 @@ class _HomeState extends State<Home> {
                                         empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMes[index].valortotal,
-                                    ticketMesAnt:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMesAnt:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMesAnt:
-                                        empresasMes[index].ticketmedio,
-                                    margemMesAnt: empresasMes[index].margem,
-                                    metaMesAnt: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
@@ -805,17 +775,13 @@ class _HomeState extends State<Home> {
                                         empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMes[index].valortotal,
-                                    ticketMesAnt:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMesAnt:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMesAnt:
-                                        empresasMes[index].ticketmedio,
-                                    margemMesAnt: empresasMes[index].margem,
-                                    metaMesAnt: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
                                   ),
                                   ConteudoFilialCard(
                                     valorHoje: 0,
@@ -926,6 +892,17 @@ class _HomeState extends State<Home> {
     if (fetchedDataMes != null) {
       setState(() {
         empresasMes = fetchedDataMes;
+      });
+    }
+  }
+
+  Future<void> fetchDataMesAnt() async {
+    List<MonitorVendasEmpresa>? fetchedDataMesAnt =
+        await DataServiceMesAnt.fetchDataMesAnt(widget.token, widget.url);
+
+    if (fetchedDataMesAnt != null) {
+      setState(() {
+        empresasMesAnt = fetchedDataMesAnt;
       });
     }
   }

@@ -222,7 +222,7 @@ class DataServiceMesAnt {
 
     try {
       //Url para a requisição.
-      var urlPost = Uri.parse('$url/monitorvendasempresas/mes');
+      var urlPost = Uri.parse('$url/monitorvendasempresas/mesant');
 
       var response = await http.post(
         urlPost,
