@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 //Código da função que retornará os valores totais de vendas e as quantidades de pedidos de liberação remota.
 
-class MonitorVendas {
+class SalesMonitor {
   //Definindo o tipo das variáveis que serão acessadas.
   late double vendadia;
   late double vendadiaanterior;
@@ -11,7 +11,7 @@ class MonitorVendas {
   late double vendames;
   late int solicitacoesremotas;
 
-  MonitorVendas({
+  SalesMonitor({
     required this.vendadia,
     required this.solicitacoesremotas,
     required this.vendadiaanterior,
@@ -19,8 +19,8 @@ class MonitorVendas {
     required this.vendames,
   });
 
-  factory MonitorVendas.fromJson(Map<String, dynamic> json) {
-    return MonitorVendas(
+  factory SalesMonitor.fromJson(Map<String, dynamic> json) {
+    return SalesMonitor(
       //Atribuindo os dados do json a essas variáveis.
       vendadia: json['vendadia'],
       vendadiaanterior: json['vendadiaanteriror'],
@@ -32,8 +32,8 @@ class MonitorVendas {
 }
 
 //Classe responsável por acessar o json e resgatar os campos.
-class DataServiceMonitorVendas {
-  static Future<Map<String, double?>> fetchDataMonitorVendas(
+class DataServiceSalesMonitor {
+  static Future<Map<String, double?>> fetchDataSalesMonitor(
       String token, String url) async {
     //Nesse caso, os dados não serão em lista, pois não haverá mais de um dado para um campo, logo, tive que definir cada campo separadamente.\
     double? vendadia;

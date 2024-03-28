@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/Front/components/Style.dart';
 
-class PreviousDetailsMonth extends StatefulWidget {
+class PrevMonthDetails extends StatefulWidget {
   final int ticketMesAnt;
   final double ticketmedioMesAnt;
   final double margemMesAnt;
 
-  const PreviousDetailsMonth({
+  const PrevMonthDetails({
     Key? key,
     required this.ticketMesAnt,
     required this.ticketmedioMesAnt,
@@ -15,10 +15,10 @@ class PreviousDetailsMonth extends StatefulWidget {
   });
 
   @override
-  State<PreviousDetailsMonth> createState() => _PreviousDetailsMonthState();
+  State<PrevMonthDetails> createState() => _PrevMonthDetailsState();
 }
 
-class _PreviousDetailsMonthState extends State<PreviousDetailsMonth> {
+class _PrevMonthDetailsState extends State<PrevMonthDetails> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 

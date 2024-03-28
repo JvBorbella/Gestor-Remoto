@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class ButtonConfig extends StatefulWidget {
+class ActionButton extends StatefulWidget {
   //Variável para definir o texto do button na página em que é chamado
   final String text;
   //Variável para definir o destino ao clicar no button na página em que é chamado
@@ -9,15 +9,19 @@ class ButtonConfig extends StatefulWidget {
   //Variável para definir o tamanho do button na página em que é chamado
   final double height;
 
-  const ButtonConfig(
-      {Key? key, required this.text, this.onPressed, required this.height})
+  const ActionButton(
+      {Key? key, 
+      required this.text,
+      this.onPressed,
+      required this.height,
+      })
       : super(key: key);
 
   @override
-  State<ButtonConfig> createState() => _ButtonConfigState();
+  State<ActionButton> createState() => _ActionButton();
 }
 
-class _ButtonConfigState extends State<ButtonConfig> {
+class _ActionButton extends State<ActionButton> {
   @override
   Widget build(BuildContext context) {
     return Material(

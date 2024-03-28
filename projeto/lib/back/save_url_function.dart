@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Style.dart';
-import 'package:projeto/Front/pages/login.dart';
+import 'package:projeto/Front/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Código da função para salvar a URL digitada na tela Config().

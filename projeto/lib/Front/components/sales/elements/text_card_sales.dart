@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Style.dart';
 
-class TextValues extends StatefulWidget {
+class TextCardSales extends StatefulWidget {
   final String text;
 
-  const TextValues({Key? key, required this.text}) : super(key: key);
+  const TextCardSales({Key? key, required this.text}) : super(key: key);
 
   @override
-  State<TextValues> createState() => _TextValuesState();
+  State<TextCardSales> createState() => _TextCardSalesState();
 }
 
-class _TextValuesState extends State<TextValues> {
+class _TextCardSalesState extends State<TextCardSales> {
   @override
   Widget build(BuildContext context) {
     return Material(

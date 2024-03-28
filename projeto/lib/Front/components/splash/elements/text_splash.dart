@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Style.dart';
 
-class AnimatedTextMove extends StatefulWidget {
+class TextSplash extends StatefulWidget {
   final String text;
 
-   const AnimatedTextMove({Key? key, required this.text,}) : super(key: key);
+   const TextSplash({Key? key, required this.text,}) : super(key: key);
 
   @override
-  _AnimatedTextMoveState createState() => _AnimatedTextMoveState();
+  _TextSplashState createState() => _TextSplashState();
 }
 
 //Código do texto "Gestor remoto" da tela splash
 
-class _AnimatedTextMoveState extends State<AnimatedTextMove> {
+class _TextSplashState extends State<TextSplash> {
   double _position = -100.0; //Posição inicial do texto (Fora da tela)
   double _opacity = 0.0; // Opacidade inicial do texto
   double _targetPosition = 0.0; // Posição final (centro da tela)

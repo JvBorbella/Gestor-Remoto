@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/front/pages/request.dart';
+import 'package:projeto/front/pages/request_page.dart';
 
-class RequisitionButtom extends StatefulWidget {
+class RequestButton extends StatefulWidget {
   //Variável para que seja definido o texto do button na página em que está sendo chamado
   final String text;
   final int solicitacoesremotas;
@@ -9,7 +9,7 @@ class RequisitionButtom extends StatefulWidget {
   final String url;
   final String urlBasic;
 
-  const RequisitionButtom(
+  const RequestButton(
       {Key? key,
       required this.text,
       required this.solicitacoesremotas,
@@ -20,10 +20,10 @@ class RequisitionButtom extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<RequisitionButtom> createState() => _RequisitionButtomState();
+  State<RequestButton> createState() => _RequestButtonState();
 }
 
-class _RequisitionButtomState extends State<RequisitionButtom> {
+class _RequestButtonState extends State<RequestButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -87,7 +87,7 @@ class _RequisitionButtomState extends State<RequisitionButtom> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) =>
-              Solicitacion(url: widget.url, token: widget.token, urlBasic: widget.urlBasic),
+              RequestPage(url: widget.url, token: widget.token, urlBasic: widget.urlBasic),
         ),
       );
     }

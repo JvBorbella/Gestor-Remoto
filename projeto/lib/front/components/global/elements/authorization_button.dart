@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LiberationButtom extends StatefulWidget {
+class AuthorizationButton extends StatefulWidget {
   //Variável para definir o texto do button na página em que está sendo chamado
   final String text;
   //Variável para definir o destino ao clicar no button, na página em que está sendo chamado
@@ -10,7 +10,7 @@ class LiberationButtom extends StatefulWidget {
   // final String message;
   final onPressed;
 
-  const LiberationButtom(
+  const AuthorizationButton(
       {Key? key,
       required this.text,
       // required this.liberacaoremotaId,
@@ -21,10 +21,10 @@ class LiberationButtom extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<LiberationButtom> createState() => _LiberationButtomState();
+  State<AuthorizationButton> createState() => _AuthorizationButtonState();
 }
 
-class _LiberationButtomState extends State<LiberationButtom> {
+class _AuthorizationButtonState extends State<AuthorizationButton> {
   @override
   Widget build(BuildContext context) {
     return Material(

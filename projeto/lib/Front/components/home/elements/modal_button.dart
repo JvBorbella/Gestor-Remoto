@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
-import 'package:projeto/front/pages/login.dart';
+import 'package:projeto/front/pages/login_page.dart';
 
-class NavbarButton extends StatefulWidget {
-  const NavbarButton({Key? key}) : super(key: key);
+class ModalButton extends StatefulWidget {
+  const ModalButton({Key? key}) : super(key: key);
 
   @override
-  State<NavbarButton> createState() => _NavbarButtonState();
+  State<ModalButton> createState() => _ModalButtonState();
 }
 
-class _NavbarButtonState extends State<NavbarButton> {
+class _ModalButtonState extends State<ModalButton> {
   late BuildContext modalContext;
 
   void _openModal(BuildContext context) {

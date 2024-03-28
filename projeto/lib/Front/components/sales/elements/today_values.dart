@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Sales/Elements/text_card_sales.dart';
 import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/sales/elements/text_card_sales.dart';
 
-class Values extends StatefulWidget {
+class TodayValues extends StatefulWidget {
   final double valorHoje;
   final int cancelamentosHoje;
   final double metaHoje;
   final double valorcancelamentosHoje;
 
-  const Values({
+  const TodayValues({
     Key? key,
     required this.valorHoje,
     required this.cancelamentosHoje,
@@ -18,10 +18,10 @@ class Values extends StatefulWidget {
   });
 
   @override
-  State<Values> createState() => _ValuesState();
+  State<TodayValues> createState() => _TodayValuesState();
 }
 
-class _ValuesState extends State<Values> {
+class _TodayValuesState extends State<TodayValues> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
@@ -43,7 +43,7 @@ class _ValuesState extends State<Values> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorHoje))
+                    TextCardSales(text: currencyFormat.format(widget.valorHoje))
                   ],
                 ),
                 Column(
@@ -54,16 +54,16 @@ class _ValuesState extends State<Values> {
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                    if (widget.valorHoje == 0 && widget.metaHoje == 0)
-                      TextValues(text: currencyFormat.format(widget.metaHoje))
+                      TextCardSales(text: currencyFormat.format(widget.metaHoje))
 
                     else if (widget.valorHoje == 0 || widget.metaHoje == 0)
-                      TextValues(text: currencyFormat.format(widget.metaHoje))
+                      TextCardSales(text: currencyFormat.format(widget.metaHoje))
 
                     else if (widget.valorHoje > widget.metaHoje ||
                         widget.valorHoje == widget.metaHoje)
                       Row(
                         children: [
-                          TextValues(
+                          TextCardSales(
                               text: currencyFormat.format(widget.metaHoje)),
                               SizedBox(width: 2,),
                           Icon(
@@ -75,7 +75,7 @@ class _ValuesState extends State<Values> {
                       )
                       
                     else
-                      TextValues(
+                      TextCardSales(
                           text: currencyFormat.format(widget.metaHoje)),
                   ],
                 ),
@@ -95,7 +95,7 @@ class _ValuesState extends State<Values> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(
+                      TextCardSales(
                           text: widget.cancelamentosHoje.toString())
                   ],
                 ),
@@ -106,7 +106,7 @@ class _ValuesState extends State<Values> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(text: currencyFormat.format(widget.valorcancelamentosHoje))
+                      TextCardSales(text: currencyFormat.format(widget.valorcancelamentosHoje))
                   ],
                 ),
               ],
@@ -134,7 +134,7 @@ class _ValuesState extends State<Values> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //     Column(
@@ -144,7 +144,7 @@ class _ValuesState extends State<Values> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //   ],

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Sales/Elements/text_card_sales.dart';
 import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/sales/elements/text_card_sales.dart';
 
-class ValuesYesterday extends StatefulWidget {
+class YesterdayValues extends StatefulWidget {
   final double valorOntem;
   final int cancelamentosOntem;
   final double metaOntem;
   final double valorcancelamentosOntem;
 
-  const ValuesYesterday({
+  const YesterdayValues({
     Key? key,
     required this.valorOntem,
     required this.cancelamentosOntem,
@@ -18,10 +18,10 @@ class ValuesYesterday extends StatefulWidget {
   });
 
   @override
-  State<ValuesYesterday> createState() => _ValuesYesterdayState();
+  State<YesterdayValues> createState() => _YesterdayValuesState();
 }
 
-class _ValuesYesterdayState extends State<ValuesYesterday> {
+class _YesterdayValuesState extends State<YesterdayValues> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
@@ -43,7 +43,7 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorOntem))
+                    TextCardSales(text: currencyFormat.format(widget.valorOntem))
                   ],
                 ),
                 Column(
@@ -54,14 +54,14 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     if (widget.valorOntem == 0 && widget.metaOntem == 0)
-                      TextValues(text: currencyFormat.format(widget.metaOntem))
+                      TextCardSales(text: currencyFormat.format(widget.metaOntem))
                       else if(widget.valorOntem == 0 || widget.metaOntem == 0)
-                      TextValues(text: currencyFormat.format(widget.metaOntem))
+                      TextCardSales(text: currencyFormat.format(widget.metaOntem))
                     else if (widget.valorOntem > widget.metaOntem ||
                         widget.valorOntem == widget.metaOntem)
                       Row(
                         children: [
-                          TextValues(
+                          TextCardSales(
                               text: currencyFormat.format(widget.metaOntem)),
                               SizedBox(width: 2,),
                           Icon(
@@ -72,7 +72,7 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
                         ],
                       )
                     else
-                      TextValues(
+                      TextCardSales(
                           text: currencyFormat.format(widget.metaOntem)),
                   ],
                 ),
@@ -92,7 +92,7 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(
+                      TextCardSales(
                           text: widget.cancelamentosOntem.toString())
                   ],
                 ),
@@ -103,7 +103,7 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(text: currencyFormat.format(widget.valorcancelamentosOntem))
+                      TextCardSales(text: currencyFormat.format(widget.valorcancelamentosOntem))
                   ],
                 ),
               ],
@@ -131,7 +131,7 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //     Column(
@@ -141,7 +141,7 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //   ],

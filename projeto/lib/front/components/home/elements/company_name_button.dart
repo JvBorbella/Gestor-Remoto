@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
-import 'package:projeto/front/pages/sales.dart';
+import 'package:projeto/front/pages/sales_page.dart';
 
-class TextBUtton extends StatefulWidget {
+class CompanyNameButton extends StatefulWidget {
   final String empresaNome;
   final double valorHoje;
   final double valorOntem;
@@ -42,7 +42,7 @@ class TextBUtton extends StatefulWidget {
   final double valorcancelamentosMes;
   final double valorcancelamentosMesAnt;
 
-  const TextBUtton({
+  const CompanyNameButton({
     Key? key,
     required this.empresaNome,
     this.token,
@@ -85,10 +85,10 @@ class TextBUtton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TextBUtton> createState() => _TextButtonState();
+  State<CompanyNameButton> createState() => _CompanyNameButtonState();
 }
 
-class _TextButtonState extends State<TextBUtton> {
+class _CompanyNameButtonState extends State<CompanyNameButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -104,7 +104,7 @@ class _TextButtonState extends State<TextBUtton> {
               //Redirecionamento executada ao clicar no button
               Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => Sales(
+                    builder: (context) => SalesPage(
                           url: widget.url,
                                     token: widget.token,
                                     empresaNome: widget.empresaNome,

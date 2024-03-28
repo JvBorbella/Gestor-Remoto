@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/Front/components/Style.dart';
 
-class DetailsWeek extends StatefulWidget {
+class WeekDetails extends StatefulWidget {
   final int ticketSemana;
   final double ticketmedioSemana;
   final double margemSemana;
 
-  const DetailsWeek({
+  const WeekDetails({
     Key? key,
     required this.ticketSemana,
     required this.ticketmedioSemana,
@@ -15,10 +15,10 @@ class DetailsWeek extends StatefulWidget {
   });
 
   @override
-  State<DetailsWeek> createState() => _DetailsWeekState();
+  State<WeekDetails> createState() => _WeekDetailsState();
 }
 
-class _DetailsWeekState extends State<DetailsWeek> {
+class _WeekDetailsState extends State<WeekDetails> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 //Código onde serão acessados os dados de vendas do dia.
 
-class MonitorVendasEmpresa {
+class CompanySalesMonitor {
   //Definindo o tipo das variáveis que estão recebendo os dados
   late String empresaNome;
   // late String title;
@@ -15,7 +15,7 @@ class MonitorVendasEmpresa {
   late double meta;
   late double valorcancelamentos;
 
-  MonitorVendasEmpresa({
+  CompanySalesMonitor({
     required this.empresaNome,
     // required this.title,
     required this.valortotal,
@@ -28,8 +28,8 @@ class MonitorVendasEmpresa {
   });
 
   //Método para acessar os campos presentes no json e atrivuí-los a cada variável dentro da class MonitorVendasEmpresaHoje.
-  factory MonitorVendasEmpresa.fromJson(Map<String, dynamic> json) {
-    return MonitorVendasEmpresa(
+  factory CompanySalesMonitor.fromJson(Map<String, dynamic> json) {
+    return CompanySalesMonitor(
       empresaNome: json['empresa_nome'],
       // title: json['title'],
       valortotal: (json['valortotal'] ?? 0).toDouble(), // Conversão para double
@@ -44,10 +44,10 @@ class MonitorVendasEmpresa {
 }
 
 //Classe onde será feita a requisição e acessado o json para serem resgatados os dados a serem utilizados.
-class DataServiceHoje {
-  static Future<List<MonitorVendasEmpresa>?> fetchData(
+class DataServiceToday {
+  static Future<List<CompanySalesMonitor>?> fetchDataToday(
       String token, String url) async {
-    List<MonitorVendasEmpresa>?
+    List<CompanySalesMonitor>?
         empresasHoje; //Dados serão retornados em lista, para retornarem todos os dados de cada campo.
 
     try {
@@ -73,7 +73,7 @@ class DataServiceHoje {
             jsonData['data']['monitorvendasempresas'].isNotEmpty) {
           empresasHoje = (jsonData['data']['monitorvendasempresas']
                   as List) //Os dados serão passados em lista para empresasHoje.
-              .map((e) => MonitorVendasEmpresa.fromJson(e))
+              .map((e) => CompanySalesMonitor.fromJson(e))
               .toList();
         } else {
           //Caso não sejam encontrados os campos no caminho fornecido, será exibida a mensagem no console:
@@ -89,10 +89,10 @@ class DataServiceHoje {
 }
 
 //Classe onde será acessado o json e resgatados os dados.
-class DataServiceOntem {
-  static Future<List<MonitorVendasEmpresa>?> fetchDataOntem(
+class DataServiceYesterday {
+  static Future<List<CompanySalesMonitor>?> fetchDataYesterday(
       String token, String url) async {
-    List<MonitorVendasEmpresa>?
+    List<CompanySalesMonitor>?
         empresasOntem; //Os dados serão passados como lista para essa instância.
 
     try {
@@ -115,7 +115,7 @@ class DataServiceOntem {
             jsonData['data'].containsKey('monitorvendasempresas') &&
             jsonData['data']['monitorvendasempresas'].isNotEmpty) {
           empresasOntem = (jsonData['data']['monitorvendasempresas'] as List)
-              .map((e) => MonitorVendasEmpresa.fromJson(e))
+              .map((e) => CompanySalesMonitor.fromJson(e))
               .toList();
         } else {
           print('Dados ausentes no JSON.');
@@ -129,11 +129,11 @@ class DataServiceOntem {
 }
 
 //Classe onde será acessado o json e resgatados os dados.
-class DataServiceSemana {
-  static Future<List<MonitorVendasEmpresa>?> fetchDataSemana(
+class DataServiceWeek {
+  static Future<List<CompanySalesMonitor>?> fetchDataWeek(
       String token, String url) async {
     //Os dados serão retornados em lista, pois podem haver mais de um dado para os campo.
-    List<MonitorVendasEmpresa>? empresasSemana;
+    List<CompanySalesMonitor>? empresasSemana;
 
     try {
       //Url que fará a requisição.
@@ -156,7 +156,7 @@ class DataServiceSemana {
             jsonData['data'].containsKey('monitorvendasempresas') &&
             jsonData['data']['monitorvendasempresas'].isNotEmpty) {
           empresasSemana = (jsonData['data']['monitorvendasempresas'] as List)
-              .map((e) => MonitorVendasEmpresa.fromJson(e))
+              .map((e) => CompanySalesMonitor.fromJson(e))
               .toList(); // Caso sejam encontrados, serão passados como uma lista para a instância empresasSemana.
           //Caso não sejam encontrados, exibirá essa mensagem no console.
         } else {
@@ -172,11 +172,11 @@ class DataServiceSemana {
 }
 
 //Classe com a função para resgatar os dados no json.
-class DataServiceMes {
-  static Future<List<MonitorVendasEmpresa>?> fetchDataMes(
+class DataServiceMonth {
+  static Future<List<CompanySalesMonitor>?> fetchDataMonth(
       String token, String url) async {
     //Estes dados serão retornados em listas, pois podem haver mais de um dado para um campo.
-    List<MonitorVendasEmpresa>? empresasMes;
+    List<CompanySalesMonitor>? empresasMes;
 
     try {
       //Url para a requisição.
@@ -198,7 +198,7 @@ class DataServiceMes {
             jsonData['data'].containsKey('monitorvendasempresas') &&
             jsonData['data']['monitorvendasempresas'].isNotEmpty) {
           empresasMes = (jsonData['data']['monitorvendasempresas'] as List)
-              .map((e) => MonitorVendasEmpresa.fromJson(e))
+              .map((e) => CompanySalesMonitor.fromJson(e))
               .toList();
           //Caso não sejam encontrados dados neste caminho, a seguinte mensagem será exibida no console.
         } else {
@@ -214,11 +214,11 @@ class DataServiceMes {
 }
 
 //Classe com a função para resgatar os dados no json.
-class DataServiceMesAnt {
-  static Future<List<MonitorVendasEmpresa>?> fetchDataMesAnt(
+class DataServicePrevMonth {
+  static Future<List<CompanySalesMonitor>?> fetchDataPrevMonth(
       String token, String url) async {
     //Estes dados serão retornados em listas, pois podem haver mais de um dado para um campo.
-    List<MonitorVendasEmpresa>? empresasMesAnt;
+    List<CompanySalesMonitor>? empresasMesAnt;
 
     try {
       //Url para a requisição.
@@ -240,7 +240,7 @@ class DataServiceMesAnt {
             jsonData['data'].containsKey('monitorvendasempresas') &&
             jsonData['data']['monitorvendasempresas'].isNotEmpty) {
           empresasMesAnt = (jsonData['data']['monitorvendasempresas'] as List)
-              .map((e) => MonitorVendasEmpresa.fromJson(e))
+              .map((e) => CompanySalesMonitor.fromJson(e))
               .toList();
           //Caso não sejam encontrados dados neste caminho, a seguinte mensagem será exibida no console.
         } else {

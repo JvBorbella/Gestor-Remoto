@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:projeto/back/login_function.dart';
 import 'package:projeto/back/save_user_function.dart';
 import 'package:projeto/front/components/global/structure/navbar.dart';
-import 'package:projeto/front/components/login_config/elements/config_button.dart';
-import 'package:projeto/front/components/login_config/elements/button.dart';
+import 'package:projeto/front/components/login_config/Elements/simple_button.dart';
+import 'package:projeto/front/components/login_config/elements/action_button.dart';
 import 'package:projeto/front/components/login_config/elements/input.dart';
 import 'package:projeto/front/components/login_config/structure/form_card.dart';
 import 'package:projeto/front/components/Style.dart';
-import 'package:projeto/front/pages/config.dart';
+import 'package:projeto/front/pages/config_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: Style.InputToButtonSpace,
                         ),
-                        ButtonConfig(
+                        ActionButton(
                           text: 'Entrar',
                           onPressed: () async {
                             if (_userController.text.isNotEmpty &&
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           height: MediaQuery.of(context).size.width * 0.05,
                         ),
-                        ButtomInitial(
+                        SimpleButton(
                           text: 'Configurar',
                           destination: ConfigPage(initialUrl: urlController),
                           height: MediaQuery.of(context).size.width * 0.05,

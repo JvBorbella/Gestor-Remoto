@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class FilialCard extends StatefulWidget {
+class BranchCard extends StatefulWidget {
   //Variável para inserir objetos dentro do card
   final List<Widget> children;
 
-  const FilialCard({Key? key, required this.children,}) : super(key: key);
+  const BranchCard({Key? key, required this.children,}) : super(key: key);
 
   @override
-  State<FilialCard> createState() => _FilialCardState();
+  State<BranchCard> createState() => _BranchCardState();
 }
 
-class _FilialCardState extends State<FilialCard> {
+class _BranchCardState extends State<BranchCard> {
   @override
   Widget build(BuildContext context) {
     return Material(

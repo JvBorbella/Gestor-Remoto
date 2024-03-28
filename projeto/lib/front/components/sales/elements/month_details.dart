@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class DetailsMonth extends StatefulWidget {
+class MonthDetails extends StatefulWidget {
   final int ticketMes;
   final double ticketmedioMes;
   final double margemMes;
 
-  const DetailsMonth({
+  const MonthDetails({
     Key? key,
     required this.ticketMes,
     required this.ticketmedioMes,
@@ -15,10 +15,10 @@ class DetailsMonth extends StatefulWidget {
   });
 
   @override
-  State<DetailsMonth> createState() => _DetailsMonthState();
+  State<MonthDetails> createState() => _MonthDetailsState();
 }
 
-class _DetailsMonthState extends State<DetailsMonth> {
+class _MonthDetailsState extends State<MonthDetails> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 

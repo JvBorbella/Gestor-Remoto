@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Sales/Elements/text_card_sales.dart';
 import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/sales/elements/text_card_sales.dart';
 
-class PreviousValuesMonth extends StatefulWidget {
+class PrevMonthValues extends StatefulWidget {
   final double valorMesAnt;
   final int cancelamentosMesAnt;
   final double metaMesAnt;
   final double valorcancelamentosMesAnt;
 
-  const PreviousValuesMonth({
+  const PrevMonthValues({
     Key? key,
     required this.valorMesAnt,
     required this.cancelamentosMesAnt,
@@ -18,10 +18,10 @@ class PreviousValuesMonth extends StatefulWidget {
   });
 
   @override
-  State<PreviousValuesMonth> createState() => _PreviousValuesMonthState();
+  State<PrevMonthValues> createState() => _PrevMonthValuesState();
 }
 
-class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
+class _PrevMonthValuesState extends State<PrevMonthValues> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
@@ -43,7 +43,7 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorMesAnt))
+                    TextCardSales(text: currencyFormat.format(widget.valorMesAnt))
                   ],
                 ),
                 Column(
@@ -54,16 +54,16 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     if (widget.valorMesAnt == 0 && widget.metaMesAnt == 0)
-                      TextValues(text: currencyFormat.format(widget.metaMesAnt))
+                      TextCardSales(text: currencyFormat.format(widget.metaMesAnt))
 
                     else if (widget.valorMesAnt == 0 || widget.metaMesAnt == 0)
-                      TextValues(text: currencyFormat.format(widget.metaMesAnt))
+                      TextCardSales(text: currencyFormat.format(widget.metaMesAnt))
 
                     else if (widget.valorMesAnt > widget.metaMesAnt ||
                         widget.valorMesAnt == widget.metaMesAnt)
                       Row(
                         children: [
-                          TextValues(
+                          TextCardSales(
                               text: currencyFormat.format(widget.metaMesAnt)),
                               SizedBox(width: 2,),
                           Icon(
@@ -75,7 +75,7 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                       )
 
                     else
-                      TextValues(
+                      TextCardSales(
                           text: currencyFormat.format(widget.metaMesAnt)),
                   ],
                 ),
@@ -95,7 +95,7 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: widget.cancelamentosMesAnt.toString())
+                    TextCardSales(text: widget.cancelamentosMesAnt.toString())
                   ],
                 ),
                 Column(
@@ -105,7 +105,7 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(
+                    TextCardSales(
                         text: currencyFormat
                             .format(widget.valorcancelamentosMesAnt))
                   ],
@@ -135,7 +135,7 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //     Column(
@@ -145,7 +145,7 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //   ],

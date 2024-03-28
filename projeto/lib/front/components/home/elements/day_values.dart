@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class ValuesDays extends StatefulWidget {
+class DayValues extends StatefulWidget {
   final String text;
 
-  const ValuesDays({Key? key, required this.text}) : super(key: key);
+  const DayValues({Key? key, required this.text}) : super(key: key);
 
   @override
-  State<ValuesDays> createState() => _ValuesDaysState();
+  State<DayValues> createState() => _DayValuesState();
 }
 
-class _ValuesDaysState extends State<ValuesDays> {
+class _DayValuesState extends State<DayValues> {
   @override
   Widget build(BuildContext context) {
     return Material(

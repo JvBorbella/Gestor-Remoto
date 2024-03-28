@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class TotalCard extends StatefulWidget {
+class TotalValuesCard extends StatefulWidget {
   // final double vendadia;
   // final double vendadiaanterior;
   // final double vendasemana;
@@ -12,7 +12,7 @@ class TotalCard extends StatefulWidget {
   final double children;
   final text;
 
-  const TotalCard({
+  const TotalValuesCard({
     Key? key,
     required this.children,
     this.text,
@@ -23,10 +23,10 @@ class TotalCard extends StatefulWidget {
   });
 
   @override
-  State<TotalCard> createState() => _TotalCardState();
+  State<TotalValuesCard> createState() => _TotalValuesCardState();
 }
 
-class _TotalCardState extends State<TotalCard> {
+class _TotalValuesCardState extends State<TotalValuesCard> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 

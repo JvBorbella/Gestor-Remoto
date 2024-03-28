@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:projeto/front/components/splash/elements/text_splash.dart';
 import 'package:projeto/front/components/Style.dart';
 import 'dart:async';
+import 'package:projeto/front/pages/login_page.dart';
 
-import 'package:projeto/front/pages/login.dart';
-
-class Splash extends StatefulWidget {
-  const Splash({Key? key}) : super(key: key);
+class SplashPage extends StatefulWidget {
+  const SplashPage({Key? key}) : super(key: key);
 
   @override
-  State<Splash> createState() => _SplashState();
+  State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashState extends State<Splash> {
+class _SplashPageState extends State<SplashPage> {
   @override
   //Função para iniciar o timer quando o widget for carregado
   void initState() {
@@ -58,7 +57,7 @@ class _SplashState extends State<Splash> {
                 Row(
                   //Chamando a animação do texto abaixo da imagem
                   children: [
-                    AnimatedTextMove(
+                    TextSplash(
                       text: 'Gestor Remoto',
                     ),
                   ],

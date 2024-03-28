@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class NumberOfRequisitions extends StatefulWidget {
+class NumberOfRequests extends StatefulWidget {
   //Variável para definir o número de requisições
   final int solicitacoesremotas;
 
-  const NumberOfRequisitions({Key? key, required this.solicitacoesremotas}) : super(key: key);
+  const NumberOfRequests({Key? key, required this.solicitacoesremotas}) : super(key: key);
 
   @override
-  State<NumberOfRequisitions> createState() => _NumberOfRequisitionsState();
+  State<NumberOfRequests> createState() => _NumberOfRequestsState();
 }
 
-class _NumberOfRequisitionsState extends State<NumberOfRequisitions> {
+class _NumberOfRequestsState extends State<NumberOfRequests> {
   @override
   Widget build(BuildContext context) {
     return Material(

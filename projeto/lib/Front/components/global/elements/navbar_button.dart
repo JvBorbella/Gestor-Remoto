@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class ButtonNavbar extends StatefulWidget {
+class NavbarButton extends StatefulWidget {
   final Widget destination;
   final Icons;
 
-  const ButtonNavbar({Key? key, required this.destination, required this.Icons}) : super (key: key);
+  const NavbarButton({Key? key, required this.destination, required this.Icons}) : super (key: key);
 
   @override
-  State<ButtonNavbar> createState() => _ButtonNavbarState();
+  State<NavbarButton> createState() => _NavbarButtonState();
 }
 
-class _ButtonNavbarState extends State<ButtonNavbar> {
+class _NavbarButtonState extends State<NavbarButton> {
   @override
   Widget build(BuildContext context) {
     return Material(

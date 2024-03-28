@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Sales/Elements/text_card_sales.dart';
 import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/sales/elements/text_card_sales.dart';
 
-class ValuesMonth extends StatefulWidget {
+class MonthValues extends StatefulWidget {
   final double valorMes;
   final int cancelamentosMes;
   final double metaMes;
   final double valorcancelamentosMes;
 
-  const ValuesMonth({
+  const MonthValues({
     Key? key,
     required this.valorMes,
     required this.cancelamentosMes,
@@ -18,10 +18,10 @@ class ValuesMonth extends StatefulWidget {
   });
 
   @override
-  State<ValuesMonth> createState() => _ValuesMonthState();
+  State<MonthValues> createState() => _MonthValuesState();
 }
 
-class _ValuesMonthState extends State<ValuesMonth> {
+class _MonthValuesState extends State<MonthValues> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
@@ -43,7 +43,7 @@ class _ValuesMonthState extends State<ValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorMes))
+                    TextCardSales(text: currencyFormat.format(widget.valorMes))
                   ],
                 ),
                 Column(
@@ -54,16 +54,16 @@ class _ValuesMonthState extends State<ValuesMonth> {
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     if (widget.valorMes == 0 && widget.metaMes == 0)
-                      TextValues(text: currencyFormat.format(widget.metaMes))
+                      TextCardSales(text: currencyFormat.format(widget.metaMes))
 
                     else if (widget.valorMes == 0 || widget.metaMes == 0)
-                      TextValues(text: currencyFormat.format(widget.metaMes))
+                      TextCardSales(text: currencyFormat.format(widget.metaMes))
 
                     else if (widget.valorMes > widget.metaMes ||
                         widget.valorMes == widget.metaMes)
                       Row(
                         children: [
-                          TextValues(
+                          TextCardSales(
                               text: currencyFormat.format(widget.metaMes)),
                               SizedBox(width: 2,),
                           Icon(
@@ -75,7 +75,7 @@ class _ValuesMonthState extends State<ValuesMonth> {
                       )
                       
                     else
-                      TextValues(
+                      TextCardSales(
                           text: currencyFormat.format(widget.metaMes)),
                   ],
                 ),
@@ -95,7 +95,7 @@ class _ValuesMonthState extends State<ValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(
+                      TextCardSales(
                           text: widget.cancelamentosMes.toString())
                   ],
                 ),
@@ -106,7 +106,7 @@ class _ValuesMonthState extends State<ValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(text: currencyFormat.format(widget.valorcancelamentosMes))
+                      TextCardSales(text: currencyFormat.format(widget.valorcancelamentosMes))
                   ],
                 ),
               ],
@@ -134,7 +134,7 @@ class _ValuesMonthState extends State<ValuesMonth> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //     Column(
@@ -144,7 +144,7 @@ class _ValuesMonthState extends State<ValuesMonth> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //   ],

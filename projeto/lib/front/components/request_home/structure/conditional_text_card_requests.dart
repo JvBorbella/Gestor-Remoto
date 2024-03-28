@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class TextRequisition extends StatelessWidget {
+class ConditionalTextCardRequests extends StatelessWidget {
   final int solicitacoesremotas;
 
-  const TextRequisition({Key? key, required this.solicitacoesremotas})
+  const ConditionalTextCardRequests({Key? key, required this.solicitacoesremotas})
       : super(key: key);
 
   @override

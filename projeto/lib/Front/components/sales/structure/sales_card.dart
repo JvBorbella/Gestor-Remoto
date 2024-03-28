@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class CardSale extends StatefulWidget {
+class SalesCard extends StatefulWidget {
   final List<Widget> children;
 
-  const CardSale({Key? key, required this.children,}) : super(key: key);
+  const SalesCard({Key? key, required this.children,}) : super(key: key);
 
   @override
-  State<CardSale> createState() => _CardSaleState();
+  State<SalesCard> createState() => _SalesCardState();
 }
 
-class _CardSaleState extends State<CardSale> {
+class _SalesCardState extends State<SalesCard> {
   @override
   Widget build(BuildContext context) {
     return Material(

@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/back/request_information.dart';
-import 'package:projeto/front/components/global/elements/button_autorization.dart';
+import 'package:projeto/front/components/global/elements/authorization_button.dart';
 import 'package:projeto/front/components/global/elements/navbar_button.dart';
 import 'package:projeto/front/components/global/structure/navbar.dart';
 import 'package:projeto/front/components/global/structure/request_card.dart';
 import 'package:projeto/front/components/requests/elements/delete_button.dart';
 import 'package:projeto/front/components/requests/elements/informations.dart';
-import 'package:projeto/front/components/requests/elements/text_request.dart';
+import 'package:projeto/front/components/requests/elements/text_requests.dart';
 import 'package:projeto/front/components/style.dart';
+import 'package:projeto/front/pages/home_page.dart';
 
-import 'package:projeto/front/pages/home.dart';
-
-class Solicitacion extends StatefulWidget {
+class RequestPage extends StatefulWidget {
   final token;
   final String url;
   final String urlBasic;
 
-  const Solicitacion({
+  const RequestPage({
     Key? key,
     this.token,
     this.url = '',
@@ -24,10 +23,10 @@ class Solicitacion extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Solicitacion> createState() => _SolicitacionState();
+  State<RequestPage> createState() => _RequestPageState();
 }
 
-class _SolicitacionState extends State<Solicitacion> {
+class _RequestPageState extends State<RequestPage> {
   List<RequestInformation> requests = [];
   bool isLoading = true;
 
@@ -54,8 +53,8 @@ class _SolicitacionState extends State<Solicitacion> {
               ? Column(
                   children: [
                     Navbar(children: [
-                      ButtonNavbar(
-                        destination: Home(
+                      NavbarButton(
+                        destination: HomePage(
                           url: widget.url,
                           token: widget.token,
                         ),
@@ -77,8 +76,8 @@ class _SolicitacionState extends State<Solicitacion> {
               : ListView(
                   children: [
                     Navbar(children: [
-                      ButtonNavbar(
-                        destination: Home(
+                      NavbarButton(
+                        destination: HomePage(
                           url: widget.url,
                           token: widget.token,
                         ),
@@ -97,7 +96,7 @@ class _SolicitacionState extends State<Solicitacion> {
                         TextEditingController _textController =
                             TextEditingController();
                         _textController.text = '';
-                        return RequisitionCard(
+                        return RequestCard(
                           children: [
                             Container(
                               child: Expanded(
@@ -121,7 +120,7 @@ class _SolicitacionState extends State<Solicitacion> {
                                               imagem: requests[index].imagem,
                                               urlBasic: widget.urlBasic,
                                             ),
-                                            Delete(onPressed: () async {
+                                            DeleteButton(onPressed: () async {
                                               await RejectRequest.rejectrequest(
                                                 context,
                                                 widget.url,
@@ -180,7 +179,7 @@ class _SolicitacionState extends State<Solicitacion> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        LiberationButtom(
+                                        AuthorizationButton(
                                             text: 'Autorizar',
                                             onPressed: () async {
                                               if (_textController

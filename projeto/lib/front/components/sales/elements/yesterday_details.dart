@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/Front/components/Style.dart';
 
-class DetailsYesterday extends StatefulWidget {
+class YesterdayDetails extends StatefulWidget {
   final int ticketOntem;
   final double ticketmedioOntem;
   final double margemOntem;
 
-  const DetailsYesterday({
+  const YesterdayDetails({
     Key? key,
     required this.ticketOntem,
     required this.ticketmedioOntem,
@@ -15,10 +15,10 @@ class DetailsYesterday extends StatefulWidget {
   });
 
   @override
-  State<DetailsYesterday> createState() => _DetailsYesterdayState();
+  State<YesterdayDetails> createState() => _YesterdayDetailsState();
 }
 
-class _DetailsYesterdayState extends State<DetailsYesterday> {
+class _YesterdayDetailsState extends State<YesterdayDetails> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 

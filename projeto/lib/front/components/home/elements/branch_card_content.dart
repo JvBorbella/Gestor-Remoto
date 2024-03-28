@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/front/components/Home/Elements/days_values.dart';
+
 import 'package:intl/intl.dart';
+import 'package:projeto/front/components/Home/Elements/day_values.dart';
+
 import 'package:projeto/front/components/Style.dart';
 
-class ConteudoFilialCard extends StatefulWidget {
+class BranchCardContent extends StatefulWidget {
+
   final double valorHoje;
   final double valorOntem;
   final double valorSemana;
   final double valorMes;
-  const ConteudoFilialCard(
+
+  const BranchCardContent(
       {Key? key,
       required this.valorHoje,
       required this.valorOntem,
@@ -17,10 +21,10 @@ class ConteudoFilialCard extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ConteudoFilialCard> createState() => _ConteudoFilialCardState();
+  State<BranchCardContent> createState() => _BranchCardContentState();
 }
 
-class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
+class _BranchCardContentState extends State<BranchCardContent> {
   bool isLoading = true;
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
@@ -47,7 +51,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       'Hoje',
                       style: TextStyle(fontSize: 12, color: Style.quarantineColor),
                     ),
-                    ValuesDays(text: currencyFormat.format(widget.valorHoje.toInt()))
+                    DayValues(text: currencyFormat.format(widget.valorHoje.toInt()))
                   ],
                 ),
                 Column(
@@ -57,10 +61,10 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                       style: TextStyle(fontSize: 12, color: Style.quarantineColor),
                     ),
                      if (widget.valorOntem == 0)
-                      ValuesDays(
+                      DayValues(
                           text: currencyFormat.format(widget.valorOntem))
                     else
-                      ValuesDays(
+                      DayValues(
                           text: currencyFormat.format(widget.valorOntem)),
                   ],
                 ),
@@ -79,7 +83,7 @@ class _ConteudoFilialCardState extends State<ConteudoFilialCard> {
                         ),
                       )
                     else
-                      ValuesDays(
+                      DayValues(
                           text: currencyFormat.format(widget.valorSemana)),
                   ],
                 ),

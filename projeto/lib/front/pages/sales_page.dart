@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/Front/components/sales/elements/today_details.dart';
 import 'package:projeto/front/components/global/elements/navbar_button.dart';
 import 'package:projeto/front/components/global/structure/navbar.dart';
-import 'package:projeto/front/components/sales/elements/details_today.dart';
 import 'package:projeto/front/components/sales/elements/month_details.dart';
-import 'package:projeto/front/components/sales/elements/week_details.dart';
-import 'package:projeto/front/components/sales/elements/details_yesterday.dart';
-import 'package:projeto/front/components/sales/elements/previous_month_details.dart';
-import 'package:projeto/front/components/sales/elements/previous_month_values.dart';
+import 'package:projeto/front/components/sales/elements/prev_month_details.dart';
+import 'package:projeto/front/components/sales/elements/prev_month_values.dart';
 import 'package:projeto/front/components/sales/elements/today_values.dart';
+import 'package:projeto/front/components/sales/elements/week_details.dart';
 import 'package:projeto/front/components/sales/elements/month_values.dart';
 import 'package:projeto/front/components/sales/elements/week_values.dart';
+import 'package:projeto/front/components/sales/elements/yesterday_details.dart';
 import 'package:projeto/front/components/sales/elements/yesterday_values.dart';
 import 'package:projeto/front/components/sales/structure/sales_card.dart';
 import 'package:projeto/front/components/Style.dart';
-import 'package:projeto/front/pages/home.dart';
+import 'package:projeto/front/pages/home_page.dart';
 
-class Sales extends StatefulWidget {
+class SalesPage extends StatefulWidget {
   final String empresaNome;
   final double valorHoje;
   final double valorOntem;
@@ -55,7 +55,7 @@ class Sales extends StatefulWidget {
   final double valorcancelamentosMes;
   final double valorcancelamentosMesAnt;
 
-  const Sales({
+  const SalesPage({
     Key? key,
     required this.empresaNome,
     this.token,
@@ -98,10 +98,10 @@ class Sales extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Sales> createState() => _SalesState();
+  State<SalesPage> createState() => _SalesPageState();
 }
 
-class _SalesState extends State<Sales> {
+class _SalesPageState extends State<SalesPage> {
   bool isLoading = true;
 
    @override
@@ -120,8 +120,8 @@ class _SalesState extends State<Sales> {
               //Código da Navbar
               Navbar(children: [
                 //Chamando os elementos internos da navbar
-                ButtonNavbar(
-                  destination: Home(
+                NavbarButton(
+                  destination: HomePage(
                     url: widget.url,
                     token: widget.token,
                   ),
@@ -140,7 +140,7 @@ class _SalesState extends State<Sales> {
                 height: 10,
               ),
               //Widget do card dos números detalhados das vendas
-              CardSale(
+              SalesCard(
                 children: [
                   SizedBox(
                     height: 5,
@@ -154,7 +154,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores
-                  Values(
+                  TodayValues(
                     valorHoje: widget.valorHoje,
                     valorcancelamentosHoje: widget.valorcancelamentosHoje,
                     cancelamentosHoje: widget.cancelamentosHoje.toInt(),
@@ -164,7 +164,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores adicionais - rodapé do card
-                  Details(
+                  TodayDetails(
                     ticketmedioHoje: widget.ticketmedioHoje,
                     margemHoje: widget.margemHoje,
                     ticketHoje: widget.ticketHoje,
@@ -174,7 +174,7 @@ class _SalesState extends State<Sales> {
               SizedBox(
                 height: 10,
               ),
-              CardSale(
+              SalesCard(
                 children: [
                   SizedBox(
                     height: 5,
@@ -188,7 +188,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores
-                  ValuesYesterday(
+                  YesterdayValues(
                     valorOntem: widget.valorOntem,
                     valorcancelamentosOntem: widget.valorcancelamentosOntem,
                     cancelamentosOntem: widget.cancelamentosOntem.toInt(),
@@ -198,7 +198,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores adicionais - rodapé do card
-                  DetailsYesterday(
+                  YesterdayDetails(
                     ticketOntem: widget.ticketOntem,
                     ticketmedioOntem: widget.ticketmedioOntem,
                     margemOntem: widget.margemOntem,
@@ -208,7 +208,7 @@ class _SalesState extends State<Sales> {
               SizedBox(
                 height: 10,
               ),
-              CardSale(
+              SalesCard(
                 children: [
                   SizedBox(
                     height: 5,
@@ -222,7 +222,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores
-                  ValuesWeek(
+                  WeekValues(
                     valorSemana: widget.valorSemana,
                     valorcancelamentosSemana: widget.valorcancelamentosSemana,
                     cancelamentosSemana: widget.cancelamentosSemana.toInt(),
@@ -232,7 +232,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores adicionais - rodapé do card
-                  DetailsWeek(
+                  WeekDetails(
                     ticketSemana: widget.ticketSemana,
                     ticketmedioSemana: widget.ticketmedioSemana,
                     margemSemana: widget.margemSemana,
@@ -242,7 +242,7 @@ class _SalesState extends State<Sales> {
               SizedBox(
                 height: 10,
               ),
-              CardSale(
+              SalesCard(
                 children: [
                   SizedBox(
                     height: 5,
@@ -256,7 +256,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores
-                  ValuesMonth(
+                  MonthValues(
                     valorMes: widget.valorMes,
                     valorcancelamentosMes: widget.valorcancelamentosMes,
                     cancelamentosMes: widget.cancelamentosMes.toInt(),
@@ -266,7 +266,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores adicionais - rodapé do card
-                  DetailsMonth(
+                  MonthDetails(
                     ticketMes: widget.ticketMes,
                     ticketmedioMes: widget.ticketmedioMes,
                     margemMes: widget.margemMes,
@@ -276,7 +276,7 @@ class _SalesState extends State<Sales> {
               SizedBox(
                 height: 10,
               ),
-              CardSale(
+              SalesCard(
                 children: [
                   SizedBox(
                     height: 5,
@@ -290,7 +290,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores
-                  PreviousValuesMonth(
+                  PrevMonthValues(
                     valorMesAnt: widget.valorMesAnt,
                     valorcancelamentosMesAnt: widget.valorcancelamentosMesAnt,
                     cancelamentosMesAnt: widget.cancelamentosMesAnt.toInt(),
@@ -300,7 +300,7 @@ class _SalesState extends State<Sales> {
                     height: Style.ContentInternalSpace,
                   ),
                   //Widget dos valores adicionais - rodapé do card
-                  PreviousDetailsMonth(
+                  PrevMonthDetails(
                     ticketMesAnt: widget.ticketMesAnt,
                     ticketmedioMesAnt: widget.ticketmedioMesAnt,
                     margemMesAnt: widget.margemMesAnt,
@@ -333,7 +333,7 @@ class _SalesState extends State<Sales> {
     setState(() {
       isLoading =
           true; // Define isLoading como true para mostrar o indicador de carregamento
-          _SalesState();
+          _SalesPageState();
     });
     await loadData();
     setState(() {

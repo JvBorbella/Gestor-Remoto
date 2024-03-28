@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
 
-class RequisitionCard extends StatefulWidget {
+class RequestCard extends StatefulWidget {
   //Variável para permitir preencher o card com objetos externos
   final List<Widget> children;
   //Variável para definir o tamanho do card diretamente na página em que está sendo chamado
 
-  const RequisitionCard({
+  const RequestCard({
     Key? key,
     required this.children,
   }) : super(key: key);
 
   @override
-  State<RequisitionCard> createState() => _RequisitionCardState();
+  State<RequestCard> createState() => _RequestCardState();
 }
 
-class _RequisitionCardState extends State<RequisitionCard> {
+class _RequestCardState extends State<RequestCard> {
   @override
   Widget build(BuildContext context) {
     return Material(

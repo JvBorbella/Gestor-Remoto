@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projeto/Front/components/global/structure/navbar.dart';
 import 'package:projeto/back/company_sales_monitor.dart';
-import 'package:projeto/back/total_values.dart';
-import 'package:projeto/front/components/global/structure/navbar.dart';
+import 'package:projeto/back/sales_monitor.dart';
 import 'package:projeto/front/components/global/structure/request_card.dart';
-import 'package:projeto/front/components/home/elements/filial_card_content.dart';
+import 'package:projeto/front/components/home/elements/branch_card_content.dart';
+import 'package:projeto/front/components/home/elements/company_name_button.dart';
 import 'package:projeto/front/components/home/elements/modal_button.dart';
-import 'package:projeto/front/components/home/elements/text_button.dart';
-import 'package:projeto/front/components/home/structure/filial_card.dart';
+import 'package:projeto/front/components/home/structure/branch_card.dart';
 import 'package:projeto/front/components/home/structure/total_values_card.dart';
+import 'package:projeto/front/components/request_home/elements/number_of_requests.dart';
 import 'package:projeto/front/components/request_home/elements/request_button.dart';
-import 'package:projeto/front/components/request_home/elements/request_number.dart';
-import 'package:projeto/front/components/request_home/structure/request_card_text.dart';
+import 'package:projeto/front/components/request_home/structure/conditional_text_card_requests.dart';
 import 'package:projeto/front/components/style.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   final token;
   final String url;
   final String urlBasic;
 
-  const Home({
+  const HomePage({
     Key? key,
     this.token,
     this.url = '',
@@ -27,16 +27,16 @@ class Home extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
   String urlController = '';
-  List<MonitorVendasEmpresa> empresasHoje = [];
-  List<MonitorVendasEmpresa> empresasOntem = [];
-  List<MonitorVendasEmpresa> empresasSemana = [];
-  List<MonitorVendasEmpresa> empresasMes = [];
-  List<MonitorVendasEmpresa> empresasMesAnt = [];
+  List<CompanySalesMonitor> empresasHoje = [];
+  List<CompanySalesMonitor> empresasOntem = [];
+  List<CompanySalesMonitor> empresasSemana = [];
+  List<CompanySalesMonitor> empresasMes = [];
+  List<CompanySalesMonitor> empresasMesAnt = [];
   late double vendadia = 0.0;
   late double vendadiaanterior = 0.0;
   late double vendasemana = 0.0;
@@ -53,9 +53,9 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     loadData();
-    fetchDataSemana();
-    fetchDataMes();
-    fetchDataMesAnt();
+    fetchDataWeek();
+    fetchDataMonth();
+    fetchDataPrevMonth();
   }
 
   @override
@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
                     UserAccountsDrawerHeader(
                         accountName: Text('Teste'),
                         accountEmail: Text('Teste')),
-                    NavbarButton()
+                    ModalButton()
                   ],
                 ),
               ),
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                   //     iconColor: MaterialStatePropertyAll(Style.tertiaryColor),
                   //   ),
                   // ),
-                  NavbarButton(),
+                  ModalButton(),
                 ],
                 text: 'Página inicial',
               ),
@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            TotalCard(
+                            TotalValuesCard(
                               text: '',
                               children: vendadia,
                             ),
@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            TotalCard(
+                            TotalValuesCard(
                               text: '',
                               children: vendadiaanterior,
                             ),
@@ -167,7 +167,7 @@ class _HomeState extends State<Home> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            TotalCard(
+                            TotalValuesCard(
                               text: '',
                               children: vendasemana,
                             ),
@@ -184,7 +184,7 @@ class _HomeState extends State<Home> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                            TotalCard(
+                            TotalValuesCard(
                               text: '',
                               children: vendames,
                             ),
@@ -198,7 +198,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              RequisitionCard(
+              RequestCard(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -226,7 +226,7 @@ class _HomeState extends State<Home> {
                               SizedBox(
                                 width: 2,
                               ),
-                              NumberOfRequisitions(
+                              NumberOfRequests(
                                   solicitacoesremotas: solicitacoesremotas),
                             ],
                           ),
@@ -235,7 +235,7 @@ class _HomeState extends State<Home> {
                           ),
                           Row(
                             children: [
-                              TextRequisition(
+                              ConditionalTextCardRequests(
                                 solicitacoesremotas: solicitacoesremotas,
                               ),
                             ],
@@ -247,7 +247,7 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              RequisitionButtom(
+                              RequestButton(
                                 text: 'Liberação remota',
                                 solicitacoesremotas: solicitacoesremotas,
                                 url: widget.url,
@@ -274,13 +274,13 @@ class _HomeState extends State<Home> {
                   if (index < empresasOntem.length) {
                     return Column(
                       children: [
-                        FilialCard(
+                        BranchCard(
                           children: [
                             Column(
                               children: [
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -346,7 +346,7 @@ class _HomeState extends State<Home> {
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   )
                                 else if (empresasMes.isNotEmpty)
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -403,7 +403,7 @@ class _HomeState extends State<Home> {
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   )
                                   else if (empresasSemana.isNotEmpty)
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -465,7 +465,7 @@ class _HomeState extends State<Home> {
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   )
                                   else
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -519,7 +519,7 @@ class _HomeState extends State<Home> {
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
                                     valorSemana:
@@ -527,21 +527,21 @@ class _HomeState extends State<Home> {
                                     valorMes: empresasMes[index].valortotal,
                                   )
                                   else if (empresasMes.isNotEmpty)
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
                                     valorSemana: 0,
                                     valorMes: empresasMes[index].valortotal,
                                   )
                                   else if (empresasSemana.isNotEmpty)
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
                                     valorSemana: empresasSemana[index].valortotal,
                                     valorMes: 0,
                                   )
                                 else 
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
                                     valorSemana: 0,
@@ -556,13 +556,13 @@ class _HomeState extends State<Home> {
                   } else {
                     return Column(
                       children: [
-                        FilialCard(
+                        BranchCard(
                           children: [
                             Column(
                               children: [
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -621,7 +621,7 @@ class _HomeState extends State<Home> {
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   )
                                 else
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -668,7 +668,7 @@ class _HomeState extends State<Home> {
                                   ),
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: 0,
                                     valorSemana:
@@ -676,7 +676,7 @@ class _HomeState extends State<Home> {
                                     valorMes: empresasMes[index].valortotal,
                                   )
                                 else
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: 0,
                                     valorSemana: 0,
@@ -699,11 +699,11 @@ class _HomeState extends State<Home> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          FilialCard(
+                          BranchCard(
                             children: [
                               Column(
                                 children: [
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -764,7 +764,7 @@ class _HomeState extends State<Home> {
                                     margemMesAnt: empresasMesAnt[index].margem,
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   ),
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: 0,
                                     valorOntem: empresasOntem[index].valortotal,
                                     valorSemana:
@@ -786,11 +786,11 @@ class _HomeState extends State<Home> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          FilialCard(
+                          BranchCard(
                             children: [
                               Column(
                                 children: [
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome:
@@ -844,7 +844,7 @@ class _HomeState extends State<Home> {
                                     margemMesAnt: empresasMesAnt[index].margem,
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   ),
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: 0,
                                     valorOntem: 0,
                                     valorSemana:
@@ -868,11 +868,11 @@ class _HomeState extends State<Home> {
                     itemBuilder: (context, index) {
                       return Column(
                         children: [
-                          FilialCard(
+                          BranchCard(
                             children: [
                               Column(
                                 children: [
-                                  TextBUtton(
+                                  CompanyNameButton(
                                     url: widget.url,
                                     token: widget.token,
                                     empresaNome: empresasMes[index].empresaNome,
@@ -916,7 +916,7 @@ class _HomeState extends State<Home> {
                                     margemMesAnt: empresasMesAnt[index].margem,
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   ),
-                                  ConteudoFilialCard(
+                                  BranchCardContent(
                                     valorHoje: 0,
                                     valorOntem: 0,
                                     valorSemana: 0,
@@ -946,12 +946,12 @@ class _HomeState extends State<Home> {
   Future<void> loadData() async {
     // Utiliza Future.wait para buscar os dados de forma paralela
     await Future.wait([
-      fetchData(),
-      fetchDataOntem(),
-      fetchedDataMonitorVendas(),
+      fetchDataToday(),
+      fetchDataYesterday(),
+      fetchDataSalesMonitor(),
       fetchDataRequests(),
-      // fetchDataSemana(),
-      // fetchDataMes(),
+      // fetchDataWeek(),
+      // fetchDataMonth(),
     ]);
     // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
     setState(() {
@@ -959,7 +959,7 @@ class _HomeState extends State<Home> {
       // Verifica se os dados de solicitacoesremotas foram carregados corretamente
       if (solicitacoesremotas != -1) {
         solicitacoesremotas =
-            NumberOfRequisitions(solicitacoesremotas: solicitacoesremotas)
+            NumberOfRequests(solicitacoesremotas: solicitacoesremotas)
                 .solicitacoesremotas;
       }
       // else if (ticketHoje != -1) {
@@ -985,9 +985,9 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Future<void> fetchData() async {
-    List<MonitorVendasEmpresa>? fetchedData =
-        await DataServiceHoje.fetchData(widget.token, widget.url);
+  Future<void> fetchDataToday() async {
+    List<CompanySalesMonitor>? fetchedData =
+        await DataServiceToday.fetchDataToday(widget.token, widget.url);
 
     if (fetchedData != null) {
       setState(() {
@@ -996,68 +996,68 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> fetchDataOntem() async {
-    List<MonitorVendasEmpresa>? fetchedDataOntem =
-        await DataServiceOntem.fetchDataOntem(widget.token, widget.url);
+  Future<void> fetchDataYesterday() async {
+    List<CompanySalesMonitor>? fetchedData =
+        await DataServiceYesterday.fetchDataYesterday(widget.token, widget.url);
 
-    if (fetchedDataOntem != null) {
+    if (fetchedData != null) {
       setState(() {
-        empresasOntem = fetchedDataOntem;
+        empresasOntem = fetchedData;
       });
     }
   }
 
-  Future<void> fetchDataSemana() async {
-    List<MonitorVendasEmpresa>? fetchedDataSemana =
-        await DataServiceSemana.fetchDataSemana(widget.token, widget.url);
+  Future<void> fetchDataWeek() async {
+    List<CompanySalesMonitor>? fetchedData =
+        await DataServiceWeek.fetchDataWeek(widget.token, widget.url);
 
-    if (fetchedDataSemana != null) {
+    if (fetchedData != null) {
       setState(() {
-        empresasSemana = fetchedDataSemana;
+        empresasSemana = fetchedData;
       });
     }
   }
 
-  Future<void> fetchDataMes() async {
-    List<MonitorVendasEmpresa>? fetchedDataMes =
-        await DataServiceMes.fetchDataMes(widget.token, widget.url);
+  Future<void> fetchDataMonth() async {
+    List<CompanySalesMonitor>? fetchedData =
+        await DataServiceMonth.fetchDataMonth(widget.token, widget.url);
 
-    if (fetchedDataMes != null) {
+    if (fetchedData != null) {
       setState(() {
-        empresasMes = fetchedDataMes;
+        empresasMes = fetchedData;
       });
     }
   }
 
-  Future<void> fetchDataMesAnt() async {
-    List<MonitorVendasEmpresa>? fetchedDataMesAnt =
-        await DataServiceMesAnt.fetchDataMesAnt(widget.token, widget.url);
+  Future<void> fetchDataPrevMonth() async {
+    List<CompanySalesMonitor>? fetchedData =
+        await DataServicePrevMonth.fetchDataPrevMonth(widget.token, widget.url);
 
-    if (fetchedDataMesAnt != null) {
+    if (fetchedData != null) {
       setState(() {
-        empresasMesAnt = fetchedDataMesAnt;
+        empresasMesAnt = fetchedData;
       });
     }
   }
 
-  Future<void> fetchedDataMonitorVendas() async {
-    Map<String, double?>? fetchedDataMonitorVendas =
-        await DataServiceMonitorVendas.fetchDataMonitorVendas(widget.token, widget.url);
+  Future<void> fetchDataSalesMonitor() async {
+    Map<String, double?>? fetchDataSalesMonitor =
+        await DataServiceSalesMonitor.fetchDataSalesMonitor(widget.token, widget.url);
 
     // ignore: unnecessary_null_comparison
-    if (fetchedDataMonitorVendas != null) {
+    if (fetchDataSalesMonitor != null) {
       setState(() {
-        vendadia = fetchedDataMonitorVendas['vendadia'] ?? 0.0;
-        vendadiaanterior = fetchedDataMonitorVendas['vendadiaanterior'] ?? 0.0;
-        vendasemana = fetchedDataMonitorVendas['vendasemana'] ?? 0.0;
-        vendames = fetchedDataMonitorVendas['vendames'] ?? 0.0;
+        vendadia = fetchDataSalesMonitor['vendadia'] ?? 0.0;
+        vendadiaanterior = fetchDataSalesMonitor['vendadiaanterior'] ?? 0.0;
+        vendasemana = fetchDataSalesMonitor['vendasemana'] ?? 0.0;
+        vendames = fetchDataSalesMonitor['vendames'] ?? 0.0;
       });
     }
   }
 
   Future<void> fetchDataRequests() async {
     int? fetchedDataRequests =
-        await DataServiceMonitorVendas.fetchDataRequests(
+        await DataServiceSalesMonitor.fetchDataRequests(
             widget.token, widget.url);
 
     if (fetchedDataRequests != null) {

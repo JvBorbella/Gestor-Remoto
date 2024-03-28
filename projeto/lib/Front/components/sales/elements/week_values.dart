@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Sales/Elements/text_card_sales.dart';
 import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/sales/elements/text_card_sales.dart';
 
-class ValuesWeek extends StatefulWidget {
+class WeekValues extends StatefulWidget {
   final double valorSemana;
   final int cancelamentosSemana;
   final double metaSemana;
   final double valorcancelamentosSemana;
 
-  const ValuesWeek({
+  const WeekValues({
     Key? key,
     required this.valorSemana,
     required this.cancelamentosSemana,
@@ -18,10 +18,10 @@ class ValuesWeek extends StatefulWidget {
   });
 
   @override
-  State<ValuesWeek> createState() => _ValuesWeekState();
+  State<WeekValues> createState() => _WeekValuesState();
 }
 
-class _ValuesWeekState extends State<ValuesWeek> {
+class _WeekValuesState extends State<WeekValues> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
@@ -43,7 +43,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.valorSemana))
+                    TextCardSales(text: currencyFormat.format(widget.valorSemana))
                   ],
                 ),
                 Column(
@@ -54,16 +54,16 @@ class _ValuesWeekState extends State<ValuesWeek> {
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
                     if (widget.valorSemana == 0 && widget.metaSemana == 0)
-                      TextValues(text: currencyFormat.format(widget.metaSemana))
+                      TextCardSales(text: currencyFormat.format(widget.metaSemana))
 
                     else if (widget.valorSemana == 0 || widget.metaSemana == 0)
-                      TextValues(text: currencyFormat.format(widget.metaSemana))
+                      TextCardSales(text: currencyFormat.format(widget.metaSemana))
 
                     else if (widget.valorSemana > widget.metaSemana ||
                         widget.valorSemana == widget.metaSemana)
                       Row(
                         children: [
-                          TextValues(
+                          TextCardSales(
                               text: currencyFormat.format(widget.metaSemana)),
                               SizedBox(width: 2,),
                           Icon(
@@ -75,7 +75,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       )
                       
                     else
-                      TextValues(
+                      TextCardSales(
                           text: currencyFormat.format(widget.metaSemana)),
                   ],
                 ),
@@ -95,7 +95,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: widget.cancelamentosSemana.toString())
+                    TextCardSales(text: widget.cancelamentosSemana.toString())
                   ],
                 ),
                 Column(
@@ -105,7 +105,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(
+                    TextCardSales(
                         text: currencyFormat
                             .format(widget.valorcancelamentosSemana))
                   ],
@@ -135,7 +135,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //     Column(
@@ -145,7 +145,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
             //           style:
             //               TextStyle(fontSize: 9, color: Style.quarantineColor),
             //         ),
-            //         TextValues(text: '(Valor)')
+            //         TextCardSales(text: '(Valor)')
             //       ],
             //     ),
             //   ],

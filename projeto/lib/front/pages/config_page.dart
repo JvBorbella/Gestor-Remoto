@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/back/save_url_function.dart';
 import 'package:projeto/front/components/global/structure/navbar.dart';
-import 'package:projeto/front/components/login_config/elements/config_button.dart';
+import 'package:projeto/front/components/login_config/elements/action_button.dart';
 import 'package:projeto/front/components/login_config/elements/input.dart';
 import 'package:projeto/front/components/login_config/structure/form_card.dart';
 import 'package:projeto/front/components/Style.dart';
-import 'package:projeto/front/pages/login.dart';
+import 'package:projeto/front/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -76,7 +76,7 @@ class _ConfigPageState extends State<ConfigPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 //Chamando os button
-                                ButtonConfig(
+                                ActionButton(
                                   text: 'Salvar',
                                   onPressed: () {
                                     saveUrlFunction.saveUrlFunction(
@@ -88,7 +88,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                 SizedBox(
                                   width: Style.ButtonSpace,
                                 ),
-                                ButtonConfig(
+                                ActionButton(
                                   text: 'Voltar',
                                   onPressed: () async {
                                     String url = urlController.text;

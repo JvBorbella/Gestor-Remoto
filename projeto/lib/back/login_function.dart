@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Style.dart';
-import 'package:projeto/Front/pages/home.dart';
+import 'package:projeto/Front/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Código da função de login
@@ -58,7 +58,7 @@ class LoginFunction {
           // Feito o processo acima, a função redireciona para a página Home(), passando para ela os dados que serão utilizados.
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => Home(
+              builder: (context) => HomePage(
                 url: '$url/ideia/secure', // URL montada.
                 urlBasic: url, // URL base passada na página de Config().
                 token: token, // Token resgatado após o login.

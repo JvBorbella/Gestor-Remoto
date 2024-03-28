@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Delete extends StatefulWidget {
+class DeleteButton extends StatefulWidget {
   // final String token;
   // final String url;
   // final String liberacaoremotaId;
   // final String message;
   final onPressed;
 
-  const Delete({
+  const DeleteButton({
     Key? key,
     // required this.token,
     // required this.url,
@@ -17,10 +17,10 @@ class Delete extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<Delete> createState() => _DeleteState();
+  State<DeleteButton> createState() => _DeleteButtonState();
 }
 
-class _DeleteState extends State<Delete> {
+class _DeleteButtonState extends State<DeleteButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
