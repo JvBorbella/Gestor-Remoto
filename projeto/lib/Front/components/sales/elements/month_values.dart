@@ -53,7 +53,30 @@ class _ValuesMonthState extends State<ValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.metaMes))
+                    if (widget.valorMes == 0 && widget.metaMes == 0)
+                      TextValues(text: currencyFormat.format(widget.metaMes))
+
+                    else if (widget.valorMes == 0 || widget.metaMes == 0)
+                      TextValues(text: currencyFormat.format(widget.metaMes))
+
+                    else if (widget.valorMes > widget.metaMes ||
+                        widget.valorMes == widget.metaMes)
+                      Row(
+                        children: [
+                          TextValues(
+                              text: currencyFormat.format(widget.metaMes)),
+                              SizedBox(width: 2,),
+                          Icon(
+                            Icons.verified,
+                            color: Style.sucefullColor,
+                            size: 16,
+                          )
+                        ],
+                      )
+                      
+                    else
+                      TextValues(
+                          text: currencyFormat.format(widget.metaMes)),
                   ],
                 ),
               ],

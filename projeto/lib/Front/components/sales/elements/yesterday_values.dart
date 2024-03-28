@@ -53,7 +53,27 @@ class _ValuesYesterdayState extends State<ValuesYesterday> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.metaOntem))
+                    if (widget.valorOntem == 0 && widget.metaOntem == 0)
+                      TextValues(text: currencyFormat.format(widget.metaOntem))
+                      else if(widget.valorOntem == 0 || widget.metaOntem == 0)
+                      TextValues(text: currencyFormat.format(widget.metaOntem))
+                    else if (widget.valorOntem > widget.metaOntem ||
+                        widget.valorOntem == widget.metaOntem)
+                      Row(
+                        children: [
+                          TextValues(
+                              text: currencyFormat.format(widget.metaOntem)),
+                              SizedBox(width: 2,),
+                          Icon(
+                            Icons.verified,
+                            color: Style.sucefullColor,
+                            size: 16,
+                          )
+                        ],
+                      )
+                    else
+                      TextValues(
+                          text: currencyFormat.format(widget.metaOntem)),
                   ],
                 ),
               ],

@@ -102,11 +102,19 @@ class Sales extends StatefulWidget {
 }
 
 class _SalesState extends State<Sales> {
+  bool isLoading = true;
+
+   @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
+         body: RefreshIndicator(
+          onRefresh: () => _refreshData(),
           child: ListView(
             children: [
               //Código da Navbar
@@ -305,4 +313,33 @@ class _SalesState extends State<Sales> {
       ),
     );
   }
+
+ Future<void> loadData() async {
+    // Utiliza Future.wait para buscar os dados de forma paralela
+    await Future.wait([
+      _refreshData()
+    ]);
+    // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
+    setState(() {
+      isLoading = false;
+      // Verifica se os dados de solicitacoesremotas foram carregados corretamente
+    });
+  }
+
+
+  Future<void> _refreshData() async {
+    // Aqui você pode chamar os métodos para recarregar os dados
+    // Exemplo: await loadData();
+    setState(() {
+      isLoading =
+          true; // Define isLoading como true para mostrar o indicador de carregamento
+          _SalesState();
+    });
+    await loadData();
+    setState(() {
+      isLoading =
+          false; // Define isLoading como false para parar o indicador de carregamento
+    });
+  }
+
 }

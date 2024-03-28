@@ -53,7 +53,30 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.metaMesAnt))
+                    if (widget.valorMesAnt == 0 && widget.metaMesAnt == 0)
+                      TextValues(text: currencyFormat.format(widget.metaMesAnt))
+
+                    else if (widget.valorMesAnt == 0 || widget.metaMesAnt == 0)
+                      TextValues(text: currencyFormat.format(widget.metaMesAnt))
+
+                    else if (widget.valorMesAnt > widget.metaMesAnt ||
+                        widget.valorMesAnt == widget.metaMesAnt)
+                      Row(
+                        children: [
+                          TextValues(
+                              text: currencyFormat.format(widget.metaMesAnt)),
+                              SizedBox(width: 2,),
+                          Icon(
+                            Icons.verified,
+                            color: Style.sucefullColor,
+                            size: 16,
+                          )
+                        ],
+                      )
+
+                    else
+                      TextValues(
+                          text: currencyFormat.format(widget.metaMesAnt)),
                   ],
                 ),
               ],
@@ -72,8 +95,7 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(
-                          text: widget.cancelamentosMesAnt.toString())
+                    TextValues(text: widget.cancelamentosMesAnt.toString())
                   ],
                 ),
                 Column(
@@ -83,7 +105,9 @@ class _PreviousValuesMonthState extends State<PreviousValuesMonth> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(text: currencyFormat.format(widget.valorcancelamentosMesAnt))
+                    TextValues(
+                        text: currencyFormat
+                            .format(widget.valorcancelamentosMesAnt))
                   ],
                 ),
               ],

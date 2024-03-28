@@ -53,7 +53,30 @@ class _ValuesState extends State<Values> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.metaHoje))
+                   if (widget.valorHoje == 0 && widget.metaHoje == 0)
+                      TextValues(text: currencyFormat.format(widget.metaHoje))
+
+                    else if (widget.valorHoje == 0 || widget.metaHoje == 0)
+                      TextValues(text: currencyFormat.format(widget.metaHoje))
+
+                    else if (widget.valorHoje > widget.metaHoje ||
+                        widget.valorHoje == widget.metaHoje)
+                      Row(
+                        children: [
+                          TextValues(
+                              text: currencyFormat.format(widget.metaHoje)),
+                              SizedBox(width: 2,),
+                          Icon(
+                            Icons.verified,
+                            color: Style.sucefullColor,
+                            size: 16,
+                          )
+                        ],
+                      )
+                      
+                    else
+                      TextValues(
+                          text: currencyFormat.format(widget.metaHoje)),
                   ],
                 ),
               ],

@@ -53,7 +53,30 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                    TextValues(text: currencyFormat.format(widget.metaSemana))
+                    if (widget.valorSemana == 0 && widget.metaSemana == 0)
+                      TextValues(text: currencyFormat.format(widget.metaSemana))
+
+                    else if (widget.valorSemana == 0 || widget.metaSemana == 0)
+                      TextValues(text: currencyFormat.format(widget.metaSemana))
+
+                    else if (widget.valorSemana > widget.metaSemana ||
+                        widget.valorSemana == widget.metaSemana)
+                      Row(
+                        children: [
+                          TextValues(
+                              text: currencyFormat.format(widget.metaSemana)),
+                              SizedBox(width: 2,),
+                          Icon(
+                            Icons.verified,
+                            color: Style.sucefullColor,
+                            size: 16,
+                          )
+                        ],
+                      )
+                      
+                    else
+                      TextValues(
+                          text: currencyFormat.format(widget.metaSemana)),
                   ],
                 ),
               ],
@@ -72,8 +95,7 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(
-                          text: widget.cancelamentosSemana.toString())
+                    TextValues(text: widget.cancelamentosSemana.toString())
                   ],
                 ),
                 Column(
@@ -83,7 +105,9 @@ class _ValuesWeekState extends State<ValuesWeek> {
                       style:
                           TextStyle(fontSize: 9, color: Style.quarantineColor),
                     ),
-                      TextValues(text: currencyFormat.format(widget.valorcancelamentosSemana))
+                    TextValues(
+                        text: currencyFormat
+                            .format(widget.valorcancelamentosSemana))
                   ],
                 ),
               ],
