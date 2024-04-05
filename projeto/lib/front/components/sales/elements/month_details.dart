@@ -57,7 +57,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -65,7 +65,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       (currencyFormat.format(widget.ticketmedioMes)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -80,7 +80,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -88,7 +88,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       '${widget.margemMes.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -103,7 +103,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -111,7 +111,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       widget.ticketMes.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

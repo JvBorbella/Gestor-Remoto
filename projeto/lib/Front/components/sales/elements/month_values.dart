@@ -41,7 +41,7 @@ class _MonthValuesState extends State<MonthValues> {
                     Text(
                       'Total vendido',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     TextCardSales(text: currencyFormat.format(widget.valorMes))
                   ],
@@ -51,7 +51,7 @@ class _MonthValuesState extends State<MonthValues> {
                     Text(
                       'Meta',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     if (widget.valorMes == 0 && widget.metaMes == 0)
                       TextCardSales(text: currencyFormat.format(widget.metaMes))
@@ -93,7 +93,7 @@ class _MonthValuesState extends State<MonthValues> {
                     Text(
                       'Cancelamentos',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                       TextCardSales(
                           text: widget.cancelamentosMes.toString())
@@ -104,7 +104,7 @@ class _MonthValuesState extends State<MonthValues> {
                     Text(
                       'Vl. Cancelamento',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                       TextCardSales(text: currencyFormat.format(widget.valorcancelamentosMes))
                   ],
@@ -132,7 +132,7 @@ class _MonthValuesState extends State<MonthValues> {
             //         Text(
             //           'Meta de hoje',
             //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
+            //               TextStyle( color: Style.quarantineColor),
             //         ),
             //         TextCardSales(text: '(Valor)')
             //       ],
@@ -142,7 +142,7 @@ class _MonthValuesState extends State<MonthValues> {
             //         Text(
             //           'Meta acum.',
             //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
+            //               TextStyle( color: Style.quarantineColor),
             //         ),
             //         TextCardSales(text: '(Valor)')
             //       ],

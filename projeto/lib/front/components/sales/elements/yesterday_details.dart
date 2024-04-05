@@ -56,7 +56,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -64,7 +64,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       (currencyFormat.format(widget.ticketmedioOntem)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -79,7 +79,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -87,7 +87,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       '${widget.margemOntem.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -102,7 +102,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -110,7 +110,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       widget.ticketOntem.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

@@ -9,6 +9,7 @@ import 'package:projeto/front/components/requests/elements/informations.dart';
 import 'package:projeto/front/components/requests/elements/text_requests.dart';
 import 'package:projeto/front/components/style.dart';
 import 'package:projeto/front/pages/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RequestPage extends StatefulWidget {
   final token;
@@ -30,10 +31,35 @@ class _RequestPageState extends State<RequestPage> {
   List<RequestInformation> requests = [];
   bool isLoading = true;
 
+  String token = '';
+  String login = '';
+  String image = '';
+  String url = '';
+  String urlBasic = '';
+  String email = '';
+
   @override
   void initState() {
     super.initState();
+    _loadSavedUrl();
+    _loadSavedToken();
+    _loadSavedLogin();
+    _loadSavedImage(); 
+    _loadSavedUrlBasic();
+    _loadSavedEmail();
     loadData();
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadSavedUrl();
+    _loadSavedToken();
+    _loadSavedLogin();
+    _loadSavedImage();
+    _loadSavedUrlBasic();
+    _loadSavedEmail();
   }
 
   @override
@@ -55,8 +81,8 @@ class _RequestPageState extends State<RequestPage> {
                     Navbar(children: [
                       NavbarButton(
                         destination: HomePage(
-                          url: widget.url,
-                          token: widget.token,
+                          // url: widget.url,
+                          // token: widget.token,
                         ),
                         Icons: Icons.arrow_back_ios_new,
                       ),
@@ -78,8 +104,8 @@ class _RequestPageState extends State<RequestPage> {
                     Navbar(children: [
                       NavbarButton(
                         destination: HomePage(
-                          url: widget.url,
-                          token: widget.token,
+                          // url: widget.url,
+                          // token: widget.token,
                         ),
                         Icons: Icons.arrow_back_ios_new,
                       ),
@@ -118,13 +144,13 @@ class _RequestPageState extends State<RequestPage> {
                                               usuarioLogin:
                                                   requests[index].usuarioLogin,
                                               imagem: requests[index].imagem,
-                                              urlBasic: widget.urlBasic,
+                                              urlBasic: urlBasic,
                                             ),
                                             DeleteButton(onPressed: () async {
                                               await RejectRequest.rejectrequest(
                                                 context,
-                                                widget.url,
-                                                widget.token,
+                                                url,
+                                                token,
                                                 requests[index]
                                                     .liberacaoremotaId,
                                                 _textController.text,
@@ -219,6 +245,54 @@ class _RequestPageState extends State<RequestPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _loadSavedUrl() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUrl = await sharedPreferences.getString('url') ?? '';
+    setState(() {
+      url = savedUrl;
+    });
+  }
+
+   Future<void> _loadSavedToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedToken = await sharedPreferences.getString('token') ?? '';
+    setState(() {
+      token = savedToken;
+    });
+  }
+
+  Future<void> _loadSavedLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedLogin = await sharedPreferences.getString('login') ?? '';
+    setState(() {
+      login = savedLogin;
+    });
+  }
+
+  Future<void> _loadSavedImage() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedImage = await sharedPreferences.getString('image') ?? '';
+    setState(() {
+      image = savedImage;
+    });
+  }
+
+  Future<void> _loadSavedUrlBasic() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUrlBasic = await sharedPreferences.getString('urlBasic') ?? '';
+    setState(() {
+      urlBasic = savedUrlBasic;
+    });
+  }
+
+  Future<void> _loadSavedEmail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedEmail = await sharedPreferences.getString('email') ?? '';
+    setState(() {
+      email = savedEmail;
+    });
   }
 
   Future<void> loadData() async {

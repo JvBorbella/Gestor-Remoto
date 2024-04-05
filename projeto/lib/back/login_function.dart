@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/Style.dart';
-import 'package:projeto/Front/pages/home_page.dart';
+import 'package:projeto/front/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //Código da função de login
@@ -17,8 +17,6 @@ class LoginFunction {
     TextEditingController userController,
     TextEditingController passwordController,
   ) async {
-    //Chamando o SharedPreferences para armazenar o token resgatado no json se a requisição post do login for bem sucedida.
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     //Tentando fazer a requisição ao servidor.
     try {
@@ -49,19 +47,27 @@ class LoginFunction {
       if (response.statusCode == 200) {
         var responseBody = jsonDecode(response.body);
         if (responseBody['success'] == true) {
-          var token = responseBody['data']['token'];
-          await sharedPreferences.setString(
-            'token',
-            "Token ${responseBody['data']['token']}",
-          );
-
-          // Feito o processo acima, a função redireciona para a página Home(), passando para ela os dados que serão utilizados.
-          Navigator.of(context).pushReplacement(
+        var token = responseBody['data']['token'];
+        var login = responseBody['data']['login']; 
+        var image = responseBody['data']['image']; 
+        var email = responseBody['data']['email']; 
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        await sharedPreferences.setString('token', token);
+        await sharedPreferences.setString('login', login);
+        await sharedPreferences.setString('image', image);
+        await sharedPreferences.setString('url', '$url/ideia/secure');
+        await sharedPreferences.setString('urlBasic', url);
+        await sharedPreferences.setString('email', email);
+        
+        // Feito o processo acima, a função redireciona para a página Home(), passando para ela os dados que serão utilizados.
+        Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => HomePage(
-                url: '$url/ideia/secure', // URL montada.
-                urlBasic: url, // URL base passada na página de Config().
-                token: token, // Token resgatado após o login.
+                builder: (context) => HomePage(
+                    // url: '$url/ideia/secure', // URL montada.
+                    // urlBasic: url, // URL base passada na página de Config().
+                    // token: token, // Token resgatado após o login.
+                    // login: login.toString(), // Passando o login para a HomePage
+                    // image: image.toString(), // Passando o image para a HomePage
               ),
             ),
           );

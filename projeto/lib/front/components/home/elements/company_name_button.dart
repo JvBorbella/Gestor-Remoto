@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/front/components/Style.dart';
 import 'package:projeto/front/pages/sales_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompanyNameButton extends StatefulWidget {
   final String empresaNome;
@@ -9,8 +10,10 @@ class CompanyNameButton extends StatefulWidget {
   final double valorSemana;
   final double valorMes;
   final double valorMesAnt;
-  final String url;
-  final token;
+  // final String url;
+  // final token;
+  // final login;
+  // final image;
   final int ticketHoje;
   final int ticketOntem;
   final int ticketSemana;
@@ -45,8 +48,10 @@ class CompanyNameButton extends StatefulWidget {
   const CompanyNameButton({
     Key? key,
     required this.empresaNome,
-    this.token,
-    this.url = '',
+    // this.token,
+    // this.login,
+    // this.image,
+    // this.url = '',
     required this.valorHoje,
     required this.valorOntem,
     required this.valorSemana,
@@ -89,6 +94,20 @@ class CompanyNameButton extends StatefulWidget {
 }
 
 class _CompanyNameButtonState extends State<CompanyNameButton> {
+  String token = '';
+  String url = '';
+  String login = '';
+  String image = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadSavedToken();
+    _loadSavedLogin();
+    _loadSavedImage();
+    _loadSavedUrl();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -105,44 +124,49 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (context) => SalesPage(
-                          url: widget.url,
-                                    token: widget.token,
-                                    empresaNome: widget.empresaNome,
-                                    valorHoje: widget.valorHoje,
-                                    ticketHoje: widget.ticketHoje,
-                                    valorcancelamentosHoje: widget.valorcancelamentosHoje,
-                                    cancelamentosHoje: widget.cancelamentosHoje,
-                                    ticketmedioHoje: widget.ticketmedioHoje,
-                                    margemHoje: widget.margemHoje,
-                                    metaHoje: widget.metaHoje,
-                                    valorOntem: widget.valorOntem,
-                                    ticketOntem: widget.ticketOntem,
-                                    valorcancelamentosOntem: widget.valorcancelamentosOntem,
-                                    cancelamentosOntem: widget.cancelamentosOntem,
-                                    ticketmedioOntem: widget.ticketmedioOntem,
-                                    margemOntem: widget.margemOntem,
-                                    metaOntem: widget.metaOntem,
-                                    valorSemana: widget.valorSemana,
-                                    ticketSemana: widget.ticketSemana,
-                                    valorcancelamentosSemana: widget.valorcancelamentosSemana,
-                                    cancelamentosSemana: widget.cancelamentosSemana,
-                                    ticketmedioSemana: widget.ticketmedioSemana,
-                                    margemSemana: widget.margemSemana,
-                                    metaSemana: widget.metaSemana,
-                                    valorMes: widget.valorMes,
-                                    ticketMes: widget.ticketMes,
-                                    valorcancelamentosMes: widget.valorcancelamentosMes,
-                                    cancelamentosMes: widget.cancelamentosMes,
-                                    ticketmedioMes: widget.ticketmedioMes,
-                                    margemMes: widget.margemMes,
-                                    metaMes: widget.metaMes,
-                                    valorMesAnt: widget.valorMesAnt,
-                                    ticketMesAnt: widget.ticketMesAnt,
-                                    valorcancelamentosMesAnt: widget.valorcancelamentosMesAnt,
-                                    cancelamentosMesAnt: widget.cancelamentosMesAnt,
-                                    ticketmedioMesAnt: widget.ticketmedioMesAnt,
-                                    margemMesAnt: widget.margemMesAnt,
-                                    metaMesAnt: widget.metaMesAnt,
+                          // url: widget.url,
+                          // token: widget.token,
+                          // login: widget.login,
+                          // image: widget.image,
+                          empresaNome: widget.empresaNome,
+                          valorHoje: widget.valorHoje,
+                          ticketHoje: widget.ticketHoje,
+                          valorcancelamentosHoje: widget.valorcancelamentosHoje,
+                          cancelamentosHoje: widget.cancelamentosHoje,
+                          ticketmedioHoje: widget.ticketmedioHoje,
+                          margemHoje: widget.margemHoje,
+                          metaHoje: widget.metaHoje,
+                          valorOntem: widget.valorOntem,
+                          ticketOntem: widget.ticketOntem,
+                          valorcancelamentosOntem:
+                              widget.valorcancelamentosOntem,
+                          cancelamentosOntem: widget.cancelamentosOntem,
+                          ticketmedioOntem: widget.ticketmedioOntem,
+                          margemOntem: widget.margemOntem,
+                          metaOntem: widget.metaOntem,
+                          valorSemana: widget.valorSemana,
+                          ticketSemana: widget.ticketSemana,
+                          valorcancelamentosSemana:
+                              widget.valorcancelamentosSemana,
+                          cancelamentosSemana: widget.cancelamentosSemana,
+                          ticketmedioSemana: widget.ticketmedioSemana,
+                          margemSemana: widget.margemSemana,
+                          metaSemana: widget.metaSemana,
+                          valorMes: widget.valorMes,
+                          ticketMes: widget.ticketMes,
+                          valorcancelamentosMes: widget.valorcancelamentosMes,
+                          cancelamentosMes: widget.cancelamentosMes,
+                          ticketmedioMes: widget.ticketmedioMes,
+                          margemMes: widget.margemMes,
+                          metaMes: widget.metaMes,
+                          valorMesAnt: widget.valorMesAnt,
+                          ticketMesAnt: widget.ticketMesAnt,
+                          valorcancelamentosMesAnt:
+                              widget.valorcancelamentosMesAnt,
+                          cancelamentosMesAnt: widget.cancelamentosMesAnt,
+                          ticketmedioMesAnt: widget.ticketmedioMesAnt,
+                          margemMesAnt: widget.margemMesAnt,
+                          metaMesAnt: widget.metaMesAnt,
                         )),
               );
             },
@@ -156,7 +180,9 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
                 //Texto do button está sendo definido na página home.Dart
                 widget.empresaNome,
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: MediaQuery.of(context).size.width < 720
+                        ? MediaQuery.of(context).size.width * 0.047
+                        : MediaQuery.of(context).size.width * 0.06,
                     fontWeight: FontWeight.bold,
                     color: Style.primaryColor),
                 textAlign: TextAlign.center,
@@ -166,5 +192,37 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
         ],
       ),
     );
+  }
+
+  Future<void> _loadSavedUrl() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUrl = await sharedPreferences.getString('url') ?? '';
+    setState(() {
+      url = savedUrl;
+    });
+  }
+
+  Future<void> _loadSavedToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedToken = await sharedPreferences.getString('token') ?? '';
+    setState(() {
+      token = savedToken;
+    });
+  }
+
+  Future<void> _loadSavedLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedLogin = await sharedPreferences.getString('login') ?? '';
+    setState(() {
+      login = savedLogin;
+    });
+  }
+
+  Future<void> _loadSavedImage() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedImage = await sharedPreferences.getString('image') ?? '';
+    setState(() {
+      image = savedImage;
+    });
   }
 }

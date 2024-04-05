@@ -41,7 +41,7 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Total vendido',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     TextCardSales(text: currencyFormat.format(widget.valorOntem))
                   ],
@@ -51,7 +51,7 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Meta',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     if (widget.valorOntem == 0 && widget.metaOntem == 0)
                       TextCardSales(text: currencyFormat.format(widget.metaOntem))
@@ -90,7 +90,7 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Cancelamentos',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                       TextCardSales(
                           text: widget.cancelamentosOntem.toString())
@@ -101,7 +101,7 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Vl. Cancelamento',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                       TextCardSales(text: currencyFormat.format(widget.valorcancelamentosOntem))
                   ],
@@ -129,7 +129,7 @@ class _YesterdayValuesState extends State<YesterdayValues> {
             //         Text(
             //           'Meta de hoje',
             //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
+            //               TextStyle( color: Style.quarantineColor),
             //         ),
             //         TextCardSales(text: '(Valor)')
             //       ],
@@ -139,7 +139,7 @@ class _YesterdayValuesState extends State<YesterdayValues> {
             //         Text(
             //           'Meta acum.',
             //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
+            //               TextStyle( color: Style.quarantineColor),
             //         ),
             //         TextCardSales(text: '(Valor)')
             //       ],

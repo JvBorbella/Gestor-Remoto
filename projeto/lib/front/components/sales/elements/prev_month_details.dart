@@ -56,7 +56,7 @@ class _PrevMonthDetailsState extends State<PrevMonthDetails> {
                                       'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -64,7 +64,7 @@ class _PrevMonthDetailsState extends State<PrevMonthDetails> {
                                       (currencyFormat.format(widget.ticketmedioMesAnt)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -79,7 +79,7 @@ class _PrevMonthDetailsState extends State<PrevMonthDetails> {
                                       'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -87,7 +87,7 @@ class _PrevMonthDetailsState extends State<PrevMonthDetails> {
                                       '${widget.margemMesAnt.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -102,7 +102,7 @@ class _PrevMonthDetailsState extends State<PrevMonthDetails> {
                                       'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -110,7 +110,7 @@ class _PrevMonthDetailsState extends State<PrevMonthDetails> {
                                       widget.ticketMesAnt.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

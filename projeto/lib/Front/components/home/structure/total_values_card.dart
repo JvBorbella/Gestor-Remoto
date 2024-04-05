@@ -54,7 +54,8 @@ class _TotalValuesCardState extends State<TotalValuesCard> {
                   style: TextStyle(
                       color: Color(0xffFFFFFF),
                       fontWeight: FontWeight.bold,
-                      fontSize: MediaQuery.of(context).size.width * 0.04),
+                      // fontSize: MediaQuery.of(context).size.width * 0.04,
+                      ),
                 ),
               ],
             ),

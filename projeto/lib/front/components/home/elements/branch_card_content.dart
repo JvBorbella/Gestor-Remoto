@@ -49,7 +49,7 @@ class _BranchCardContentState extends State<BranchCardContent> {
                   children: [
                     Text(
                       'Hoje',
-                      style: TextStyle(fontSize: 12, color: Style.quarantineColor),
+                      style: TextStyle(color: Style.quarantineColor),
                     ),
                     DayValues(text: currencyFormat.format(widget.valorHoje.toInt()))
                   ],
@@ -58,7 +58,7 @@ class _BranchCardContentState extends State<BranchCardContent> {
                   children: [
                     Text(
                       'Ontem',
-                      style: TextStyle(fontSize: 12, color: Style.quarantineColor),
+                      style: TextStyle(color: Style.quarantineColor),
                     ),
                      if (widget.valorOntem == 0)
                       DayValues(
@@ -72,16 +72,11 @@ class _BranchCardContentState extends State<BranchCardContent> {
                   children: [
                     Text(
                       'Semana',
-                      style: TextStyle(fontSize: 12, color: Style.quarantineColor),
+                      style: TextStyle(color: Style.quarantineColor),
                     ),
                     if (widget.valorSemana == 0)
-                      Container(
-                        width: 10,
-                        height: 10,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      )
+                      DayValues(
+                          text: currencyFormat.format(widget.valorSemana))
                     else
                       DayValues(
                           text: currencyFormat.format(widget.valorSemana)),
@@ -107,25 +102,19 @@ class _BranchCardContentState extends State<BranchCardContent> {
                     Text(
                       'Vendas no mês',
                       style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                                                    fontWeight: FontWeight.bold,
                           color: Style.quarantineColor),
                     ),
                     if (widget.valorMes == 0)
-                      Container(
-                        width: 35,
-                        height: 35,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      )
+                      DayValues(
+                          text: currencyFormat.format(widget.valorMes))
                     else
                       Text(
                         currencyFormat.format(widget.valorMes),
                         style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.width < 600
-                                ? MediaQuery.of(context).size.width * 0.07
-                                : MediaQuery.of(context).size.width * 0.018,
+                            // context).size.width < 600
+                            //     ? MediaQuery.of(context).size.width * 0.07
+                            //     : MediaQuery.of(context).size.width * 0.018,
                             fontWeight: FontWeight.bold,
                             color: Style.primaryColor),
                       ),

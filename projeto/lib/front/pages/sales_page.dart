@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/Front/components/sales/elements/today_details.dart';
+import 'package:projeto/back/company_sales_monitor.dart';
 import 'package:projeto/front/components/global/elements/navbar_button.dart';
 import 'package:projeto/front/components/global/structure/navbar.dart';
 import 'package:projeto/front/components/sales/elements/month_details.dart';
@@ -14,6 +15,7 @@ import 'package:projeto/front/components/sales/elements/yesterday_values.dart';
 import 'package:projeto/front/components/sales/structure/sales_card.dart';
 import 'package:projeto/front/components/Style.dart';
 import 'package:projeto/front/pages/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SalesPage extends StatefulWidget {
   final String empresaNome;
@@ -22,8 +24,10 @@ class SalesPage extends StatefulWidget {
   final double valorSemana;
   final double valorMes;
   final double valorMesAnt;
-  final String url;
-  final token;
+  // final String url;
+  // final token;
+  // final login;
+  // final image;
   final int ticketHoje;
   final int ticketOntem;
   final int ticketSemana;
@@ -58,8 +62,10 @@ class SalesPage extends StatefulWidget {
   const SalesPage({
     Key? key,
     required this.empresaNome,
-    this.token,
-    this.url = '',
+    // this.token,
+    // this.login,
+    // this.image,
+    // this.url = '',
     required this.valorHoje,
     required this.valorOntem,
     required this.valorSemana,
@@ -102,19 +108,31 @@ class SalesPage extends StatefulWidget {
 }
 
 class _SalesPageState extends State<SalesPage> {
-  bool isLoading = true;
+  List<CompanySalesMonitor> empresasHoje = [];
+  List<CompanySalesMonitor> empresasOntem = [];
+  List<CompanySalesMonitor> empresasSemana = [];
+  List<CompanySalesMonitor> empresasMes = [];
+  List<CompanySalesMonitor> empresasMesAnt = [];
 
-   @override
-  void initState() {
-    super.initState();
+  String token = '';
+  String url = '';
+  String login = '';
+  String image = '';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadSavedToken();
+    _loadSavedLogin();
+    _loadSavedImage();
+    _loadSavedUrl();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-         body: RefreshIndicator(
-          onRefresh: () => _refreshData(),
+         body: Container(
           child: ListView(
             children: [
               //Código da Navbar
@@ -122,8 +140,11 @@ class _SalesPageState extends State<SalesPage> {
                 //Chamando os elementos internos da navbar
                 NavbarButton(
                   destination: HomePage(
-                    url: widget.url,
-                    token: widget.token,
+                    // url: widget.url,
+                    // token: widget.token,
+                    // login: widget.url,
+                    // image: widget.image,
+                    // token: widget.token,
                   ),
                   Icons: Icons.arrow_back_ios_new,
                 ),
@@ -133,7 +154,7 @@ class _SalesPageState extends State<SalesPage> {
               ),
               Text(
                 widget.empresaNome,
-                style: TextStyle(fontSize: 22, color: Style.quarantineColor),
+                style: TextStyle(color: Style.quarantineColor),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -146,10 +167,13 @@ class _SalesPageState extends State<SalesPage> {
                     height: 5,
                   ),
                   //Chamando elementos para dentro do card
-                  Text('Hoje', style: TextStyle(
-                    color: Style.quarantineColor,
-                    fontSize: 18,
-                  ),),
+                  Text(
+                    'Hoje',
+                    style: TextStyle(
+                      color: Style.quarantineColor,
+                      // fontSize: 18,
+                    ),
+                  ),
                   SizedBox(
                     height: Style.ContentInternalSpace,
                   ),
@@ -180,10 +204,13 @@ class _SalesPageState extends State<SalesPage> {
                     height: 5,
                   ),
                   //Chamando elementos para dentro do card
-                  Text('Ontem', style: TextStyle(
-                    color: Style.quarantineColor,
-                    fontSize: 18,
-                  ),),
+                  Text(
+                    'Ontem',
+                    style: TextStyle(
+                      color: Style.quarantineColor,
+                      // fontSize: 18,
+                    ),
+                  ),
                   SizedBox(
                     height: Style.ContentInternalSpace,
                   ),
@@ -214,10 +241,13 @@ class _SalesPageState extends State<SalesPage> {
                     height: 5,
                   ),
                   //Chamando elementos para dentro do card
-                  Text('Semana', style: TextStyle(
-                    color: Style.quarantineColor,
-                    fontSize: 18,
-                  ),),
+                  Text(
+                    'Semana',
+                    style: TextStyle(
+                      color: Style.quarantineColor,
+                      // fontSize: 18,
+                    ),
+                  ),
                   SizedBox(
                     height: Style.ContentInternalSpace,
                   ),
@@ -248,10 +278,13 @@ class _SalesPageState extends State<SalesPage> {
                     height: 5,
                   ),
                   //Chamando elementos para dentro do card
-                  Text('Mês', style: TextStyle(
-                    color: Style.quarantineColor,
-                    fontSize: 18,
-                  ),),
+                  Text(
+                    'Mês',
+                    style: TextStyle(
+                      color: Style.quarantineColor,
+                      // fontSize: 18,
+                    ),
+                  ),
                   SizedBox(
                     height: Style.ContentInternalSpace,
                   ),
@@ -282,10 +315,13 @@ class _SalesPageState extends State<SalesPage> {
                     height: 5,
                   ),
                   //Chamando elementos para dentro do card
-                  Text('Mês anterior', style: TextStyle(
-                    color: Style.quarantineColor,
-                    fontSize: 18,
-                  ),),
+                  Text(
+                    'Mês anterior',
+                    style: TextStyle(
+                      color: Style.quarantineColor,
+                      // fontSize: 18,
+                    ),
+                  ),
                   SizedBox(
                     height: Style.ContentInternalSpace,
                   ),
@@ -314,32 +350,35 @@ class _SalesPageState extends State<SalesPage> {
     );
   }
 
- Future<void> loadData() async {
-    // Utiliza Future.wait para buscar os dados de forma paralela
-    await Future.wait([
-      _refreshData()
-    ]);
-    // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
+   Future<void> _loadSavedUrl() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUrl = await sharedPreferences.getString('url') ?? '';
     setState(() {
-      isLoading = false;
-      // Verifica se os dados de solicitacoesremotas foram carregados corretamente
+      url = savedUrl;
     });
   }
 
-
-  Future<void> _refreshData() async {
-    // Aqui você pode chamar os métodos para recarregar os dados
-    // Exemplo: await loadData();
+  Future<void> _loadSavedToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedToken = await sharedPreferences.getString('token') ?? '';
     setState(() {
-      isLoading =
-          true; // Define isLoading como true para mostrar o indicador de carregamento
-          _SalesPageState();
-    });
-    await loadData();
-    setState(() {
-      isLoading =
-          false; // Define isLoading como false para parar o indicador de carregamento
+      token = savedToken;
     });
   }
 
+  Future<void> _loadSavedLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedLogin = await sharedPreferences.getString('login') ?? '';
+    setState(() {
+      login = savedLogin;
+    });
+  }
+
+  Future<void> _loadSavedImage() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedImage = await sharedPreferences.getString('image') ?? '';
+    setState(() {
+      image = savedImage;
+    });
+  }
 }

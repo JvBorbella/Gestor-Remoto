@@ -16,7 +16,7 @@ class ConditionalTextCardRequests extends StatelessWidget {
               Text(
                 'Não há nenhuma requisição no momento',
                 style: TextStyle(
-                  fontSize: 11,
+                  // fontSize: 11,
                   color: Color(0xffA6A6A6),
                 ),
               ),
@@ -24,7 +24,7 @@ class ConditionalTextCardRequests extends StatelessWidget {
               Text(
                 'Nova solicitação!',
                 style: TextStyle(
-                  fontSize: 13,
+                  // fontSize: 13,
                   color: Color(0xff00568E),
                   fontWeight: FontWeight.bold,
                 ),

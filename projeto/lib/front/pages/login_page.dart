@@ -23,7 +23,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String urlController = '';
+  String url = '';
   final SaveUserFunction saveUserService = SaveUserFunction();
   final _userController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -36,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
 
     _loadSavedUrl();
     saveUserService.listenAndSaveUser(context, _userController);
+    
   }
 
   @override
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String savedUrl = sharedPreferences.getString('saveUrl') ?? '';
     setState(() {
-      urlController = savedUrl;
+      url = savedUrl;
     });
   }
 
@@ -115,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                                 _passwordController.text.isNotEmpty) {
                               await LoginFunction.login(
                                 context,
-                                urlController,
+                                url,
                                 _userController,
                                 _passwordController,
                               );
@@ -139,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SimpleButton(
                           text: 'Configurar',
-                          destination: ConfigPage(initialUrl: urlController),
+                          destination: ConfigPage(initialUrl: url),
                           height: MediaQuery.of(context).size.width * 0.05,
                         ),
                       ],

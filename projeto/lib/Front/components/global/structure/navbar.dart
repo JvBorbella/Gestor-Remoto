@@ -37,7 +37,7 @@ class _NavbarState extends State<Navbar> {
                   style: TextStyle(
                     //Estilização do texto.
                     color: Style.tertiaryColor,
-                    fontSize: 16,
+                    // fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
                 ),

@@ -18,9 +18,9 @@ class _DayValuesState extends State<DayValues> {
       child: Text(
         widget.text,
         style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width < 600
-                ? MediaQuery.of(context).size.width * 0.032
-                : MediaQuery.of(context).size.width * 0.012,
+            // fontSize: MediaQuery.of(context).size.width < 600
+            //     ? MediaQuery.of(context).size.width * 0.032
+            //     : MediaQuery.of(context).size.width * 0.012,
             color: Style.primaryColor,
             fontWeight: FontWeight.bold),
       ),

@@ -13,17 +13,22 @@ import 'package:projeto/front/components/request_home/elements/number_of_request
 import 'package:projeto/front/components/request_home/elements/request_button.dart';
 import 'package:projeto/front/components/request_home/structure/conditional_text_card_requests.dart';
 import 'package:projeto/front/components/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  final token;
-  final String url;
-  final String urlBasic;
+  // final token;
+  // final login;
+  // final image;
+  // final String url;
+  // final String urlBasic;
 
   const HomePage({
     Key? key,
-    this.token,
-    this.url = '',
-    this.urlBasic = '',
+    // this.token,
+    // this.login,
+    // this.image,
+    // this.url = '',
+    // this.urlBasic = '',
   }) : super(key: key);
 
   @override
@@ -41,21 +46,43 @@ class _HomePageState extends State<HomePage> {
   late double vendadiaanterior = 0.0;
   late double vendasemana = 0.0;
   late double vendames = 0.0;
-  // late int ticketHoje = -1;
-  // late int ticketOntem = -1;
   late int solicitacoesremotas = -1;
   // Valor padrão de carregamento
   bool isLoading = true;
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
+  String token = '';
+  String login = '';
+  String image = '';
+  String url = '';
+  String urlBasic = '';
+  String email = '';
+
   @override
   void initState() {
     super.initState();
+    _loadSavedUrl();
+    _loadSavedToken();
     loadData();
     fetchDataWeek();
     fetchDataMonth();
     fetchDataPrevMonth();
+    _loadSavedLogin();
+    _loadSavedImage(); 
+    _loadSavedUrlBasic();
+    _loadSavedEmail();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadSavedUrl();
+    _loadSavedToken();
+    _loadSavedLogin();
+    _loadSavedImage();
+    _loadSavedUrlBasic();
+    _loadSavedEmail();
   }
 
   @override
@@ -68,23 +95,148 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
+    void _closeModal() {
+      //Função para fechar o modal
+      Navigator.of(context).pop();
+    }
+
     return SafeArea(
       child: Scaffold(
         drawer: Drawer(
-          width: 250,
+          width: MediaQuery.of(context).size.width * 0.8,
           child: Column(
             children: [
               Container(
                 child: Column(
                   children: [
                     UserAccountsDrawerHeader(
-                        accountName: Text('Teste'),
-                        accountEmail: Text('Teste')),
-                    ModalButton()
+                      currentAccountPictureSize:
+                          Size(MediaQuery.of(context).size.width * 1.25, 30),
+                      decoration: BoxDecoration(color: Style.primaryColor),
+                      currentAccountPicture: IconButton(
+                        padding: EdgeInsets.only(bottom: 20),
+                        onPressed: _closeModal,
+                        icon: Icon(Icons.close),
+                        style: ButtonStyle(
+                          iconColor:
+                              MaterialStatePropertyAll(Style.tertiaryColor),
+                        ),
+                        
+                      ),
+                      accountEmail: ModalButton(),
+                      accountName: Row(
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 70,
+                            // decoration: BoxDecoration(shape: BoxShape.circle),
+                            child: ClipOval(
+                              child: image.isNotEmpty
+                                  ? Image.network(
+                                      urlBasic + image,
+                                      alignment: Alignment.center,
+                                      fit: BoxFit.fill,
+                                      filterQuality: FilterQuality.high,
+                                    ) // Exibe a imagem
+                                  : Image.network(
+                                      'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                                      color: Style.tertiaryColor,
+                                      alignment: Alignment.center,
+                                      fit: BoxFit.fill,
+                                      filterQuality: FilterQuality.high,
+                                    ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Olá, ' + login + '!',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins-Medium',
+                                ),
+                                textAlign: TextAlign.start,
+                              ),
+                              Text(email,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins-Medium',
+                                    fontSize: 8,
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-              ListTile(),
+              ListBody(
+                children: [
+                  Container(
+                    // padding: EdgeInsets.only(left: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // Navigator.of(context)
+                            //     .push(MaterialPageRoute(
+                            //   builder: (context) => HomePage()));
+                          },
+                          child: Text(
+                            'Promoções',
+                            style: TextStyle(
+                                color: Style.primaryColor,
+                                fontSize: 15,
+                                fontFamily: 'Poppins-Medium'),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // Navigator.of(context)
+                            //     .push(MaterialPageRoute(
+                            //   builder: (context) => HomePage()));
+                          },
+                          child: Text(
+                            'Produtos negativos',
+                            style: TextStyle(
+                                color: Style.primaryColor,
+                                fontSize: 15,
+                                fontFamily: 'Poppins-Medium'),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // Navigator.of(context)
+                            //     .push(MaterialPageRoute(
+                            //   builder: (context) => HomePage()));
+                          },
+                          child: Text(
+                            'Funcionários escalados',
+                            style: TextStyle(
+                                color: Style.primaryColor,
+                                fontSize: 15,
+                                fontFamily: 'Poppins-Medium'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
@@ -94,12 +246,13 @@ class _HomePageState extends State<HomePage> {
             children: [
               Navbar(
                 children: [
-                  // DrawerButton(
-                  //   style: ButtonStyle(
-                  //     iconColor: MaterialStatePropertyAll(Style.tertiaryColor),
-                  //   ),
-                  // ),
-                  ModalButton(),
+                  DrawerButton(
+                    style: ButtonStyle(
+                        iconColor:
+                            MaterialStatePropertyAll(Style.tertiaryColor),
+                        padding: MaterialStatePropertyAll(EdgeInsets.all(12))),
+                  ),
+                  // ModalButton(),
                 ],
                 text: 'Página inicial',
               ),
@@ -120,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                               'Total de hoje',
                               style: TextStyle(
                                 color: Style.primaryColor,
-                                fontSize: 12,
+                                // fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -137,7 +290,7 @@ class _HomePageState extends State<HomePage> {
                               'Total de ontem',
                               style: TextStyle(
                                 color: Style.primaryColor,
-                                fontSize: 12,
+                                // fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -162,7 +315,7 @@ class _HomePageState extends State<HomePage> {
                               'Total da semana',
                               style: TextStyle(
                                 color: Style.primaryColor,
-                                fontSize: 12,
+                                // fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -179,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                               'Total do mês',
                               style: TextStyle(
                                 color: Style.primaryColor,
-                                fontSize: 12,
+                                // fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
@@ -220,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                                 'Requisições',
                                 style: TextStyle(
                                     color: Style.primaryColor,
-                                    fontSize: 16,
+                                    // fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
@@ -250,9 +403,9 @@ class _HomePageState extends State<HomePage> {
                               RequestButton(
                                 text: 'Liberação remota',
                                 solicitacoesremotas: solicitacoesremotas,
-                                url: widget.url,
-                                token: widget.token,
-                                urlBasic: widget.urlBasic,
+                                url: url,
+                                token: token,
+                                urlBasic: urlBasic,
                               )
                             ],
                           ),
@@ -281,100 +434,67 @@ class _HomePageState extends State<HomePage> {
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasHoje[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasHoje[index].empresaNome,
                                     valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje:
-                                        empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index]
-                                        .valorcancelamentos,
-                                    cancelamentosHoje:
-                                        empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje:
-                                        empresasHoje[index].ticketmedio,
+                                    ticketHoje: empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
+                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
                                     margemHoje: empresasHoje[index].margem,
                                     metaHoje: empresasHoje[index].meta,
                                     valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosOntem:
-                                        empresasOntem[index]
-                                            .valorcancelamentos,
-                                    cancelamentosOntem:
-                                        empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem:
-                                        empresasOntem[index].ticketmedio,
-                                    margemOntem:
-                                        empresasOntem[index].margem,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
                                     metaOntem: empresasOntem[index].meta,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosSemana:
-                                        empresasSemana[index]
-                                            .valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index]
-                                        .cancelamentos,
-                                    ticketmedioSemana:
-                                        empresasSemana[index].ticketmedio,
-                                    margemSemana:
-                                        empresasSemana[index].margem,
-                                    metaSemana:
-                                        empresasSemana[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
                                     valorMes: empresasMes[index].valortotal,
-                                    ticketMes:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMes:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMes:
-                                        empresasMes[index].ticketmedio,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
                                     valorMesAnt: empresasMesAnt[index].valortotal,
                                     ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
                                     valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
                                     cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
-                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    ticketmedioMesAnt:empresasMesAnt[index].ticketmedio,
                                     margemMesAnt: empresasMesAnt[index].margem,
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   )
                                 else if (empresasMes.isNotEmpty)
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasHoje[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasHoje[index].empresaNome,
                                     valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje:
-                                        empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index]
-                                        .valorcancelamentos,
-                                    cancelamentosHoje:
-                                        empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje:
-                                        empresasHoje[index].ticketmedio,
+                                    ticketHoje: empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
+                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
                                     margemHoje: empresasHoje[index].margem,
                                     metaHoje: empresasHoje[index].meta,
                                     valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosOntem:
-                                        empresasOntem[index]
-                                            .valorcancelamentos,
-                                    cancelamentosOntem:
-                                        empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem:
-                                        empresasOntem[index].ticketmedio,
-                                    margemOntem:
-                                        empresasOntem[index].margem,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
                                     metaOntem: empresasOntem[index].meta,
                                     valorSemana: 0,
                                     ticketSemana: 0,
@@ -384,14 +504,10 @@ class _HomePageState extends State<HomePage> {
                                     margemSemana: 0,
                                     metaSemana: 0,
                                     valorMes: empresasMes[index].valortotal,
-                                    ticketMes:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMes:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMes:
-                                        empresasMes[index].ticketmedio,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
                                     valorMesAnt: empresasMesAnt[index].valortotal,
@@ -402,54 +518,35 @@ class _HomePageState extends State<HomePage> {
                                     margemMesAnt: empresasMesAnt[index].margem,
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   )
-                                  else if (empresasSemana.isNotEmpty)
+                                else if (empresasSemana.isNotEmpty)
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasHoje[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasHoje[index].empresaNome,
                                     valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje:
-                                        empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index]
-                                        .valorcancelamentos,
-                                    cancelamentosHoje:
-                                        empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje:
-                                        empresasHoje[index].ticketmedio,
+                                    ticketHoje: empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
+                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
                                     margemHoje: empresasHoje[index].margem,
                                     metaHoje: empresasHoje[index].meta,
                                     valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosOntem:
-                                        empresasOntem[index]
-                                            .valorcancelamentos,
-                                    cancelamentosOntem:
-                                        empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem:
-                                        empresasOntem[index].ticketmedio,
-                                    margemOntem:
-                                        empresasOntem[index].margem,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
                                     metaOntem: empresasOntem[index].meta,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosSemana:
-                                        empresasSemana[index]
-                                            .valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index]
-                                        .cancelamentos,
-                                    ticketmedioSemana:
-                                        empresasSemana[index].ticketmedio,
-                                    margemSemana:
-                                        empresasSemana[index].margem,
-                                    metaSemana:
-                                        empresasSemana[index].meta,
-                                   valorMes: 0,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
+                                    valorMes: 0,
                                     ticketMes: 0,
                                     valorcancelamentosMes: 0,
                                     cancelamentosMes: 0,
@@ -464,36 +561,26 @@ class _HomePageState extends State<HomePage> {
                                     margemMesAnt: empresasMesAnt[index].margem,
                                     metaMesAnt: empresasMesAnt[index].meta,
                                   )
-                                  else
+                                else
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasHoje[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasHoje[index].empresaNome,
                                     valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje:
-                                        empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index]
-                                        .valorcancelamentos,
-                                    cancelamentosHoje:
-                                        empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje:
-                                        empresasHoje[index].ticketmedio,
+                                    ticketHoje: empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
+                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
                                     margemHoje: empresasHoje[index].margem,
                                     metaHoje: empresasHoje[index].meta,
                                     valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosOntem:
-                                        empresasOntem[index]
-                                            .valorcancelamentos,
-                                    cancelamentosOntem:
-                                        empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem:
-                                        empresasOntem[index].ticketmedio,
-                                    margemOntem:
-                                        empresasOntem[index].margem,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
                                     metaOntem: empresasOntem[index].meta,
                                     valorSemana: 0,
                                     ticketSemana: 0,
@@ -502,7 +589,7 @@ class _HomePageState extends State<HomePage> {
                                     ticketmedioSemana: 0,
                                     margemSemana: 0,
                                     metaSemana: 0,
-                                   valorMes: 0,
+                                    valorMes: 0,
                                     ticketMes: 0,
                                     valorcancelamentosMes: 0,
                                     cancelamentosMes: 0,
@@ -522,25 +609,24 @@ class _HomePageState extends State<HomePage> {
                                   BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
                                     valorMes: empresasMes[index].valortotal,
                                   )
-                                  else if (empresasMes.isNotEmpty)
+                                else if (empresasMes.isNotEmpty)
                                   BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
                                     valorSemana: 0,
                                     valorMes: empresasMes[index].valortotal,
                                   )
-                                  else if (empresasSemana.isNotEmpty)
+                                else if (empresasSemana.isNotEmpty)
                                   BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
                                     valorSemana: empresasSemana[index].valortotal,
                                     valorMes: 0,
                                   )
-                                else 
+                                else
                                   BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: empresasOntem[index].valortotal,
@@ -563,19 +649,16 @@ class _HomePageState extends State<HomePage> {
                                 if (empresasSemana.isNotEmpty &&
                                     empresasMes.isNotEmpty)
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasHoje[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasHoje[index].empresaNome,
                                     valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje:
-                                        empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index]
-                                        .valorcancelamentos,
-                                    cancelamentosHoje:
-                                        empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje:
-                                        empresasHoje[index].ticketmedio,
+                                    ticketHoje: empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
+                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
                                     margemHoje: empresasHoje[index].margem,
                                     metaHoje: empresasHoje[index].meta,
                                     valorOntem: 0,
@@ -585,31 +668,18 @@ class _HomePageState extends State<HomePage> {
                                     ticketmedioOntem: 0,
                                     margemOntem: 0,
                                     metaOntem: 0,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosSemana:
-                                        empresasSemana[index]
-                                            .valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index]
-                                        .cancelamentos,
-                                    ticketmedioSemana:
-                                        empresasSemana[index].ticketmedio,
-                                    margemSemana:
-                                        empresasSemana[index].margem,
-                                    metaSemana:
-                                        empresasSemana[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
                                     valorMes: empresasMes[index].valortotal,
-                                    ticketMes:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMes:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMes:
-                                        empresasMes[index].ticketmedio,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
                                     valorMesAnt: empresasMesAnt[index].valortotal,
@@ -622,19 +692,16 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 else
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasHoje[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasHoje[index].empresaNome,
                                     valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje:
-                                        empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index]
-                                        .valorcancelamentos,
-                                    cancelamentosHoje:
-                                        empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje:
-                                        empresasHoje[index].ticketmedio,
+                                    ticketHoje: empresasHoje[index].ticket.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
+                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
+                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
                                     margemHoje: empresasHoje[index].margem,
                                     metaHoje: empresasHoje[index].meta,
                                     valorOntem: 0,
@@ -671,8 +738,7 @@ class _HomePageState extends State<HomePage> {
                                   BranchCardContent(
                                     valorHoje: empresasHoje[index].valortotal,
                                     valorOntem: 0,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
                                     valorMes: empresasMes[index].valortotal,
                                   )
                                 else
@@ -704,10 +770,11 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 children: [
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasOntem[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasOntem[index].empresaNome,
                                     valorHoje: 0,
                                     ticketHoje: 0,
                                     valorcancelamentosHoje: 0,
@@ -716,44 +783,24 @@ class _HomePageState extends State<HomePage> {
                                     margemHoje: 0,
                                     metaHoje: 0,
                                     valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosOntem:
-                                        empresasOntem[index]
-                                            .valorcancelamentos,
-                                    cancelamentosOntem:
-                                        empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem:
-                                        empresasOntem[index].ticketmedio,
-                                    margemOntem:
-                                        empresasOntem[index].margem,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
                                     metaOntem: empresasOntem[index].meta,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosSemana:
-                                        empresasSemana[index]
-                                            .valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index]
-                                        .cancelamentos,
-                                    ticketmedioSemana:
-                                        empresasSemana[index].ticketmedio,
-                                    margemSemana:
-                                        empresasSemana[index].margem,
-                                    metaSemana:
-                                        empresasSemana[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
                                     valorMes: empresasMes[index].valortotal,
-                                    ticketMes:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMes:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMes:
-                                        empresasMes[index].ticketmedio,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
                                     valorMesAnt: empresasMesAnt[index].valortotal,
@@ -767,8 +814,7 @@ class _HomePageState extends State<HomePage> {
                                   BranchCardContent(
                                     valorHoje: 0,
                                     valorOntem: empresasOntem[index].valortotal,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
                                     valorMes: empresasMes[index].valortotal,
                                   )
                                 ],
@@ -791,10 +837,11 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 children: [
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
-                                    empresaNome:
-                                        empresasHoje[index].empresaNome,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
+                                    empresaNome: empresasHoje[index].empresaNome,
                                     valorHoje: 0,
                                     ticketHoje: 0,
                                     valorcancelamentosHoje: 0,
@@ -809,31 +856,18 @@ class _HomePageState extends State<HomePage> {
                                     ticketmedioOntem: 0,
                                     margemOntem: 0,
                                     metaOntem: 0,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index]
-                                        .ticket
-                                        .toInt(),
-                                    valorcancelamentosSemana:
-                                        empresasSemana[index]
-                                            .valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index]
-                                        .cancelamentos,
-                                    ticketmedioSemana:
-                                        empresasSemana[index].ticketmedio,
-                                    margemSemana:
-                                        empresasSemana[index].margem,
-                                    metaSemana:
-                                        empresasSemana[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
                                     valorMes: empresasMes[index].valortotal,
-                                    ticketMes:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMes:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMes:
-                                        empresasMes[index].ticketmedio,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
                                     valorMesAnt: empresasMesAnt[index].valortotal,
@@ -847,8 +881,7 @@ class _HomePageState extends State<HomePage> {
                                   BranchCardContent(
                                     valorHoje: 0,
                                     valorOntem: 0,
-                                    valorSemana:
-                                        empresasSemana[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
                                     valorMes: empresasMes[index].valortotal,
                                   )
                                 ],
@@ -873,8 +906,10 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 children: [
                                   CompanyNameButton(
-                                    url: widget.url,
-                                    token: widget.token,
+                                    // url: url,
+                                    // token: token,
+                                    // login: widget.login,
+                                    // image: widget.image,
                                     empresaNome: empresasMes[index].empresaNome,
                                     valorHoje: 0,
                                     ticketHoje: 0,
@@ -898,14 +933,10 @@ class _HomePageState extends State<HomePage> {
                                     margemSemana: 0,
                                     metaSemana: 0,
                                     valorMes: empresasMes[index].valortotal,
-                                    ticketMes:
-                                        empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index]
-                                        .valorcancelamentos,
-                                    cancelamentosMes:
-                                        empresasMes[index].cancelamentos,
-                                    ticketmedioMes:
-                                        empresasMes[index].ticketmedio,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
                                     margemMes: empresasMes[index].margem,
                                     metaMes: empresasMes[index].meta,
                                     valorMesAnt: empresasMesAnt[index].valortotal,
@@ -943,33 +974,84 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> loadData() async {
-    // Utiliza Future.wait para buscar os dados de forma paralela
-    await Future.wait([
-      fetchDataToday(),
-      fetchDataYesterday(),
-      fetchDataSalesMonitor(),
-      fetchDataRequests(),
-      // fetchDataWeek(),
-      // fetchDataMonth(),
-    ]);
-    // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
+  Future<void> _loadSavedUrl() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUrl = await sharedPreferences.getString('url') ?? '';
     setState(() {
-      isLoading = false;
-      // Verifica se os dados de solicitacoesremotas foram carregados corretamente
-      if (solicitacoesremotas != -1) {
-        solicitacoesremotas =
-            NumberOfRequests(solicitacoesremotas: solicitacoesremotas)
-                .solicitacoesremotas;
-      }
-      // else if (ticketHoje != -1) {
-      //   ticketHoje = ticketHoje;
-      // }
-      // else if (ticketOntem != -1) {
-      //   ticketOntem = ticketOntem;
-      // }
+      url = savedUrl;
     });
   }
+
+   Future<void> _loadSavedToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedToken = await sharedPreferences.getString('token') ?? '';
+    setState(() {
+      token = savedToken;
+    });
+  }
+
+  Future<void> _loadSavedLogin() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedLogin = await sharedPreferences.getString('login') ?? '';
+    setState(() {
+      login = savedLogin;
+    });
+  }
+
+  Future<void> _loadSavedImage() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedImage = await sharedPreferences.getString('image') ?? '';
+    setState(() {
+      image = savedImage;
+    });
+  }
+
+  Future<void> _loadSavedUrlBasic() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedUrlBasic = await sharedPreferences.getString('urlBasic') ?? '';
+    setState(() {
+      urlBasic = savedUrlBasic;
+    });
+  }
+
+  Future<void> _loadSavedEmail() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String savedEmail = await sharedPreferences.getString('email') ?? '';
+    setState(() {
+      email = savedEmail;
+    });
+  }
+
+  Future<void> loadData() async {
+  // Utiliza Future.wait para buscar os dados de forma paralela
+  await Future.wait([
+    _loadSavedToken(),
+    _loadSavedUrl(),
+  ]);
+
+  // Após carregar os dados do token e da URL, chama as funções para buscar os dados
+  await Future.wait([
+    fetchDataToday(),
+    fetchDataYesterday(),
+    fetchDataWeek(),
+    fetchDataMonth(),
+    fetchDataPrevMonth(),
+    fetchDataSalesMonitor(),
+    fetchDataRequests(),
+  ]);
+
+  // Todos os dados foram carregados, agora atualiza o estado para parar o carregamento
+  setState(() {
+    isLoading = false;
+    // Verifica se os dados de solicitacoesremotas foram carregados corretamente
+    if (solicitacoesremotas != -1) {
+      solicitacoesremotas =
+          NumberOfRequests(solicitacoesremotas: solicitacoesremotas)
+              .solicitacoesremotas;
+    }
+  });
+}
+
 
   Future<void> _refreshData() async {
     // Aqui você pode chamar os métodos para recarregar os dados
@@ -987,7 +1069,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchDataToday() async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServiceToday.fetchDataToday(widget.token, widget.url);
+        await DataServiceToday.fetchDataToday(token, url);
 
     if (fetchedData != null) {
       setState(() {
@@ -998,7 +1080,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchDataYesterday() async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServiceYesterday.fetchDataYesterday(widget.token, widget.url);
+        await DataServiceYesterday.fetchDataYesterday(token, url);
 
     if (fetchedData != null) {
       setState(() {
@@ -1009,7 +1091,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchDataWeek() async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServiceWeek.fetchDataWeek(widget.token, widget.url);
+        await DataServiceWeek.fetchDataWeek(token, url);
 
     if (fetchedData != null) {
       setState(() {
@@ -1020,7 +1102,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchDataMonth() async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServiceMonth.fetchDataMonth(widget.token, widget.url);
+        await DataServiceMonth.fetchDataMonth(token, url);
 
     if (fetchedData != null) {
       setState(() {
@@ -1031,7 +1113,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchDataPrevMonth() async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServicePrevMonth.fetchDataPrevMonth(widget.token, widget.url);
+        await DataServicePrevMonth.fetchDataPrevMonth(token, url);
 
     if (fetchedData != null) {
       setState(() {
@@ -1042,7 +1124,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchDataSalesMonitor() async {
     Map<String, double?>? fetchDataSalesMonitor =
-        await DataServiceSalesMonitor.fetchDataSalesMonitor(widget.token, widget.url);
+        await DataServiceSalesMonitor.fetchDataSalesMonitor(
+            token, url);
 
     // ignore: unnecessary_null_comparison
     if (fetchDataSalesMonitor != null) {
@@ -1056,9 +1139,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchDataRequests() async {
-    int? fetchedDataRequests =
-        await DataServiceSalesMonitor.fetchDataRequests(
-            widget.token, widget.url);
+    int? fetchedDataRequests = await DataServiceSalesMonitor.fetchDataRequests(
+        token, url);
 
     if (fetchedDataRequests != null) {
       setState(() {

@@ -57,7 +57,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -65,7 +65,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       (currencyFormat.format(widget.ticketmedioSemana)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -80,7 +80,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -88,7 +88,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       '${widget.margemSemana.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -103,7 +103,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 8,
+                                          // fontSize: 8,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -111,7 +111,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       widget.ticketSemana.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: 12,
+                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

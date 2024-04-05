@@ -41,7 +41,7 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Total vendido',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     TextCardSales(text: currencyFormat.format(widget.valorSemana))
                   ],
@@ -51,7 +51,7 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Meta',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     if (widget.valorSemana == 0 && widget.metaSemana == 0)
                       TextCardSales(text: currencyFormat.format(widget.metaSemana))
@@ -93,7 +93,7 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Cancelamentos',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     TextCardSales(text: widget.cancelamentosSemana.toString())
                   ],
@@ -103,7 +103,7 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Vl. Cancelamento',
                       style:
-                          TextStyle(fontSize: 9, color: Style.quarantineColor),
+                          TextStyle( color: Style.quarantineColor),
                     ),
                     TextCardSales(
                         text: currencyFormat
@@ -133,7 +133,7 @@ class _WeekValuesState extends State<WeekValues> {
             //         Text(
             //           'Meta de hoje',
             //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
+            //               TextStyle( color: Style.quarantineColor),
             //         ),
             //         TextCardSales(text: '(Valor)')
             //       ],
@@ -143,7 +143,7 @@ class _WeekValuesState extends State<WeekValues> {
             //         Text(
             //           'Meta acum.',
             //           style:
-            //               TextStyle(fontSize: 9, color: Style.quarantineColor),
+            //               TextStyle( color: Style.quarantineColor),
             //         ),
             //         TextCardSales(text: '(Valor)')
             //       ],
