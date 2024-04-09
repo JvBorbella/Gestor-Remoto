@@ -124,8 +124,8 @@ class _ModalButtonState extends State<ModalButton> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        // height: 35,
-        // width: 70,
+        height: 35,
+        width: 70,
         //Área externa do button que abre o modal
         color: Style.primaryColor,
         // padding: EdgeInsets.only(left: 10, top: 5),
@@ -138,18 +138,20 @@ class _ModalButtonState extends State<ModalButton> {
                 _openModal(context);
               },
               child: ButtonTheme(
-                //Estilização do Buttom
-                child: Row(
-                  children: [
-                    Text('Sair', style: TextStyle(color: Style.tertiaryColor, fontSize: 12),),
-                     Icon(
-                  Icons.exit_to_app,
-                  color: Style.tertiaryColor,
-                  size: 18,
-                ),
-                  ],
-                )
-              ),
+                  //Estilização do Buttom
+                  child: Row(
+                children: [
+                  Text(
+                    'Sair',
+                    style: TextStyle(color: Style.tertiaryColor, fontSize: 12),
+                  ),
+                  Icon(
+                    Icons.exit_to_app,
+                    color: Style.tertiaryColor,
+                    size: 18,
+                  ),
+                ],
+              )),
             ),
           ],
         ),

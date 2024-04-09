@@ -6,7 +6,9 @@ import 'package:projeto/back/sales_monitor.dart';
 import 'package:projeto/front/components/global/structure/request_card.dart';
 import 'package:projeto/front/components/home/elements/branch_card_content.dart';
 import 'package:projeto/front/components/home/elements/company_name_button.dart';
-import 'package:projeto/front/components/home/elements/modal_button.dart';
+import 'package:projeto/front/components/home/elements/drawer_button.dart';
+
+// import 'package:projeto/front/components/home/elements/modal_button.dart';
 import 'package:projeto/front/components/home/structure/branch_card.dart';
 import 'package:projeto/front/components/home/structure/total_values_card.dart';
 import 'package:projeto/front/components/request_home/elements/number_of_requests.dart';
@@ -16,19 +18,9 @@ import 'package:projeto/front/components/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  // final token;
-  // final login;
-  // final image;
-  // final String url;
-  // final String urlBasic;
 
   const HomePage({
     Key? key,
-    // this.token,
-    // this.login,
-    // this.image,
-    // this.url = '',
-    // this.urlBasic = '',
   }) : super(key: key);
 
   @override
@@ -64,14 +56,14 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _loadSavedUrl();
     _loadSavedToken();
-    loadData();
-    fetchDataWeek();
-    fetchDataMonth();
-    fetchDataPrevMonth();
     _loadSavedLogin();
     _loadSavedImage(); 
     _loadSavedUrlBasic();
     _loadSavedEmail();
+    loadData();
+    fetchDataWeek();
+    fetchDataMonth();
+    fetchDataPrevMonth();
   }
 
   @override
@@ -85,6 +77,11 @@ class _HomePageState extends State<HomePage> {
     _loadSavedEmail();
   }
 
+   void _closeModal() {
+      //Função para fechar o modal
+      Navigator.of(context).pop();
+    }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
@@ -95,150 +92,11 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    void _closeModal() {
-      //Função para fechar o modal
-      Navigator.of(context).pop();
-    }
-
     return SafeArea(
       child: Scaffold(
         drawer: Drawer(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: Column(
-            children: [
-              Container(
-                child: Column(
-                  children: [
-                    UserAccountsDrawerHeader(
-                      currentAccountPictureSize:
-                          Size(MediaQuery.of(context).size.width * 1.25, 30),
-                      decoration: BoxDecoration(color: Style.primaryColor),
-                      currentAccountPicture: IconButton(
-                        padding: EdgeInsets.only(bottom: 20),
-                        onPressed: _closeModal,
-                        icon: Icon(Icons.close),
-                        style: ButtonStyle(
-                          iconColor:
-                              MaterialStatePropertyAll(Style.tertiaryColor),
-                        ),
-                        
-                      ),
-                      accountEmail: ModalButton(),
-                      accountName: Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 70,
-                            // decoration: BoxDecoration(shape: BoxShape.circle),
-                            child: ClipOval(
-                              child: image.isNotEmpty
-                                  ? Image.network(
-                                      urlBasic + image,
-                                      alignment: Alignment.center,
-                                      fit: BoxFit.fill,
-                                      filterQuality: FilterQuality.high,
-                                    ) // Exibe a imagem
-                                  : Image.network(
-                                      'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
-                                      color: Style.tertiaryColor,
-                                      alignment: Alignment.center,
-                                      fit: BoxFit.fill,
-                                      filterQuality: FilterQuality.high,
-                                    ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Olá, ' + login + '!',
-                                style: TextStyle(
-                                  fontFamily: 'Poppins-Medium',
-                                ),
-                                textAlign: TextAlign.start,
-                              ),
-                              Text(email,
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins-Medium',
-                                    fontSize: 8,
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ListBody(
-                children: [
-                  Container(
-                    // padding: EdgeInsets.only(left: 15),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(
-                            //   builder: (context) => HomePage()));
-                          },
-                          child: Text(
-                            'Promoções',
-                            style: TextStyle(
-                                color: Style.primaryColor,
-                                fontSize: 15,
-                                fontFamily: 'Poppins-Medium'),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(
-                            //   builder: (context) => HomePage()));
-                          },
-                          child: Text(
-                            'Produtos negativos',
-                            style: TextStyle(
-                                color: Style.primaryColor,
-                                fontSize: 15,
-                                fontFamily: 'Poppins-Medium'),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Navigator.of(context)
-                            //     .push(MaterialPageRoute(
-                            //   builder: (context) => HomePage()));
-                          },
-                          child: Text(
-                            'Funcionários escalados',
-                            style: TextStyle(
-                                color: Style.primaryColor,
-                                fontSize: 15,
-                                fontFamily: 'Poppins-Medium'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
+          child: CustomDrawer(),
+          width: MediaQuery.of(context).size.width * 0.9,
         ),
         body: RefreshIndicator(
           onRefresh: () => _refreshData(),
