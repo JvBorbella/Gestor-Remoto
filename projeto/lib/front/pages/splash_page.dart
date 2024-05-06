@@ -50,7 +50,7 @@ class _SplashPageState extends State<SplashPage> {
                     Image.network(
                       'https://bdc.ideiatecnologia.com.br/wp/wp-content/uploads/2024/02/IDEIA-LOGO-AZUL-e1707321339855.png',
                       color: Style.primaryColor,
-                      height: MediaQuery.of(context).size.width * 0.25,
+                      height: Style.LogoSplashSize(context),
                     ),
                   ],
                 ),

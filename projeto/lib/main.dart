@@ -13,15 +13,11 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
             bodyText1: TextStyle(
               fontFamily: 'Poppins-Medium',
-              fontSize: MediaQuery.of(context).size.width < 720
-                  ? MediaQuery.of(context).size.width * 0.038
-                  : MediaQuery.of(context).size.width * 0.04,
+              fontSize: MediaQuery.of(context).size.height * 0.02
             ),
             bodyText2: TextStyle(
               fontFamily: 'Poppins-Medium',
-              fontSize: MediaQuery.of(context).size.width < 720
-                  ? MediaQuery.of(context).size.width * 0.035
-                  : MediaQuery.of(context).size.width * 0.04,
+              fontSize: MediaQuery.of(context).size.width * 0.033,
             )),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,

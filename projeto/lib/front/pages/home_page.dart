@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto/Front/components/global/structure/navbar.dart';
 import 'package:projeto/back/company_sales_monitor.dart';
@@ -51,6 +52,12 @@ class _HomePageState extends State<HomePage> {
   String urlBasic = '';
   String email = '';
 
+    String selectedOptionChild = '';
+
+  String max = 'Maiores vendas do dia';
+  String min = 'Menores vendas do dia';
+  String cod = 'Código de loja';
+
   @override
   void initState() {
     super.initState();
@@ -61,9 +68,6 @@ class _HomePageState extends State<HomePage> {
     _loadSavedUrlBasic();
     _loadSavedEmail();
     loadData();
-    fetchDataWeek();
-    fetchDataMonth();
-    fetchDataPrevMonth();
   }
 
   @override
@@ -82,12 +86,24 @@ class _HomePageState extends State<HomePage> {
       Navigator.of(context).pop();
     }
 
+    Future<void> _loadOrder() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String order = sharedPreferences.getString('order') ?? '';
+    setState(() {
+      order = order;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
       return Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: Container(
+            height: Style.CircularProgressIndicatorWidth(context),
+            width: Style.CircularProgressIndicatorWidth(context),
+            child: CircularProgressIndicator(strokeWidth: Style.CircularProgressIndicatorSize(context),)
+            ),
         ),
       );
     }
@@ -100,22 +116,24 @@ class _HomePageState extends State<HomePage> {
         ),
         body: RefreshIndicator(
           onRefresh: () => _refreshData(),
+          strokeWidth: Style.CircularProgressIndicatorSize(context),
           child: ListView(
             children: [
               Navbar(
                 children: [
                   DrawerButton(
                     style: ButtonStyle(
+                      iconSize: MaterialStatePropertyAll(Style.SizeDrawerButton(context)),
                         iconColor:
                             MaterialStatePropertyAll(Style.tertiaryColor),
-                        padding: MaterialStatePropertyAll(EdgeInsets.all(12))),
+                        padding: MaterialStatePropertyAll(EdgeInsets.all(Style.PaddingDrawerButton(context)))),
                   ),
                   // ModalButton(),
                 ],
                 text: 'Página inicial',
               ),
               SizedBox(
-                height: 10,
+                height: Style.height_10(context),
               ),
               Container(
                 decoration: BoxDecoration(),
@@ -162,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: Style.height_10(context),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -204,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     SizedBox(
-                      height: 20,
+                      height: Style.height_20(context),
                     )
                   ],
                 ),
@@ -216,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 2,
+                        width: Style.height_2(context),
                       ),
                       Column(
                         children: [
@@ -231,18 +249,18 @@ class _HomePageState extends State<HomePage> {
                                 'Requisições',
                                 style: TextStyle(
                                     color: Style.primaryColor,
-                                    // fontSize: 16,
+                                    fontSize: Style.TextRequests(context),
                                     fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
-                                width: 2,
+                                width: Style.height_2(context),
                               ),
                               NumberOfRequests(
                                   solicitacoesremotas: solicitacoesremotas),
                             ],
                           ),
                           SizedBox(
-                            height: 7,
+                            height: Style.height_7(context),
                           ),
                           Row(
                             children: [
@@ -252,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           SizedBox(
-                            height: 30,
+                            height: Style.height_30(context),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -274,349 +292,167 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: Style.height_10(context),
               ),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: empresasHoje.length,
-                itemBuilder: (context, index) {
-                  // Verifica se empresasOntem possui elementos antes de acessá-los
-                  if (index < empresasOntem.length) {
-                    return Column(
-                      children: [
-                        BranchCard(
-                          children: [
-                            Column(
-                              children: [
-                                if (empresasSemana.isNotEmpty &&
-                                    empresasMes.isNotEmpty)
-                                  CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
-                                    empresaNome: empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje: empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
-                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
-                                    margemHoje: empresasHoje[index].margem,
-                                    metaHoje: empresasHoje[index].meta,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index].ticket.toInt(),
-                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
-                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
-                                    margemOntem: empresasOntem[index].margem,
-                                    metaOntem: empresasOntem[index].meta,
-                                    valorSemana: empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index].ticket.toInt(),
-                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
-                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
-                                    margemSemana: empresasSemana[index].margem,
-                                    metaSemana: empresasSemana[index].meta,
-                                    valorMes: empresasMes[index].valortotal,
-                                    ticketMes: empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
-                                    cancelamentosMes: empresasMes[index].cancelamentos,
-                                    ticketmedioMes: empresasMes[index].ticketmedio,
-                                    margemMes: empresasMes[index].margem,
-                                    metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMesAnt[index].valortotal,
-                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
-                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
-                                    ticketmedioMesAnt:empresasMesAnt[index].ticketmedio,
-                                    margemMesAnt: empresasMesAnt[index].margem,
-                                    metaMesAnt: empresasMesAnt[index].meta,
-                                  )
-                                else if (empresasMes.isNotEmpty)
-                                  CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
-                                    empresaNome: empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje: empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
-                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
-                                    margemHoje: empresasHoje[index].margem,
-                                    metaHoje: empresasHoje[index].meta,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index].ticket.toInt(),
-                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
-                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
-                                    margemOntem: empresasOntem[index].margem,
-                                    metaOntem: empresasOntem[index].meta,
-                                    valorSemana: 0,
-                                    ticketSemana: 0,
-                                    valorcancelamentosSemana: 0,
-                                    cancelamentosSemana: 0,
-                                    ticketmedioSemana: 0,
-                                    margemSemana: 0,
-                                    metaSemana: 0,
-                                    valorMes: empresasMes[index].valortotal,
-                                    ticketMes: empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
-                                    cancelamentosMes: empresasMes[index].cancelamentos,
-                                    ticketmedioMes: empresasMes[index].ticketmedio,
-                                    margemMes: empresasMes[index].margem,
-                                    metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMesAnt[index].valortotal,
-                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
-                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
-                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
-                                    margemMesAnt: empresasMesAnt[index].margem,
-                                    metaMesAnt: empresasMesAnt[index].meta,
-                                  )
-                                else if (empresasSemana.isNotEmpty)
-                                  CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
-                                    empresaNome: empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje: empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
-                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
-                                    margemHoje: empresasHoje[index].margem,
-                                    metaHoje: empresasHoje[index].meta,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index].ticket.toInt(),
-                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
-                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
-                                    margemOntem: empresasOntem[index].margem,
-                                    metaOntem: empresasOntem[index].meta,
-                                    valorSemana: empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index].ticket.toInt(),
-                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
-                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
-                                    margemSemana: empresasSemana[index].margem,
-                                    metaSemana: empresasSemana[index].meta,
-                                    valorMes: 0,
-                                    ticketMes: 0,
-                                    valorcancelamentosMes: 0,
-                                    cancelamentosMes: 0,
-                                    ticketmedioMes: 0,
-                                    margemMes: 0,
-                                    metaMes: 0,
-                                    valorMesAnt: empresasMesAnt[index].valortotal,
-                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
-                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
-                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
-                                    margemMesAnt: empresasMesAnt[index].margem,
-                                    metaMesAnt: empresasMesAnt[index].meta,
-                                  )
-                                else
-                                  CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
-                                    empresaNome: empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje: empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
-                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
-                                    margemHoje: empresasHoje[index].margem,
-                                    metaHoje: empresasHoje[index].meta,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    ticketOntem: empresasOntem[index].ticket.toInt(),
-                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
-                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
-                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
-                                    margemOntem: empresasOntem[index].margem,
-                                    metaOntem: empresasOntem[index].meta,
-                                    valorSemana: 0,
-                                    ticketSemana: 0,
-                                    valorcancelamentosSemana: 0,
-                                    cancelamentosSemana: 0,
-                                    ticketmedioSemana: 0,
-                                    margemSemana: 0,
-                                    metaSemana: 0,
-                                    valorMes: 0,
-                                    ticketMes: 0,
-                                    valorcancelamentosMes: 0,
-                                    cancelamentosMes: 0,
-                                    ticketmedioMes: 0,
-                                    margemMes: 0,
-                                    metaMes: 0,
-                                    valorMesAnt: empresasMesAnt[index].valortotal,
-                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
-                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
-                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
-                                    margemMesAnt: empresasMesAnt[index].margem,
-                                    metaMesAnt: empresasMesAnt[index].meta,
-                                  ),
-                                if (empresasSemana.isNotEmpty &&
-                                    empresasMes.isNotEmpty)
-                                  BranchCardContent(
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    valorSemana: empresasSemana[index].valortotal,
-                                    valorMes: empresasMes[index].valortotal,
-                                  )
-                                else if (empresasMes.isNotEmpty)
-                                  BranchCardContent(
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    valorSemana: 0,
-                                    valorMes: empresasMes[index].valortotal,
-                                  )
-                                else if (empresasSemana.isNotEmpty)
-                                  BranchCardContent(
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    valorSemana: empresasSemana[index].valortotal,
-                                    valorMes: 0,
-                                  )
-                                else
-                                  BranchCardContent(
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    valorOntem: empresasOntem[index].valortotal,
-                                    valorSemana: 0,
-                                    valorMes: 0,
-                                  )
-                              ],
-                            ),
-                          ],
+              Container(
+                padding: EdgeInsets.all(Style.height_10(context)),
+                decoration: BoxDecoration(
+                  border: Border.symmetric(horizontal: BorderSide(width: Style.height_1(context), color: Style.quarantineColor))
+                ),
+                child: Row(
+                  children: [
+                    PopupMenuButton<String>(
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'Código de loja',
+                          child: Text('Código de loja'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Maiores vendas de hoje',
+                          child: Text('Maiores vendas de hoje'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Menores vendas de hoje',
+                          child: Text('Menores vendas de hoje'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Maiores vendas de ontem',
+                          child: Text('Maiores vendas de ontem'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Menores vendas de ontem',
+                          child: Text('Menores vendas de ontem'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Maiores vendas da semana',
+                          child: Text('Maiores vendas da semana'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Menores vendas da semana',
+                          child: Text('Menores vendas da semana'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Maiores vendas do mês',
+                          child: Text('Maiores vendas do mês'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Menores vendas do mês',
+                          child: Text('Menores vendas do mês'),
                         ),
                       ],
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        BranchCard(
-                          children: [
-                            Column(
-                              children: [
-                                if (empresasSemana.isNotEmpty &&
-                                    empresasMes.isNotEmpty)
-                                  CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
-                                    empresaNome: empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje: empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
-                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
-                                    margemHoje: empresasHoje[index].margem,
-                                    metaHoje: empresasHoje[index].meta,
-                                    valorOntem: 0,
-                                    ticketOntem: 0,
-                                    valorcancelamentosOntem: 0,
-                                    cancelamentosOntem: 0,
-                                    ticketmedioOntem: 0,
-                                    margemOntem: 0,
-                                    metaOntem: 0,
-                                    valorSemana: empresasSemana[index].valortotal,
-                                    ticketSemana: empresasSemana[index].ticket.toInt(),
-                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
-                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
-                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
-                                    margemSemana: empresasSemana[index].margem,
-                                    metaSemana: empresasSemana[index].meta,
-                                    valorMes: empresasMes[index].valortotal,
-                                    ticketMes: empresasMes[index].ticket.toInt(),
-                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
-                                    cancelamentosMes: empresasMes[index].cancelamentos,
-                                    ticketmedioMes: empresasMes[index].ticketmedio,
-                                    margemMes: empresasMes[index].margem,
-                                    metaMes: empresasMes[index].meta,
-                                    valorMesAnt: empresasMesAnt[index].valortotal,
-                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
-                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
-                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
-                                    margemMesAnt: empresasMesAnt[index].margem,
-                                    metaMesAnt: empresasMesAnt[index].meta,
-                                  )
-                                else
-                                  CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
-                                    empresaNome: empresasHoje[index].empresaNome,
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    ticketHoje: empresasHoje[index].ticket.toInt(),
-                                    valorcancelamentosHoje: empresasHoje[index].valorcancelamentos,
-                                    cancelamentosHoje: empresasHoje[index].cancelamentos,
-                                    ticketmedioHoje: empresasHoje[index].ticketmedio,
-                                    margemHoje: empresasHoje[index].margem,
-                                    metaHoje: empresasHoje[index].meta,
-                                    valorOntem: 0,
-                                    ticketOntem: 0,
-                                    valorcancelamentosOntem: 0,
-                                    cancelamentosOntem: 0,
-                                    ticketmedioOntem: 0,
-                                    margemOntem: 0,
-                                    metaOntem: 0,
-                                    valorSemana: 0,
-                                    ticketSemana: 0,
-                                    valorcancelamentosSemana: 0,
-                                    cancelamentosSemana: 0,
-                                    ticketmedioSemana: 0,
-                                    margemSemana: 0,
-                                    metaSemana: 0,
-                                    valorMes: 0,
-                                    ticketMes: 0,
-                                    valorcancelamentosMes: 0,
-                                    cancelamentosMes: 0,
-                                    ticketmedioMes: 0,
-                                    margemMes: 0,
-                                    metaMes: 0,
-                                    valorMesAnt: empresasMesAnt[index].valortotal,
-                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
-                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
-                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
-                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
-                                    margemMesAnt: empresasMesAnt[index].margem,
-                                    metaMesAnt: empresasMesAnt[index].meta,
-                                  ),
-                                if (empresasSemana.isNotEmpty &&
-                                    empresasMes.isNotEmpty)
-                                  BranchCardContent(
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    valorOntem: 0,
-                                    valorSemana: empresasSemana[index].valortotal,
-                                    valorMes: empresasMes[index].valortotal,
-                                  )
-                                else
-                                  BranchCardContent(
-                                    valorHoje: empresasHoje[index].valortotal,
-                                    valorOntem: 0,
-                                    valorSemana: 0,
-                                    valorMes: 0,
-                                  )
-                              ],
-                            ),
-                          ],
+                      onSelected: (String value) async {
+                        if (value == 'Código de loja'){
+                          await fetchDataToday(ascending: null);
+                        } else if (value == 'Maiores vendas de hoje') {
+                          await fetchDataToday(ascending: false);
+                        } else if (value == 'Menores vendas de hoje'){
+                          await fetchDataToday(ascending: true);
+                        } else if (value == 'Maiores vendas de ontem'){
+                          await fetchDataYesterday(ascending: false);
+                        } else if (value == 'Menores vendas de ontem'){
+                          await fetchDataYesterday(ascending: true);
+                        } else if (value == 'Maiores vendas da semana'){
+                          await fetchDataWeek(ascending: false);
+                        } else if (value == 'Menores vendas da semana'){
+                          await fetchDataWeek(ascending: true);
+                        } else if (value == 'Maiores vendas do mês'){
+                          await fetchDataMonth(ascending: false);
+                        } else if (value == 'Menores vendas do mês'){
+                          await fetchDataMonth(ascending: true);
+                        }
+                        setState(() {
+                          selectedOptionChild = value;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Icon(Icons.filter_alt_rounded, color: Style.primaryColor,),
+                          Text('Ordenado por: '), 
+                          Text(selectedOptionChild,
+                          style: TextStyle(
+                            color: Style.secondaryColor,
+                            fontWeight: FontWeight.bold
+                          ),)
+                        ]
                         ),
-                      ],
-                    );
-                  }
-                },
+                    ),
+                  ],
+                ),
               ),
-              if (empresasHoje.isEmpty)
+              SizedBox(
+                height: Style.height_10(context),
+              ),
+              if (
+              empresasHoje.isNotEmpty && 
+              empresasOntem.isNotEmpty && 
+              empresasSemana.isNotEmpty && 
+              empresasMes.isNotEmpty &&
+              empresasMesAnt.isNotEmpty
+              )
                 ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasHoje.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
+                                    empresaNome: empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    ticketHoje: empresasHoje[index].valortotal.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valortotal,
+                                    cancelamentosHoje: empresasHoje[index].valortotal,
+                                    ticketmedioHoje: empresasHoje[index].valortotal,
+                                    margemHoje: empresasHoje[index].valortotal,
+                                    metaHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
+                    if(empresasHoje.isEmpty && empresasMesAnt.isEmpty)
+                    ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: empresasOntem.length,
@@ -628,10 +464,69 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 children: [
                                   CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
+                                    empresaNome: empresasOntem[index].empresaNome,
+                                    valorHoje: 0,
+                                    ticketHoje: 0,
+                                    valorcancelamentosHoje: 0,
+                                    cancelamentosHoje: 0,
+                                    ticketmedioHoje: 0,
+                                    margemHoje: 0,
+                                    metaHoje: 0,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: 0,
+                                    ticketMesAnt: 0,
+                                    valorcancelamentosMesAnt: 0,
+                                    cancelamentosMesAnt: 0,
+                                    ticketmedioMesAnt: 0,
+                                    margemMesAnt: 0,
+                                    metaMesAnt: 0,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: 0,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    })
+                    else if(empresasHoje.isEmpty)
+                    ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasOntem.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
                                     empresaNome: empresasOntem[index].empresaNome,
                                     valorHoje: 0,
                                     ticketHoje: 0,
@@ -682,8 +577,8 @@ class _HomePageState extends State<HomePage> {
                         ],
                       );
                     }),
-              if (empresasHoje.isEmpty && empresasOntem.isEmpty)
-                ListView.builder(
+                    if(empresasHoje.isEmpty && empresasOntem.isEmpty && empresasMesAnt.isEmpty)
+                    ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: empresasSemana.length,
@@ -695,11 +590,70 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 children: [
                                   CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
-                                    empresaNome: empresasHoje[index].empresaNome,
+                                    empresaNome: empresasSemana[index].empresaNome,
+                                    valorHoje: 0,
+                                    ticketHoje: 0,
+                                    valorcancelamentosHoje: 0,
+                                    cancelamentosHoje: 0,
+                                    ticketmedioHoje: 0,
+                                    margemHoje: 0,
+                                    metaHoje: 0,
+                                    valorOntem: 0,
+                                    ticketOntem: 0,
+                                    valorcancelamentosOntem: 0,
+                                    cancelamentosOntem: 0,
+                                    ticketmedioOntem: 0,
+                                    margemOntem: 0,
+                                    metaOntem: 0,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: 0,
+                                    ticketMesAnt: 0,
+                                    valorcancelamentosMesAnt: 0,
+                                    cancelamentosMesAnt: 0,
+                                    ticketmedioMesAnt: 0,
+                                    margemMesAnt: 0,
+                                    metaMesAnt: 0,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: 0,
+                                    valorOntem: 0,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    })
+                    else if(empresasHoje.isEmpty && empresasOntem.isEmpty)
+                    ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasSemana.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
+                                    empresaNome: empresasSemana[index].empresaNome,
                                     valorHoje: 0,
                                     ticketHoje: 0,
                                     valorcancelamentosHoje: 0,
@@ -748,11 +702,72 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       );
+                    })
+                    else if(empresasOntem.isEmpty)
+                    ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasHoje.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
+                                    empresaNome: empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    ticketHoje: empresasHoje[index].valortotal.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valortotal,
+                                    cancelamentosHoje: empresasHoje[index].valortotal,
+                                    ticketmedioHoje: empresasHoje[index].valortotal,
+                                    margemHoje: empresasHoje[index].valortotal,
+                                    metaHoje: empresasHoje[index].valortotal,
+                                    valorOntem: 0,
+                                    ticketOntem: 0,
+                                    valorcancelamentosOntem: 0,
+                                    cancelamentosOntem: 0,
+                                    ticketmedioOntem: 0,
+                                    margemOntem: 0,
+                                    metaOntem: 0,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    valorOntem: 0,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
                     }),
-              if (empresasHoje.isEmpty &&
-                  empresasOntem.isEmpty &&
-                  empresasSemana.isEmpty)
-                ListView.builder(
+                    if(empresasHoje.isEmpty && empresasOntem.isEmpty && empresasSemana.isEmpty && empresasMesAnt.isEmpty)
+                    ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: empresasMes.length,
@@ -764,10 +779,6 @@ class _HomePageState extends State<HomePage> {
                               Column(
                                 children: [
                                   CompanyNameButton(
-                                    // url: url,
-                                    // token: token,
-                                    // login: widget.login,
-                                    // image: widget.image,
                                     empresaNome: empresasMes[index].empresaNome,
                                     valorHoje: 0,
                                     ticketHoje: 0,
@@ -784,7 +795,70 @@ class _HomePageState extends State<HomePage> {
                                     margemOntem: 0,
                                     metaOntem: 0,
                                     valorSemana: 0,
-                                    ticketSemana: 0,
+                                    ticketSemana: 0.toInt(),
+                                    valorcancelamentosSemana: 0,
+                                    cancelamentosSemana: 0,
+                                    ticketmedioSemana: 0,
+                                    margemSemana: 0,
+                                    metaSemana: 0,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: 0,
+                                    ticketMesAnt: 0,
+                                    valorcancelamentosMesAnt: 0,
+                                    cancelamentosMesAnt: 0,
+                                    ticketmedioMesAnt: 0,
+                                    margemMesAnt: 0,
+                                    metaMesAnt: 0,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: 0,
+                                    valorOntem: 0,
+                                    valorSemana: 0,
+                                    valorMes: empresasMes[index].valortotal,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    })
+                    else if(empresasHoje.isEmpty && empresasOntem.isEmpty && empresasSemana.isEmpty)
+                    ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasMes.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
+                                    empresaNome: empresasMes[index].empresaNome,
+                                    valorHoje: 0,
+                                    ticketHoje: 0,
+                                    valorcancelamentosHoje: 0,
+                                    cancelamentosHoje: 0,
+                                    ticketmedioHoje: 0,
+                                    margemHoje: 0,
+                                    metaHoje: 0,
+                                    valorOntem: 0,
+                                    ticketOntem: 0,
+                                    valorcancelamentosOntem: 0,
+                                    cancelamentosOntem: 0,
+                                    ticketmedioOntem: 0,
+                                    margemOntem: 0,
+                                    metaOntem: 0,
+                                    valorSemana: 0,
+                                    ticketSemana: 0.toInt(),
                                     valorcancelamentosSemana: 0,
                                     cancelamentosSemana: 0,
                                     ticketmedioSemana: 0,
@@ -817,14 +891,205 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       );
+                    })
+                    else if (empresasSemana.isEmpty)
+                    ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasHoje.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
+                                    empresaNome: empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    ticketHoje: empresasHoje[index].valortotal.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valortotal,
+                                    cancelamentosHoje: empresasHoje[index].valortotal,
+                                    ticketmedioHoje: empresasHoje[index].valortotal,
+                                    margemHoje: empresasHoje[index].valortotal,
+                                    metaHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana: 0,
+                                    ticketSemana: 0.toInt(),
+                                    valorcancelamentosSemana: 0,
+                                    cancelamentosSemana: 0,
+                                    ticketmedioSemana: 0,
+                                    margemSemana: 0,
+                                    metaSemana: 0,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    valorSemana: 0,
+                                    valorMes: empresasMes[index].valortotal,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
                     }),
-              if (empresasHoje.isEmpty &&
-                  empresasOntem.isEmpty &&
-                  empresasMes.isEmpty &&
-                  empresasSemana.isEmpty)
-                Center(
-                  child: Text('Não há dados de vendas'),
-                ),
+                    if(empresasHoje.isEmpty && empresasOntem.isEmpty && empresasSemana.isEmpty && empresasMes.isEmpty && empresasMesAnt.isEmpty)
+                     Center(
+                      child: Text('Não há dados de vendas no momento 😞'),
+                      )
+                      else if(empresasHoje.isEmpty && empresasOntem.isEmpty && empresasSemana.isEmpty && empresasMes.isEmpty)
+                     Center(
+                      child: Text('Não há dados de vendas no momento 😞'),
+                      )
+                    else if(empresasMes.isEmpty)
+                    ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasHoje.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
+                                    empresaNome: empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    ticketHoje: empresasHoje[index].valortotal.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valortotal,
+                                    cancelamentosHoje: empresasHoje[index].valortotal,
+                                    ticketmedioHoje: empresasHoje[index].valortotal,
+                                    margemHoje: empresasHoje[index].valortotal,
+                                    metaHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
+                                    valorMes: 0,
+                                    ticketMes: 0,
+                                    valorcancelamentosMes: 0,
+                                    cancelamentosMes: 0,
+                                    ticketmedioMes: 0,
+                                    margemMes: 0,
+                                    metaMes: 0,
+                                    valorMesAnt: empresasMesAnt[index].valortotal,
+                                    ticketMesAnt: empresasMesAnt[index].ticket.toInt(),
+                                    valorcancelamentosMesAnt: empresasMesAnt[index].valorcancelamentos,
+                                    cancelamentosMesAnt: empresasMesAnt[index].cancelamentos,
+                                    ticketmedioMesAnt: empresasMesAnt[index].ticketmedio,
+                                    margemMesAnt: empresasMesAnt[index].margem,
+                                    metaMesAnt: empresasMesAnt[index].meta,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    valorMes: 0,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
+               if(empresasMesAnt.isEmpty)
+                ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: empresasHoje.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          BranchCard(
+                            children: [
+                              Column(
+                                children: [
+                                  CompanyNameButton(
+                                    empresaNome: empresasHoje[index].empresaNome,
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    ticketHoje: empresasHoje[index].valortotal.toInt(),
+                                    valorcancelamentosHoje: empresasHoje[index].valortotal,
+                                    cancelamentosHoje: empresasHoje[index].valortotal,
+                                    ticketmedioHoje: empresasHoje[index].valortotal,
+                                    margemHoje: empresasHoje[index].valortotal,
+                                    metaHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    ticketOntem: empresasOntem[index].ticket.toInt(),
+                                    valorcancelamentosOntem: empresasOntem[index].valorcancelamentos,
+                                    cancelamentosOntem: empresasOntem[index].cancelamentos,
+                                    ticketmedioOntem: empresasOntem[index].ticketmedio,
+                                    margemOntem: empresasOntem[index].margem,
+                                    metaOntem: empresasOntem[index].meta,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    ticketSemana: empresasSemana[index].ticket.toInt(),
+                                    valorcancelamentosSemana: empresasSemana[index].valorcancelamentos,
+                                    cancelamentosSemana: empresasSemana[index].cancelamentos,
+                                    ticketmedioSemana: empresasSemana[index].ticketmedio,
+                                    margemSemana: empresasSemana[index].margem,
+                                    metaSemana: empresasSemana[index].meta,
+                                    valorMes: empresasMes[index].valortotal,
+                                    ticketMes: empresasMes[index].ticket.toInt(),
+                                    valorcancelamentosMes: empresasMes[index].valorcancelamentos,
+                                    cancelamentosMes: empresasMes[index].cancelamentos,
+                                    ticketmedioMes: empresasMes[index].ticketmedio,
+                                    margemMes: empresasMes[index].margem,
+                                    metaMes: empresasMes[index].meta,
+                                    valorMesAnt: 0,
+                                    ticketMesAnt: 0,
+                                    valorcancelamentosMesAnt: 0,
+                                    cancelamentosMesAnt: 0,
+                                    ticketmedioMesAnt: 0,
+                                    margemMesAnt: 0,
+                                    metaMesAnt: 0,
+                                  ),
+                                  BranchCardContent(
+                                    valorHoje: empresasHoje[index].valortotal,
+                                    valorOntem: empresasOntem[index].valortotal,
+                                    valorSemana: empresasSemana[index].valortotal,
+                                    valorMes: empresasMes[index].valortotal,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+               ),
             ],
           ),
         ),
@@ -925,47 +1190,119 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> fetchDataToday() async {
-    List<CompanySalesMonitor>? fetchedData =
-        await DataServiceToday.fetchDataToday(token, url);
+  Future<void> fetchDataToday({bool? ascending}) async {
+  List<CompanySalesMonitor>? fetchedData =
+      await DataServiceToday.fetchDataToday(token, url, ascending: ascending);
 
-    if (fetchedData != null) {
-      setState(() {
-        empresasHoje = fetchedData;
-      });
+  if (fetchedData != null) {
+    setState(() {
+      empresasHoje = fetchedData;
+
+      // Ordena as outras listas de acordo com a ordem das vendas do dia
+      empresasOntem.sort((a, b) =>
+          empresasHoje.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasHoje.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasSemana.sort((a, b) =>
+          empresasHoje.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasHoje.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasMes.sort((a, b) =>
+          empresasHoje.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasHoje.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasMesAnt.sort((a, b) =>
+          empresasHoje.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasHoje.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
     }
+  );
   }
+}
 
-  Future<void> fetchDataYesterday() async {
+  Future<void> fetchDataYesterday({bool? ascending}) async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServiceYesterday.fetchDataYesterday(token, url);
+        await DataServiceYesterday.fetchDataYesterday(token, url, ascending: ascending);
 
     if (fetchedData != null) {
       setState(() {
         empresasOntem = fetchedData;
-      });
+
+        // Ordena as outras listas de acordo com a ordem das vendas do dia
+      empresasHoje.sort((a, b) =>
+          empresasOntem.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasOntem.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasSemana.sort((a, b) =>
+          empresasOntem.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasOntem.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasMes.sort((a, b) =>
+          empresasOntem.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasOntem.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasMesAnt.sort((a, b) =>
+          empresasOntem.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasOntem.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+      }
+     );
     }
   }
 
-  Future<void> fetchDataWeek() async {
+  Future<void> fetchDataWeek({bool? ascending}) async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServiceWeek.fetchDataWeek(token, url);
+        await DataServiceWeek.fetchDataWeek(token, url, ascending: ascending);
 
     if (fetchedData != null) {
       setState(() {
         empresasSemana = fetchedData;
-      });
+
+         // Ordena as outras listas de acordo com a ordem das vendas do dia
+      empresasHoje.sort((a, b) =>
+          empresasSemana.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasSemana.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasOntem.sort((a, b) =>
+          empresasSemana.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasSemana.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasMes.sort((a, b) =>
+          empresasSemana.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasSemana.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasMesAnt.sort((a, b) =>
+          empresasSemana.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasSemana.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+      }
+     );
     }
   }
 
-  Future<void> fetchDataMonth() async {
+  Future<void> fetchDataMonth({bool? ascending}) async {
     List<CompanySalesMonitor>? fetchedData =
-        await DataServiceMonth.fetchDataMonth(token, url);
+        await DataServiceMonth.fetchDataMonth(token, url, ascending: ascending);
 
     if (fetchedData != null) {
       setState(() {
         empresasMes = fetchedData;
-      });
+
+         // Ordena as outras listas de acordo com a ordem das vendas do dia
+      empresasHoje.sort((a, b) =>
+          empresasMes.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasMes.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasOntem.sort((a, b) =>
+          empresasMes.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasMes.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasSemana.sort((a, b) =>
+          empresasMes.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasMes.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+
+      empresasMesAnt.sort((a, b) =>
+          empresasMes.indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
+          .compareTo(empresasMes.indexWhere((empresa) => empresa.empresaNome == b.empresaNome)));
+      }
+     );
     }
   }
 

@@ -25,7 +25,7 @@ class _FormCardState extends State<FormCard> {
           Image.network(
                 'https://bdc.ideiatecnologia.com.br/wp/wp-content/uploads/2024/02/IDEIA-LOGO-AZUL-e1707321339855.png',
                 color: Style.primaryColor,
-                height: 75,
+                height: Style.logoSize(context),
               ),
               //Área do container com os widgets de form.
           Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/front/components/style.dart';
 
 class TextSolicitacion extends StatefulWidget {
   final String text;
@@ -17,7 +18,7 @@ class _TextSolicitacionState extends State<TextSolicitacion> {
         //Texto que será exibido está sendo definido na página em que este widget está sendo chamado
         widget.text,
         style: TextStyle(
-          fontSize: 12,
+          fontSize: Style.TextSolicitacionSize(context),
         ),
         textAlign: TextAlign.center,
       ),

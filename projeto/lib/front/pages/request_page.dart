@@ -44,11 +44,10 @@ class _RequestPageState extends State<RequestPage> {
     _loadSavedUrl();
     _loadSavedToken();
     _loadSavedLogin();
-    _loadSavedImage(); 
+    _loadSavedImage();
     _loadSavedUrlBasic();
     _loadSavedEmail();
     loadData();
-
   }
 
   @override
@@ -67,7 +66,12 @@ class _RequestPageState extends State<RequestPage> {
     if (isLoading) {
       return Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: Container(
+              height: Style.CircularProgressIndicatorWidth(context),
+              width: Style.CircularProgressIndicatorWidth(context),
+              child: CircularProgressIndicator(
+                strokeWidth: Style.CircularProgressIndicatorSize(context),
+              )),
         ),
       );
     }
@@ -80,10 +84,7 @@ class _RequestPageState extends State<RequestPage> {
                   children: [
                     Navbar(children: [
                       NavbarButton(
-                        destination: HomePage(
-                          // url: widget.url,
-                          // token: widget.token,
-                        ),
+                        destination: HomePage(),
                         Icons: Icons.arrow_back_ios_new,
                       ),
                     ], text: 'Solicitações'),
@@ -104,14 +105,14 @@ class _RequestPageState extends State<RequestPage> {
                     Navbar(children: [
                       NavbarButton(
                         destination: HomePage(
-                          // url: widget.url,
-                          // token: widget.token,
-                        ),
+                            // url: widget.url,
+                            // token: widget.token,
+                            ),
                         Icons: Icons.arrow_back_ios_new,
                       ),
                     ], text: 'Solicitações'),
                     SizedBox(
-                      height: Style.ContentInternalSpace,
+                      height: Style.height_10(context),
                     ),
                     Spacer(),
                     ListView.builder(
@@ -162,7 +163,7 @@ class _RequestPageState extends State<RequestPage> {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: Style.ContentInternalSpace,
+                                      height: Style.height_10(context),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -178,7 +179,7 @@ class _RequestPageState extends State<RequestPage> {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: 10,
+                                      height: Style.height_10(context),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -199,7 +200,7 @@ class _RequestPageState extends State<RequestPage> {
                                       ],
                                     ),
                                     SizedBox(
-                                      height: Style.ContentInternalButtonSpace,
+                                      height: Style.height_30(context),
                                     ),
                                     Row(
                                       mainAxisAlignment:
@@ -255,7 +256,7 @@ class _RequestPageState extends State<RequestPage> {
     });
   }
 
-   Future<void> _loadSavedToken() async {
+  Future<void> _loadSavedToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String savedToken = await sharedPreferences.getString('token') ?? '';
     setState(() {

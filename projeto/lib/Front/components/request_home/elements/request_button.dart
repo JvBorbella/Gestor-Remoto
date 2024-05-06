@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/front/components/style.dart';
 import 'package:projeto/front/pages/request_page.dart';
 
 class RequestButton extends StatefulWidget {
@@ -27,11 +28,16 @@ class _RequestButtonState extends State<RequestButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Container(
+      child: TextButton(
+         onPressed: () {
+                //Método para verificar se há requisições ou não.
+                checkRequisitionsAndNavigate(context);
+              },
+        child: Container(
         decoration: BoxDecoration(
           //Estilização
-          border: Border.all(width: 2, color: Color(0xff42B9F0)),
-          borderRadius: BorderRadius.circular(5),
+          border: Border.all(width: Style.height_2(context), color: Color(0xff42B9F0)),
+          borderRadius: BorderRadius.circular(Style.height_5(context)),
         ),
         //Conteúdo interno do button
         child: Column(
@@ -51,16 +57,18 @@ class _RequestButtonState extends State<RequestButton> {
                 style: TextStyle(
                   color: Color(0xff42b9f0),
                   fontWeight: FontWeight.bold,
-                  fontSize: 12,
+                  fontSize: Style.TextRequestButtonHeight(context),
                 ),
               ),
             ),
           ],
         ),
         //Tamanho e espaçamento
-        width: 160,
+        width: Style.RequestButtonWidth(context),
+        height: Style.RequestButtonHeight(context),
         padding: EdgeInsets.all(0),
       ),
+        ) 
     );
   }
 
@@ -75,10 +83,11 @@ class _RequestButtonState extends State<RequestButton> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
+          padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
           content: Text(
             'Não há nenhuma solicitação no momento!',
             style: TextStyle(
-              fontSize: 13,
+              fontSize: Style.SaveUrlMessageSize(context),
             ),
           ),
         ),

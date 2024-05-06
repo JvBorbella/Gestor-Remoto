@@ -40,7 +40,7 @@ class LoginFunction {
           'auth-pass': md5Password,
         },
       );
-
+      print(md5Password);
       print(response.statusCode);
 
       //Caso o servidor aceite a conexão, o token será resgatado no json e armazenado no sharedpreferences.
@@ -58,27 +58,23 @@ class LoginFunction {
         await sharedPreferences.setString('url', '$url/ideia/secure');
         await sharedPreferences.setString('urlBasic', url);
         await sharedPreferences.setString('email', email);
+        print(token);
         
         // Feito o processo acima, a função redireciona para a página Home(), passando para ela os dados que serão utilizados.
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-                builder: (context) => HomePage(
-                    // url: '$url/ideia/secure', // URL montada.
-                    // urlBasic: url, // URL base passada na página de Config().
-                    // token: token, // Token resgatado após o login.
-                    // login: login.toString(), // Passando o login para a HomePage
-                    // image: image.toString(), // Passando o image para a HomePage
-              ),
+                builder: (context) => HomePage(),
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               behavior: SnackBarBehavior.floating,
+              padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
               content: Text(
                 responseBody['message'],
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: Style.SaveUrlMessageSize(context),
                   color: Style.tertiaryColor,
                 ),
               ),
@@ -90,10 +86,11 @@ class LoginFunction {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
+            padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
             content: Text(
               'Sem conexão com o servidor!',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: Style.SaveUrlMessageSize(context),
                 color: Style.tertiaryColor,
               ),
             ),
@@ -104,10 +101,11 @@ class LoginFunction {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
+            padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
             content: Text(
               'Não foi possível conectar-se dentro do tempo limite!',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: Style.SaveUrlMessageSize(context),
                 color: Style.tertiaryColor,
               ),
             ),
@@ -118,10 +116,11 @@ class LoginFunction {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
+            padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
             content: Text(
               'Não foi possível conectar-se dentro do tempo limite!',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: Style.SaveUrlMessageSize(context),
                 color: Style.tertiaryColor,
               ),
             ),
@@ -132,10 +131,11 @@ class LoginFunction {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
+            padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
             content: Text(
               'Ocorreu um erro inesperado com o servidor!',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: Style.SaveUrlMessageSize(context),
                 color: Style.tertiaryColor,
               ),
             ),
@@ -146,10 +146,11 @@ class LoginFunction {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
+            padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
             content: Text(
               'Não foi possível iniciar a sessão!',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: Style.SaveUrlMessageSize(context),
                 color: Style.tertiaryColor,
               ),
             ),
@@ -162,10 +163,11 @@ class LoginFunction {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
+          padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
           content: Text(
             'Não foi possível iniciar a sessão',
             style: TextStyle(
-              fontSize: 13,
+              fontSize: Style.SaveUrlMessageSize(context),
               color: Style.tertiaryColor,
             ),
           ),

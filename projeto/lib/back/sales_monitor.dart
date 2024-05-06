@@ -52,6 +52,7 @@ class DataServiceSalesMonitor {
           'auth-token': token, //Passando o token na header para a requisição ser aceita.
         },
       );
+      print(urlPost);
 
       if (response.statusCode == 200) { //Caso a conexão seja aceita, a variável jsonData acessará o json e resgatará os dados.
         var jsonData = json.decode(response.body);

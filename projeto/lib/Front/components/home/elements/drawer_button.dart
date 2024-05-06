@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 import 'package:projeto/front/components/home/elements/modal_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,157 +38,172 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     return Material(
       child: Drawer(
-        // width: MediaQuery.of(context).size.width * 0.8,
-        child: Column(
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  UserAccountsDrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Style.primaryColor,
-                    ),
-                    currentAccountPictureSize:
-                        Size(MediaQuery.of(context).size.width * 0.8, 50),
-                    currentAccountPicture: Container(
-                      // padding: EdgeInsets.only(bottom: 30),
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                        // padding: EdgeInsets.all(10),
-                        onPressed: _closeDrawer,
-                        icon: Icon(Icons.close),
-                        style: ButtonStyle(
-                          iconColor:
-                              MaterialStatePropertyAll(Style.tertiaryColor),
+          // width: MediaQuery.of(context).size.width * 0.8,
+          child: Column(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Container(
+                  // height: Style.DrawerHeaderSize(context),
+                  decoration: BoxDecoration(color: Style.primaryColor),
+                  child: Container(
+                    padding: EdgeInsets.all(Style.PaddingContainerDrawerHeader(context)),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: _closeDrawer,
+                              icon: Icon(Icons.close),
+                              iconSize: Style.IconCloseDrawerSize(context),
+                              alignment: Alignment.topRight,
+                              style: ButtonStyle(
+                                iconColor: MaterialStatePropertyAll(
+                                    Style.tertiaryColor),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                    accountEmail: Row(
-                      children: [
-                        Container(
-                          child: ModalButton(),
-                          width: 50,
-                        )
-                      ],
-                    ),
-                    accountName: Row(
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 70,
-                          // decoration: BoxDecoration(shape: BoxShape.circle),
-                          child: ClipOval(
-                            child: image.isNotEmpty
-                                ? Image.network(
-                                    urlBasic + image,
-                                    alignment: Alignment.center,
-                                    fit: BoxFit.fill,
-                                    filterQuality: FilterQuality.high,
-                                  ) // Exibe a imagem
-                                : Image.network(
-                                    'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
-                                    color: Style.tertiaryColor,
-                                    alignment: Alignment.center,
-                                    fit: BoxFit.fill,
-                                    filterQuality: FilterQuality.high,
+                        // SizedBox(
+                        //   height: Style.SalesCardSpace(context),
+                        // ),
+                        Row(
+                          children: [
+                            Column(
+                              children: [
+                                Padding(padding: EdgeInsets.only(left: Style.height_25(context))),
+                                Container(
+                                  width: Style.AccountNameWidth(context),
+                                  height: Style.AccountNameWidth(context),
+                                  // decoration: BoxDecoration(shape: BoxShape.circle),
+                                  child: ClipOval(
+                                    child: image.isNotEmpty
+                                        ? Image.network(
+                                            urlBasic + image,
+                                            alignment: Alignment.center,
+                                            fit: BoxFit.fill,
+                                            filterQuality: FilterQuality.high,
+                                          ) // Exibe a imagem
+                                        : Image.network(
+                                            'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                                            color: Style.tertiaryColor,
+                                            alignment: Alignment.center,
+                                            fit: BoxFit.fill,
+                                            filterQuality: FilterQuality.high,
+                                          ),
                                   ),
-                          ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Olá, ' + login + '!',
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins-Medium',
+                                        fontSize: Style.LoginFontSize(context),
+                                        color: Style.tertiaryColor,
+                                      ),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      email,
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins-Medium',
+                                        fontSize: Style.EmailFontSize(context),
+                                        color: Style.tertiaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
                         ),
                         SizedBox(
-                          width: 5,
+                          height: Style.ModalButtonSpace(context),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
                           children: [
-                            Text(
-                              'Olá, ' + login + '!',
-                              style: TextStyle(
-                                fontFamily: 'Poppins-Medium',
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
-                            Text(
-                              email,
-                              style: TextStyle(
-                                fontFamily: 'Poppins-Medium',
-                                fontSize: 8,
-                              ),
+                            // Padding(padding: EdgeInsets.only(left: Style.ModalButtonPadding(context))),
+                            Container(
+                              height: Style.ModalButtonHeight(context),
+                              width: Style.ModalButtonWidth(context),
+                              child: ModalButton(),
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            ListBody(
-              children: [
-                Container(
-                  // padding: EdgeInsets.only(left: 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Navigator.of(context)
-                          //     .push(MaterialPageRoute(
-                          //   builder: (context) => HomePage()));
-                        },
-                        child: Text(
-                          'Promoções',
-                          style: TextStyle(
-                              color: Style.primaryColor,
-                              fontSize: 15,
-                              fontFamily: 'Poppins-Medium'),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Navigator.of(context)
-                          //     .push(MaterialPageRoute(
-                          //   builder: (context) => HomePage()));
-                        },
-                        child: Text(
-                          'Produtos negativos',
-                          style: TextStyle(
-                              color: Style.primaryColor,
-                              fontSize: 15,
-                              fontFamily: 'Poppins-Medium'),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Navigator.of(context)
-                          //     .push(MaterialPageRoute(
-                          //   builder: (context) => HomePage()));
-                        },
-                        child: Text(
-                          'Funcionários escalados',
-                          style: TextStyle(
-                              color: Style.primaryColor,
-                              fontSize: 15,
-                              fontFamily: 'Poppins-Medium'),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                ),
               ],
-            )
-          ],
-        ),
-      ),
+            ),
+          ),
+          ListBody(
+            children: [
+              Container(
+                // padding: EdgeInsets.only(left: 15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: Style.ButtonDrawerSpace(context),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Promoções',
+                        style: TextStyle(
+                            color: Style.primaryColor,
+                            fontSize: Style.ButtonDrawerSize(context),
+                            fontFamily: 'Poppins-Medium'),
+                      ),
+                    ),
+                    SizedBox(
+                      height: Style.ButtonDrawerSpace(context),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Produtos negativos',
+                        style: TextStyle(
+                            color: Style.primaryColor,
+                            fontSize: Style.ButtonDrawerSize(context),
+                            fontFamily: 'Poppins-Medium'),
+                      ),
+                    ),
+                    SizedBox(
+                      height: Style.ButtonDrawerSpace(context),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Funcionários escalados',
+                        style: TextStyle(
+                            color: Style.primaryColor,
+                            fontSize: Style.ButtonDrawerSize(context),
+                            fontFamily: 'Poppins-Medium'),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      )),
     );
   }
 

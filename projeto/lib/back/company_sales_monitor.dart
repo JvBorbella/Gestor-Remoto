@@ -46,7 +46,8 @@ class CompanySalesMonitor {
 //Classe onde será feita a requisição e acessado o json para serem resgatados os dados a serem utilizados.
 class DataServiceToday {
   static Future<List<CompanySalesMonitor>?> fetchDataToday(
-      String token, String url) async {
+      String token, String url, {bool? ascending}) async {
+
     List<CompanySalesMonitor>?
         empresasHoje; //Dados serão retornados em lista, para retornarem todos os dados de cada campo.
 
@@ -62,6 +63,7 @@ class DataServiceToday {
           'auth-token': token,
         },
       );
+      print(urlPost);
 
       if (response.statusCode == 200) {
         //Se a conexão for aceita, o json será acessado e resgatados os dados.
@@ -75,9 +77,18 @@ class DataServiceToday {
                   as List) //Os dados serão passados em lista para empresasHoje.
               .map((e) => CompanySalesMonitor.fromJson(e))
               .toList();
+
+               empresasHoje.sort((a, b) {
+            if (ascending!) {
+              return a.valortotal.compareTo(b.valortotal);
+            } else {
+              return b.valortotal.compareTo(a.valortotal);
+            }
+          });
+
         } else {
           //Caso não sejam encontrados os campos no caminho fornecido, será exibida a mensagem no console:
-          print('Dados ausentes no JSON.');
+          print('Dados ausentes no JSON. TODAY');
         }
       }
     } catch (e) {
@@ -91,7 +102,7 @@ class DataServiceToday {
 //Classe onde será acessado o json e resgatados os dados.
 class DataServiceYesterday {
   static Future<List<CompanySalesMonitor>?> fetchDataYesterday(
-      String token, String url) async {
+      String token, String url, {bool? ascending}) async {
     List<CompanySalesMonitor>?
         empresasOntem; //Os dados serão passados como lista para essa instância.
 
@@ -106,6 +117,7 @@ class DataServiceYesterday {
           'auth-token': token, //Passando o token na header da requisição.
         },
       );
+      print(urlPost);
 
 //Caso retorne status 200, a variável jsonData acessará o json e atribuirá os dados à empresasOntem caso sejam encontrados pelo caminho fornecido.
       if (response.statusCode == 200) {
@@ -117,8 +129,17 @@ class DataServiceYesterday {
           empresasOntem = (jsonData['data']['monitorvendasempresas'] as List)
               .map((e) => CompanySalesMonitor.fromJson(e))
               .toList();
+
+                empresasOntem.sort((a, b) {
+            if (ascending!) {
+              return a.valortotal.compareTo(b.valortotal);
+            } else {
+              return b.valortotal.compareTo(a.valortotal);
+            }
+          });
+
         } else {
-          print('Dados ausentes no JSON.');
+          print('Dados ausentes no JSON. YESTERDAY');
         }
       }
     } catch (e) {
@@ -131,7 +152,7 @@ class DataServiceYesterday {
 //Classe onde será acessado o json e resgatados os dados.
 class DataServiceWeek {
   static Future<List<CompanySalesMonitor>?> fetchDataWeek(
-      String token, String url) async {
+      String token, String url, {bool? ascending}) async {
     //Os dados serão retornados em lista, pois podem haver mais de um dado para os campo.
     List<CompanySalesMonitor>? empresasSemana;
 
@@ -147,6 +168,7 @@ class DataServiceWeek {
               token, //Passando o token na header para a requisição ser aceita.
         },
       );
+      print(urlPost);
 
       //Caso a resposta seja 200, a variável jsonData acessará o json e buscará os dados através do caminho informado.
       if (response.statusCode == 200) {
@@ -158,9 +180,17 @@ class DataServiceWeek {
           empresasSemana = (jsonData['data']['monitorvendasempresas'] as List)
               .map((e) => CompanySalesMonitor.fromJson(e))
               .toList(); // Caso sejam encontrados, serão passados como uma lista para a instância empresasSemana.
+
+                empresasSemana.sort((a, b) {
+            if (ascending!) {
+              return a.valortotal.compareTo(b.valortotal);
+            } else {
+              return b.valortotal.compareTo(a.valortotal);
+            }
+          });
           //Caso não sejam encontrados, exibirá essa mensagem no console.
         } else {
-          print('Dados ausentes no JSON.');
+          print('Dados ausentes no JSON. WEEK');
         }
       }
       //Se a tentativa de requisição não for aceita, o erro será exibido no console.
@@ -174,7 +204,7 @@ class DataServiceWeek {
 //Classe com a função para resgatar os dados no json.
 class DataServiceMonth {
   static Future<List<CompanySalesMonitor>?> fetchDataMonth(
-      String token, String url) async {
+      String token, String url, {bool? ascending}) async {
     //Estes dados serão retornados em listas, pois podem haver mais de um dado para um campo.
     List<CompanySalesMonitor>? empresasMes;
 
@@ -189,6 +219,7 @@ class DataServiceMonth {
               token, //Passando o token na header para a requisição ser aceita.
         },
       );
+      print(urlPost);
 
       //Caso seja aceita, a variável jsonData acessará o json fornecido pela requisição e encontrará os campos através do caminho informado.
       if (response.statusCode == 200) {
@@ -200,9 +231,17 @@ class DataServiceMonth {
           empresasMes = (jsonData['data']['monitorvendasempresas'] as List)
               .map((e) => CompanySalesMonitor.fromJson(e))
               .toList();
+
+                empresasMes.sort((a, b) {
+            if (ascending!) {
+              return a.valortotal.compareTo(b.valortotal);
+            } else {
+              return b.valortotal.compareTo(a.valortotal);
+            }
+          });
           //Caso não sejam encontrados dados neste caminho, a seguinte mensagem será exibida no console.
         } else {
-          print('Dados ausentes no JSON.');
+          print('Dados ausentes no JSON. MONTH');
         }
       }
       //Caso ocorra algum erro na requisição post, o mesmo será exibido no console.
@@ -231,6 +270,7 @@ class DataServicePrevMonth {
               token, //Passando o token na header para a requisição ser aceita.
         },
       );
+      print(urlPost);
 
       //Caso seja aceita, a variável jsonData acessará o json fornecido pela requisição e encontrará os campos através do caminho informado.
       if (response.statusCode == 200) {
@@ -244,7 +284,7 @@ class DataServicePrevMonth {
               .toList();
           //Caso não sejam encontrados dados neste caminho, a seguinte mensagem será exibida no console.
         } else {
-          print('Dados ausentes no JSON.');
+          print('Dados ausentes no JSON. PREV. MONTH');
         }
       }
       //Caso ocorra algum erro na requisição post, o mesmo será exibido no console.

@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                     FormCard(
                       children: [
                         SizedBox(
-                          height: Style.ImageToInputSpace,
+                          height: Style.height_50(context),
                         ),
                         Input(
                           text: 'Usuário',
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         SizedBox(
-                          height: Style.inputSpace,
+                          height: Style.InputSpace(context),
                         ),
                         Input(
                           text: 'Senha',
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _passwordController,
                         ),
                         SizedBox(
-                          height: Style.InputToButtonSpace,
+                          height: Style.InputToButtonSpace(context),
                         ),
                         ActionButton(
                           text: 'Entrar',
@@ -136,12 +136,15 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             }
                           },
-                          height: MediaQuery.of(context).size.width * 0.05,
+                          height: Style.ActionButtonSize(context),
+                        ),
+                        SizedBox(
+                          height: Style.ButtonToButtonSpaceHeight(context),
                         ),
                         SimpleButton(
                           text: 'Configurar',
                           destination: ConfigPage(initialUrl: url),
-                          height: MediaQuery.of(context).size.width * 0.05,
+                          height: Style.ActionButtonSize(context),
                         ),
                       ],
                     ),

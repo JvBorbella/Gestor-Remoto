@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 import 'package:projeto/Front/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,10 +14,11 @@ class SaveUrlFunction {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
+        padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
         content: Text(
           'IP salvo com sucesso!',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: Style.SaveUrlMessageSize(context),
           ),
         ),
         backgroundColor: Style.sucefullColor,

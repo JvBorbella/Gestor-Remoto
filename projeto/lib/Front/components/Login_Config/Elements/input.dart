@@ -42,7 +42,7 @@ class _InputState extends State<Input> {
     return Material(
       child: ConstrainedBox(
         constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+            BoxConstraints(maxWidth: 1200),
         child: Container(
           margin: EdgeInsets.only(left: 5.0, right: 5),
           child: Column(
@@ -71,9 +71,6 @@ class _InputState extends State<Input> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                // onChanged: (text) {
-                //   print('Texto digitado: $text');
-                // },
               ),
             ],
           ),

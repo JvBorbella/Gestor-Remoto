@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 import 'package:projeto/front/components/sales/elements/text_card_sales.dart';
 
 class TodayValues extends StatefulWidget {
@@ -65,11 +65,11 @@ class _TodayValuesState extends State<TodayValues> {
                         children: [
                           TextCardSales(
                               text: currencyFormat.format(widget.metaHoje)),
-                              SizedBox(width: 2,),
+                              SizedBox(width: Style.height_2(context),),
                           Icon(
                             Icons.verified,
                             color: Style.sucefullColor,
-                            size: 16,
+                            size: Style.IconVerifiedSize(context),
                           )
                         ],
                       )
@@ -82,7 +82,7 @@ class _TodayValuesState extends State<TodayValues> {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: Style.height_30(context),
             ),
             //Segunda linha
             Row(
@@ -112,43 +112,8 @@ class _TodayValuesState extends State<TodayValues> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: Style.height_20(context),
             ),
-            //Linha divisória
-            // Divider(
-            //   color: Style.quarantineColor, // Cor da linha
-            //   height: 20, // Altura da linha
-            //   thickness: 2,
-            // ),
-            // SizedBox(
-            //   height: 0,
-            // ),
-            // //Valores de metas
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta de hoje',
-            //           style:
-            //               TextStyle( color: Style.quarantineColor),
-            //         ),
-            //         TextCardSales(text: '(Valor)')
-            //       ],
-            //     ),
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta acum.',
-            //           style:
-            //               TextStyle( color: Style.quarantineColor),
-            //         ),
-            //         TextCardSales(text: '(Valor)')
-            //       ],
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

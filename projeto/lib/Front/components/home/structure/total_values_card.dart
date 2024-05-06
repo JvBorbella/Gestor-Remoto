@@ -40,7 +40,7 @@ class _TotalValuesCardState extends State<TotalValuesCard> {
         //Estilização
         decoration: BoxDecoration(
           color: Style.primaryColor,
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(Style.height_10(context)),
         ),
         child: Column(
           //Conteúdo interno do card
@@ -62,7 +62,7 @@ class _TotalValuesCardState extends State<TotalValuesCard> {
           ],
         ),
         //espaçamento interno
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(Style.height_10(context)),
         width: MediaQuery.of(context).size.width * 0.41,
       ),
     );

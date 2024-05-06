@@ -18,7 +18,7 @@ class _NavbarState extends State<Navbar> {
     return Material(
       child: Container(
         color: Style.primaryColor,
-        height: 50,
+        height: Style.NavbarSize(context),
         //Stack usado para que os elementos se sobreponham e seus respectivos tamanhos não influenciem no alinhamento
         child: Stack(
           children: [
@@ -37,6 +37,7 @@ class _NavbarState extends State<Navbar> {
                   style: TextStyle(
                     //Estilização do texto.
                     color: Style.tertiaryColor,
+                    fontSize: Style.TextNavbarSize(context)
                     // fontSize: 16,
                   ),
                   textAlign: TextAlign.center,

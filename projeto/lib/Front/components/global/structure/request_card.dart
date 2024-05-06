@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 
 class RequestCard extends StatefulWidget {
   //Variável para permitir preencher o card com objetos externos
@@ -23,14 +23,14 @@ class _RequestCardState extends State<RequestCard> {
         children: [
           Container(
             //Espaçamento entre o card e as bordas
-            margin: EdgeInsets.only(right: 20.0, left: 20.0),
+            margin: EdgeInsets.only(right: Style.height_20(context), left: Style.height_20(context)),
             //Estilização
             decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Style.primaryColor),
-              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(width: Style.height_1(context), color: Style.primaryColor),
+              borderRadius: BorderRadius.circular(Style.height_10(context)),
             ),
             //Espaçamento interno do card
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(Style.height_10(context)),
             child: Column(
               //Coluna para agrupar os objetos que serão chamado através da variável
               children: [
@@ -46,9 +46,6 @@ class _RequestCardState extends State<RequestCard> {
                 ),
               ],
             ),
-          ),
-          SizedBox(
-            height: 15,
           ),
         ],
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/Front/components/style.dart';
 
 class TextSplash extends StatefulWidget {
   final String text;
@@ -58,7 +58,7 @@ class _TextSplashState extends State<TextSplash> {
         child: Text(
           widget.text,
           style: TextStyle(
-            fontSize: 30,
+            fontSize: Style.TextSplashSize(context),
             fontWeight: FontWeight.w300,
             color: Style.primaryColor,
           ),

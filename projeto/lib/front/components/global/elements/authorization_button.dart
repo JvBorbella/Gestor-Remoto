@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/front/components/style.dart';
 
 class AuthorizationButton extends StatefulWidget {
   //Variável para definir o texto do button na página em que está sendo chamado
@@ -31,8 +32,8 @@ class _AuthorizationButtonState extends State<AuthorizationButton> {
       child: Container(
         //Estilização do button
         decoration: BoxDecoration(
-          border: Border.all(width: 2, color: Color(0xff42B9F0)),
-          borderRadius: BorderRadius.circular(5),
+          border: Border.all(width: Style.WidthBorderImageContainer(context), color: Color(0xff42B9F0)),
+          borderRadius: BorderRadius.circular(Style.BorderAuthorizationButtonCircular(context)),
         ),
         child: Column(
           //Alinhamento interno
@@ -52,14 +53,15 @@ class _AuthorizationButtonState extends State<AuthorizationButton> {
                 style: TextStyle(
                   color: Color(0xff42b9f0),
                   fontWeight: FontWeight.bold,
-                  fontSize: 12,
+                  fontSize: Style.TextRequestButtonHeight(context),
                 ),
               ),
             ),
           ],
         ),
         //Tamanho do button
-        width: 160,
+        width: Style.RequestButtonWidth(context),
+        height: Style.RequestButtonHeight(context),
         padding: EdgeInsets.all(0),
       ),
     );

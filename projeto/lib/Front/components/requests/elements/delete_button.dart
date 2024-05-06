@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/front/components/style.dart';
 
 class DeleteButton extends StatefulWidget {
-  // final String token;
-  // final String url;
-  // final String liberacaoremotaId;
-  // final String message;
   final onPressed;
 
   const DeleteButton({
     Key? key,
-    // required this.token,
-    // required this.url,
-    // required this.liberacaoremotaId,
-    // required this.message,
+
     this.onPressed,
   }) : super(key: key);
 
@@ -39,6 +33,7 @@ class _DeleteButtonState extends State<DeleteButton> {
               child: Icon(
                 Icons.delete, // Ícone padrão de três pontos
                 color: const Color.fromARGB(255, 197, 28, 28), // Cor do ícone
+                size: Style.DeleteButtonSize(context),
               ),
             )
           ],

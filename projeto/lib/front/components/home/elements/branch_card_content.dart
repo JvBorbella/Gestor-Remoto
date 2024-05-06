@@ -51,7 +51,12 @@ class _BranchCardContentState extends State<BranchCardContent> {
                       'Hoje',
                       style: TextStyle(color: Style.quarantineColor),
                     ),
-                    DayValues(text: currencyFormat.format(widget.valorHoje.toInt()))
+                     if (widget.valorHoje == 0)
+                      DayValues(
+                          text: currencyFormat.format(widget.valorHoje.toInt()))
+                    else
+                      DayValues(
+                          text: currencyFormat.format(widget.valorHoje.toInt())),
                   ],
                 ),
                 Column(
@@ -102,7 +107,6 @@ class _BranchCardContentState extends State<BranchCardContent> {
                     Text(
                       'Vendas no mês',
                       style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
                           color: Style.quarantineColor),
                     ),
                     if (widget.valorMes == 0)

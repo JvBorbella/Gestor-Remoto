@@ -56,7 +56,7 @@ class _ConfigPageState extends State<ConfigPage> {
                     FormCard(
                       children: [
                         SizedBox(
-                          height: Style.ImageToInputSpace,
+                          height: Style.height_50(context),
                         ),
                         //Chamando elementos para dentro do container
                         Input(
@@ -66,7 +66,7 @@ class _ConfigPageState extends State<ConfigPage> {
                           controller: urlController,
                         ),
                         SizedBox(
-                          height: Style.InputToButtonSpace,
+                          height: Style.height_50(context),
                         ),
                         Column(
                           children: [
@@ -82,11 +82,10 @@ class _ConfigPageState extends State<ConfigPage> {
                                     saveUrlFunction.saveUrlFunction(
                                         context, urlController.text);
                                   },
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.05,
+                                  height: Style.ActionButtonSize(context),
                                 ),
                                 SizedBox(
-                                  width: Style.ButtonSpace,
+                                  width: Style.ButtonToButtonSpaceWidth(context),
                                 ),
                                 ActionButton(
                                   text: 'Voltar',
@@ -99,8 +98,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                       ),
                                     );
                                   },
-                                  height:
-                                      MediaQuery.of(context).size.width * 0.05,
+                                  height: Style.ActionButtonSize(context),
                                 ),
                               ],
                             ),

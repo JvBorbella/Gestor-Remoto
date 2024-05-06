@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 
 class Informations extends StatefulWidget {
   final url;
@@ -45,23 +45,23 @@ class _InformationsState extends State<Informations> {
                             ) // Exibe a imagem
                           : Image.network(
                               'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
-                              width: 70,
-                              height: 70,
+                              width: Style.ImageProfileRequestSize(context),
+                              height: Style.ImageProfileRequestSize(context),
                               color: Style.primaryColor,
                               fit: BoxFit.cover,
                             ),
                     ),
-                    width: 50,
-                    height: 50,
+                    width: Style.ContainerImageProfileRequestSize(context),
+                    height: Style.ContainerImageProfileRequestSize(context),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(Style.BorderRadiusContainerImage(context)),
                         border:
-                            Border.all(width: 2, color: Style.primaryColor)),
+                            Border.all(width: Style.WidthBorderImageContainer(context), color: Style.primaryColor)),
                   ),
                 ],
               ),
               SizedBox(
-                width: 10, // Espaçamento entre a imagem e os outros elementos
+                width: Style.height_10(context), // Espaçamento entre a imagem e os outros elementos
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -73,7 +73,7 @@ class _InformationsState extends State<Informations> {
                       widget.usuarioLogin,
                       style: TextStyle(
                         color: Style.primaryColor,
-                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontSize: Style.UserLoginSize(context),
                         fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow
@@ -88,7 +88,7 @@ class _InformationsState extends State<Informations> {
                       widget.empresaNome,
                       style: TextStyle(
                         color: Style.primaryColor,
-                        fontSize: MediaQuery.of(context).size.width * 0.025,
+                        fontSize: Style.UserCompanySize(context),
                         fontWeight: FontWeight.bold,
                       ),
                       overflow: TextOverflow.clip, // corta o texto no limite da largura

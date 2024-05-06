@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 
 class YesterdayDetails extends StatefulWidget {
   final int ticketOntem;
@@ -19,7 +19,7 @@ class YesterdayDetails extends StatefulWidget {
 }
 
 class _YesterdayDetailsState extends State<YesterdayDetails> {
-  NumberFormat currencyFormat =
+   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
   @override
@@ -37,12 +37,14 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                 children: [
                   Container(
                       //Estilização
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
-                          color: Style.primaryColor,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(5),
-                              bottomRight: Radius.circular(5))),
+                        color: Style.primaryColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(Style.height_2(context)),
+                            bottomRight: Radius.circular(Style.height_2(context))),
+                            border: Border.all(color: Style.primaryColor)
+                      ),
                       child: Column(
                         children: [
                           Container(
@@ -56,7 +58,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 8,
+                                          fontSize: Style.TextDetailsSize(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -64,14 +66,14 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       (currencyFormat.format(widget.ticketmedioOntem)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 12,
+                                          fontSize: Style.height_12(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: Style.height_10(context),
                                 ),
                                 Column(
                                   children: [
@@ -79,7 +81,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 8,
+                                          fontSize: Style.TextDetailsSize(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -87,14 +89,14 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       '${widget.margemOntem.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 12,
+                                          fontSize: Style.height_12(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: Style.height_10(context),
                                 ),
                                 Column(
                                   children: [
@@ -102,7 +104,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 8,
+                                          fontSize: Style.TextDetailsSize(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -110,7 +112,6 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       widget.ticketOntem.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

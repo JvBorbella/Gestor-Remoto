@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 import 'package:projeto/front/pages/sales_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,10 +10,6 @@ class CompanyNameButton extends StatefulWidget {
   final double valorSemana;
   final double valorMes;
   final double valorMesAnt;
-  // final String url;
-  // final token;
-  // final login;
-  // final image;
   final int ticketHoje;
   final int ticketOntem;
   final int ticketSemana;
@@ -48,10 +44,6 @@ class CompanyNameButton extends StatefulWidget {
   const CompanyNameButton({
     Key? key,
     required this.empresaNome,
-    // this.token,
-    // this.login,
-    // this.image,
-    // this.url = '',
     required this.valorHoje,
     required this.valorOntem,
     required this.valorSemana,
@@ -124,10 +116,6 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                     builder: (context) => SalesPage(
-                          // url: widget.url,
-                          // token: widget.token,
-                          // login: widget.login,
-                          // image: widget.image,
                           empresaNome: widget.empresaNome,
                           valorHoje: widget.valorHoje,
                           ticketHoje: widget.ticketHoje,
@@ -138,16 +126,14 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
                           metaHoje: widget.metaHoje,
                           valorOntem: widget.valorOntem,
                           ticketOntem: widget.ticketOntem,
-                          valorcancelamentosOntem:
-                              widget.valorcancelamentosOntem,
+                          valorcancelamentosOntem: widget.valorcancelamentosOntem,
                           cancelamentosOntem: widget.cancelamentosOntem,
                           ticketmedioOntem: widget.ticketmedioOntem,
                           margemOntem: widget.margemOntem,
                           metaOntem: widget.metaOntem,
                           valorSemana: widget.valorSemana,
                           ticketSemana: widget.ticketSemana,
-                          valorcancelamentosSemana:
-                              widget.valorcancelamentosSemana,
+                          valorcancelamentosSemana: widget.valorcancelamentosSemana,
                           cancelamentosSemana: widget.cancelamentosSemana,
                           ticketmedioSemana: widget.ticketmedioSemana,
                           margemSemana: widget.margemSemana,
@@ -161,8 +147,7 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
                           metaMes: widget.metaMes,
                           valorMesAnt: widget.valorMesAnt,
                           ticketMesAnt: widget.ticketMesAnt,
-                          valorcancelamentosMesAnt:
-                              widget.valorcancelamentosMesAnt,
+                          valorcancelamentosMesAnt: widget.valorcancelamentosMesAnt,
                           cancelamentosMesAnt: widget.cancelamentosMesAnt,
                           ticketmedioMesAnt: widget.ticketmedioMesAnt,
                           margemMesAnt: widget.margemMesAnt,
@@ -172,17 +157,15 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
             },
             //Aparência do button
             child: Container(
-              margin: EdgeInsets.all(8),
+              margin: EdgeInsets.all(Style.CompanyNameButtonMargin(context)),
               width: MediaQuery.of(context).size.width,
               decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  BoxDecoration(borderRadius: BorderRadius.circular(Style.CompanyNameButtonBorderRadius(context))),
               child: Text(
                 //Texto do button está sendo definido na página home.Dart
                 widget.empresaNome,
                 style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width < 720
-                        ? MediaQuery.of(context).size.width * 0.047
-                        : MediaQuery.of(context).size.width * 0.06,
+                    fontSize: Style.CompanyNameButtonSize(context),
                     fontWeight: FontWeight.bold,
                     color: Style.primaryColor),
                 textAlign: TextAlign.center,

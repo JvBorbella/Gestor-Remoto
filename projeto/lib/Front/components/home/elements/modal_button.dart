@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 import 'package:projeto/front/pages/login_page.dart';
 
 class ModalButton extends StatefulWidget {
@@ -20,15 +20,15 @@ class _ModalButtonState extends State<ModalButton> {
         modalContext = context;
         return Container(
           //Configurações de tamanho e espaçamento do modal
-          height: 200,
-          width: double.maxFinite,
-          padding: EdgeInsets.all(8),
+          height: Style.ModalSize(context),
+          // width: double.maxFinite,
+          padding: EdgeInsets.all(Style.PaddingModal(context)),
           child: Container(
             //Tamanho e espaçamento interno do modal
-            height: 150,
-            margin: EdgeInsets.only(left: 10, right: 10),
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+            height: Style.InternalModalSize(context),
+            margin: EdgeInsets.only(left: Style.ModalMargin(context), right: Style.ModalMargin(context)),
+            padding: EdgeInsets.all(Style.InternalModalPadding(context)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(Style.ModalBorderRadius(context))),
             child: Column(
               //Conteúdo interno do modal
               children: [
@@ -37,14 +37,14 @@ class _ModalButtonState extends State<ModalButton> {
                     Text(
                       'Deseja sair da aplicação?',
                       style: TextStyle(
-                        // fontSize: 16,
+                        fontSize: Style.TextExitConfirmation(context),
                         color: Style.primaryColor,
                       ),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: Style.height_30(context),
                 ),
                 Row(
                   //Espaçamento entre os Buttons
@@ -56,17 +56,18 @@ class _ModalButtonState extends State<ModalButton> {
                         _sair();
                       },
                       child: Container(
-                        width: 100,
-                        padding: EdgeInsets.all(15),
+                        width: Style.ButtonExitWidth(context),
+                        height: Style.ButtonExitHeight(context),
+                        padding: EdgeInsets.all(Style.ButtonExitPadding(context)),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(Style.ButtonExitBorderRadius(context)),
                             color: Style.primaryColor),
                         child: Text(
                           'Sair',
                           style: TextStyle(
                             color: Style.tertiaryColor,
                             fontWeight: FontWeight.bold,
-                            // fontSize: 18,
+                            fontSize: Style.TextButtonExitSize(context),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -78,12 +79,13 @@ class _ModalButtonState extends State<ModalButton> {
                         _closeModal();
                       },
                       child: Container(
-                        width: 110,
-                        padding: EdgeInsets.all(15),
+                        width: Style.ButtonCancelWidth(context),
+                        height: Style.ButtonCancelHeight(context),
+                        padding: EdgeInsets.all(Style.ButtonCancelPadding(context)),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(Style.ButtonExitBorderRadius(context)),
                           border:
-                              Border.all(width: 2, color: Style.secondaryColor),
+                              Border.all(width: Style.WidthBorderImageContainer(context), color: Style.secondaryColor),
                           color: Style.tertiaryColor,
                         ),
                         child: Text(
@@ -91,7 +93,7 @@ class _ModalButtonState extends State<ModalButton> {
                           style: TextStyle(
                             color: Style.secondaryColor,
                             fontWeight: FontWeight.bold,
-                            // fontSize: 18,
+                            fontSize: Style.TextButtonExitSize(context),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -124,7 +126,7 @@ class _ModalButtonState extends State<ModalButton> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        height: 35,
+        height: 25,
         width: 70,
         //Área externa do button que abre o modal
         color: Style.primaryColor,
@@ -143,12 +145,15 @@ class _ModalButtonState extends State<ModalButton> {
                 children: [
                   Text(
                     'Sair',
-                    style: TextStyle(color: Style.tertiaryColor, fontSize: 12),
+                    style: TextStyle(color: Style.tertiaryColor, fontSize: Style.TextModalButtonSize(context)),
                   ),
+                  // SizedBox(
+                  //   width: Style.SalesCardSpace(context),
+                  // ),
                   Icon(
                     Icons.exit_to_app,
                     color: Style.tertiaryColor,
-                    size: 18,
+                    size: Style.IconModalButtonSize(context),
                   ),
                 ],
               )),

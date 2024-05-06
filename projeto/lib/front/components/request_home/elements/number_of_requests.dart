@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/front/components/style.dart';
 
 class NumberOfRequests extends StatefulWidget {
   //Variável para definir o número de requisições
@@ -19,7 +20,7 @@ class _NumberOfRequestsState extends State<NumberOfRequests> {
         child: Text(
           '${widget.solicitacoesremotas > 0 ? widget.solicitacoesremotas : ""}',
           style: TextStyle(
-            fontSize: 13,
+            fontSize: Style.NumberOfRequestsSize(context),
             fontWeight: FontWeight.bold,
             color: Color(0xffFFFFFF),
           ),
@@ -33,9 +34,9 @@ class _NumberOfRequestsState extends State<NumberOfRequests> {
               : Colors.white,
           borderRadius: BorderRadius.circular(30),
         ),
-        width: 20,
-        height: 20,
-        padding: EdgeInsets.only(bottom: 5),
+        width: Style.BackgroundNumberOfRequestsSize(context),
+        height: Style.BackgroundNumberOfRequestsSize(context),
+        padding: EdgeInsets.all(2),
       ),
     );
   }

@@ -139,32 +139,26 @@ class _SalesPageState extends State<SalesPage> {
               Navbar(children: [
                 //Chamando os elementos internos da navbar
                 NavbarButton(
-                  destination: HomePage(
-                    // url: widget.url,
-                    // token: widget.token,
-                    // login: widget.url,
-                    // image: widget.image,
-                    // token: widget.token,
-                  ),
+                  destination: HomePage(),
                   Icons: Icons.arrow_back_ios_new,
                 ),
               ], text: 'Vendas'),
               SizedBox(
-                height: 10,
+                height: Style.SalesCardSpace(context),
               ),
               Text(
                 widget.empresaNome,
-                style: TextStyle(color: Style.quarantineColor),
+                style: TextStyle(color: Style.quarantineColor, fontSize: Style.CompanyNameSalesPageSize(context)),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
-                height: 10,
+                height: Style.SalesCardSpace(context),
               ),
               //Widget do card dos números detalhados das vendas
               SalesCard(
                 children: [
                   SizedBox(
-                    height: 5,
+                    height: Style.PeriodTitleSpace(context),
                   ),
                   //Chamando elementos para dentro do card
                   Text(
@@ -175,7 +169,7 @@ class _SalesPageState extends State<SalesPage> {
                     ),
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores
                   TodayValues(
@@ -185,7 +179,7 @@ class _SalesPageState extends State<SalesPage> {
                     metaHoje: widget.metaHoje,
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores adicionais - rodapé do card
                   TodayDetails(
@@ -196,12 +190,12 @@ class _SalesPageState extends State<SalesPage> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: Style.SalesCardSpace(context),
               ),
               SalesCard(
                 children: [
                   SizedBox(
-                    height: 5,
+                    height: Style.PeriodTitleSpace(context),
                   ),
                   //Chamando elementos para dentro do card
                   Text(
@@ -212,7 +206,7 @@ class _SalesPageState extends State<SalesPage> {
                     ),
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores
                   YesterdayValues(
@@ -222,7 +216,7 @@ class _SalesPageState extends State<SalesPage> {
                     metaOntem: widget.metaOntem,
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores adicionais - rodapé do card
                   YesterdayDetails(
@@ -233,12 +227,12 @@ class _SalesPageState extends State<SalesPage> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: Style.SalesCardSpace(context),
               ),
               SalesCard(
                 children: [
                   SizedBox(
-                    height: 5,
+                    height: Style.PeriodTitleSpace(context),
                   ),
                   //Chamando elementos para dentro do card
                   Text(
@@ -249,7 +243,7 @@ class _SalesPageState extends State<SalesPage> {
                     ),
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores
                   WeekValues(
@@ -259,7 +253,7 @@ class _SalesPageState extends State<SalesPage> {
                     metaSemana: widget.metaSemana,
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores adicionais - rodapé do card
                   WeekDetails(
@@ -270,12 +264,12 @@ class _SalesPageState extends State<SalesPage> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: Style.SalesCardSpace(context),
               ),
               SalesCard(
                 children: [
                   SizedBox(
-                    height: 5,
+                    height: Style.PeriodTitleSpace(context),
                   ),
                   //Chamando elementos para dentro do card
                   Text(
@@ -286,7 +280,7 @@ class _SalesPageState extends State<SalesPage> {
                     ),
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores
                   MonthValues(
@@ -296,7 +290,7 @@ class _SalesPageState extends State<SalesPage> {
                     metaMes: widget.metaMes,
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores adicionais - rodapé do card
                   MonthDetails(
@@ -307,12 +301,12 @@ class _SalesPageState extends State<SalesPage> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: Style.SalesCardSpace(context),
               ),
               SalesCard(
                 children: [
                   SizedBox(
-                    height: 5,
+                    height: Style.PeriodTitleSpace(context),
                   ),
                   //Chamando elementos para dentro do card
                   Text(
@@ -323,7 +317,7 @@ class _SalesPageState extends State<SalesPage> {
                     ),
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores
                   PrevMonthValues(
@@ -333,7 +327,7 @@ class _SalesPageState extends State<SalesPage> {
                     metaMesAnt: widget.metaMesAnt,
                   ),
                   SizedBox(
-                    height: Style.ContentInternalSpace,
+                    height: Style.height_10(context),
                   ),
                   //Widget dos valores adicionais - rodapé do card
                   PrevMonthDetails(

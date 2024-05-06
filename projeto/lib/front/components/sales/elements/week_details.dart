@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 
 class WeekDetails extends StatefulWidget {
   final int ticketSemana;
@@ -19,9 +19,8 @@ class WeekDetails extends StatefulWidget {
 }
 
 class _WeekDetailsState extends State<WeekDetails> {
-  NumberFormat currencyFormat =
+   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +37,14 @@ class _WeekDetailsState extends State<WeekDetails> {
                 children: [
                   Container(
                       //Estilização
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
-                          color: Style.primaryColor,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(5),
-                              bottomRight: Radius.circular(5))),
+                        color: Style.primaryColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(Style.height_2(context)),
+                            bottomRight: Radius.circular(Style.height_2(context))),
+                            border: Border.all(color: Style.primaryColor)
+                      ),
                       child: Column(
                         children: [
                           Container(
@@ -57,7 +58,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       'Ticket md',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 8,
+                                          fontSize: Style.TextDetailsSize(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -65,14 +66,14 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       (currencyFormat.format(widget.ticketmedioSemana)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 12,
+                                          fontSize: Style.height_12(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: Style.height_10(context),
                                 ),
                                 Column(
                                   children: [
@@ -80,7 +81,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       'Margem',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 8,
+                                          fontSize: Style.TextDetailsSize(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -88,14 +89,14 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       '${widget.margemSemana.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 12,
+                                          fontSize: Style.height_12(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: Style.height_10(context),
                                 ),
                                 Column(
                                   children: [
@@ -103,7 +104,7 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       'Cupons',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 8,
+                                          fontSize: Style.TextDetailsSize(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -111,7 +112,6 @@ class _WeekDetailsState extends State<WeekDetails> {
                                       widget.ticketSemana.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          // fontSize: 12,
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

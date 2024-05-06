@@ -16,7 +16,7 @@ class _NavbarButtonState extends State<NavbarButton> {
   Widget build(BuildContext context) {
     return Material(
        child: Container(
-        width: 70,
+        width: Style.ModalButtonWidth(context),
         //Área externa do button  
         decoration: BoxDecoration(
           color: Style.primaryColor,
@@ -36,6 +36,7 @@ class _NavbarButtonState extends State<NavbarButton> {
                 child: Icon(
                   widget.Icons,
                   color: Style.tertiaryColor,
+                  size: Style.SizeDrawerButton(context),
                 ),
               ),
             ),

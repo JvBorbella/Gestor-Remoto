@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/front/components/Style.dart';
+import 'package:projeto/front/components/style.dart';
 
 class SalesCard extends StatefulWidget {
   final List<Widget> children;
@@ -16,11 +16,11 @@ class _SalesCardState extends State<SalesCard> {
     return Material(
       // Código do card usado na tela de vendas detalhadas
       child: Container(
-        margin: EdgeInsets.all(12),
-        padding: EdgeInsets.all(0),
+        margin: EdgeInsets.all(Style.height_12(context)),
+        padding: EdgeInsets.zero,
         decoration: BoxDecoration(
-          border: Border.all(width: 2, color: Style.primaryColor),
-          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: Style.height_2(context), color: Style.primaryColor),
+          borderRadius: BorderRadius.circular(Style.height_5(context)),
         ),
         //Parte do código para que sejam atribuidos os widgets definidos no código da tela que ficarão dentro do card
         child: Column(
