@@ -22,7 +22,7 @@ class _ModalButtonState extends State<ModalButton> {
           //Configurações de tamanho e espaçamento do modal
           height: Style.ModalSize(context),
           // width: double.maxFinite,
-          padding: EdgeInsets.all(Style.PaddingModal(context)),
+          // padding: EdgeInsets.all(Style.PaddingModal(context)),
           child: Container(
             //Tamanho e espaçamento interno do modal
             height: Style.InternalModalSize(context),

@@ -23,7 +23,7 @@ class _RequestCardState extends State<RequestCard> {
         children: [
           Container(
             //Espaçamento entre o card e as bordas
-            margin: EdgeInsets.only(right: Style.height_20(context), left: Style.height_20(context)),
+            margin: EdgeInsets.only(right: Style.height_20(context), left: Style.height_20(context), bottom: Style.height_20(context)),
             //Estilização
             decoration: BoxDecoration(
               border: Border.all(width: Style.height_1(context), color: Style.primaryColor),

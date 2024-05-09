@@ -22,7 +22,8 @@ class _NumberOfRequestsState extends State<NumberOfRequests> {
           style: TextStyle(
             fontSize: Style.NumberOfRequestsSize(context),
             fontWeight: FontWeight.bold,
-            color: Color(0xffFFFFFF),
+            color: Style.tertiaryColor,
+            
           ),
           textAlign: TextAlign.center,
         ),
@@ -32,11 +33,11 @@ class _NumberOfRequestsState extends State<NumberOfRequests> {
           color: widget.solicitacoesremotas > 0
               ? Color(0xffFFD700)
               : Colors.white,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(Style.height_30(context)),
         ),
         width: Style.BackgroundNumberOfRequestsSize(context),
         height: Style.BackgroundNumberOfRequestsSize(context),
-        padding: EdgeInsets.all(2),
+        padding: EdgeInsets.all(Style.height_2(context)),
       ),
     );
   }

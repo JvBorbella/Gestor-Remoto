@@ -31,38 +31,45 @@ class _AuthorizationButtonState extends State<AuthorizationButton> {
     return Material(
       child: Container(
         //Estilização do button
-        decoration: BoxDecoration(
-          border: Border.all(width: Style.WidthBorderImageContainer(context), color: Color(0xff42B9F0)),
-          borderRadius: BorderRadius.circular(Style.BorderAuthorizationButtonCircular(context)),
-        ),
+
         child: Column(
           //Alinhamento interno
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextButton(
-              //Função aplicada ao ser clicado
-              onPressed: () {
-                if (widget.onPressed != null) {
-                  widget.onPressed();
-                }
-              },
-              //Texto retornado, que foi definido na página em que o button está sendo chamado
-              child: Text(
-                widget.text,
-                style: TextStyle(
-                  color: Color(0xff42b9f0),
-                  fontWeight: FontWeight.bold,
-                  fontSize: Style.TextRequestButtonHeight(context),
-                ),
-              ),
-            ),
+                //Função aplicada ao ser clicado
+                onPressed: () {
+                  if (widget.onPressed != null) {
+                    widget.onPressed();
+                  }
+                },
+                //Texto retornado, que foi definido na página em que o button está sendo chamado
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        width: Style.WidthBorderImageContainer(context),
+                        color: Color(0xff42B9F0)),
+                    borderRadius: BorderRadius.circular(
+                        Style.BorderAuthorizationButtonCircular(context)),
+                  ),
+                  child: Text(
+                    widget.text,
+                    style: TextStyle(
+                      color: Color(0xff42b9f0),
+                      fontWeight: FontWeight.bold,
+                      fontSize: Style.TextRequestButtonHeight(context),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  width: Style.RequestButtonWidth(context),
+                  height: Style.RequestButtonHeight(context),
+                  padding: EdgeInsets.all(0),
+                )),
           ],
         ),
         //Tamanho do button
-        width: Style.RequestButtonWidth(context),
-        height: Style.RequestButtonHeight(context),
-        padding: EdgeInsets.all(0),
       ),
     );
   }

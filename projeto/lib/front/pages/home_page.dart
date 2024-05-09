@@ -51,12 +51,7 @@ class _HomePageState extends State<HomePage> {
   String url = '';
   String urlBasic = '';
   String email = '';
-
-    String selectedOptionChild = '';
-
-  String max = 'Maiores vendas do dia';
-  String min = 'Menores vendas do dia';
-  String cod = 'Código de loja';
+  String selectedOptionChild = '';
 
   @override
   void initState() {
@@ -68,6 +63,7 @@ class _HomePageState extends State<HomePage> {
     _loadSavedUrlBasic();
     _loadSavedEmail();
     loadData();
+    
   }
 
   @override
@@ -85,14 +81,6 @@ class _HomePageState extends State<HomePage> {
       //Função para fechar o modal
       Navigator.of(context).pop();
     }
-
-    Future<void> _loadOrder() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String order = sharedPreferences.getString('order') ?? '';
-    setState(() {
-      order = order;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -240,11 +228,11 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Row(
                             children: [
-                              Padding(
-                                padding: solicitacoesremotas <= 0
-                                    ? EdgeInsets.only(left: 30)
-                                    : EdgeInsets.all(0),
-                              ),
+                              // Padding(
+                              //   padding: solicitacoesremotas <= 0
+                              //       ? EdgeInsets.only(left: 30)
+                              //       : EdgeInsets.all(0),
+                              // ),
                               Text(
                                 'Requisições',
                                 style: TextStyle(
@@ -295,17 +283,20 @@ class _HomePageState extends State<HomePage> {
                 height: Style.height_10(context),
               ),
               Container(
-                padding: EdgeInsets.all(Style.height_10(context)),
+                padding: EdgeInsets.all(Style.height_15(context)),
+                margin: EdgeInsets.only(bottom: Style.height_20(context)),
                 decoration: BoxDecoration(
                   border: Border.symmetric(horizontal: BorderSide(width: Style.height_1(context), color: Style.quarantineColor))
                 ),
                 child: Row(
                   children: [
-                    PopupMenuButton<String>(
+                    Container(
+                      height: Style.height_20(context),
+                      child: PopupMenuButton<String>(
                       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                         const PopupMenuItem<String>(
                           value: 'Código de loja',
-                          child: Text('Código de loja'),
+                          child: Text('Código de loja',),
                         ),
                         const PopupMenuItem<String>(
                           value: 'Maiores vendas de hoje',
@@ -366,8 +357,8 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.filter_alt_rounded, color: Style.primaryColor,),
-                          Text('Ordenado por: '), 
+                          Icon(Icons.filter_alt_rounded, color: Style.primaryColor, size: Style.height_20(context),),
+                          Text('Ordenado por: ', style: TextStyle(fontSize: Style.height_15(context)),), 
                           Text(selectedOptionChild,
                           style: TextStyle(
                             color: Style.secondaryColor,
@@ -376,6 +367,7 @@ class _HomePageState extends State<HomePage> {
                         ]
                         ),
                     ),
+                    )
                   ],
                 ),
               ),
@@ -1175,7 +1167,6 @@ class _HomePageState extends State<HomePage> {
   });
 }
 
-
   Future<void> _refreshData() async {
     // Aqui você pode chamar os métodos para recarregar os dados
     // Exemplo: await loadData();
@@ -1183,6 +1174,7 @@ class _HomePageState extends State<HomePage> {
       isLoading =
           true; // Define isLoading como true para mostrar o indicador de carregamento
     });
+    selectedOptionChild = '';
     await loadData();
     setState(() {
       isLoading =

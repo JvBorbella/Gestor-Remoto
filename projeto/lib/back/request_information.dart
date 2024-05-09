@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto/Front/components/Style.dart';
+import 'package:projeto/front/pages/request_page.dart';
 
 //Código onde são acessados os dados das soicitações remotas.
 
@@ -90,6 +91,7 @@ class AcceptRequest {
     BuildContext context,
     //Recebendo dados que serão necessários para realizar a função.
     String url,
+    String urlBasic,
     String token,
     String liberacaoremotaId,
     String _textController,
@@ -117,7 +119,7 @@ class AcceptRequest {
           SnackBar(
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'Solicitação aceita',
+              'Liberação remota aceita',
               style: TextStyle(
                 fontSize: 13,
                 color: Style.tertiaryColor,
@@ -126,6 +128,12 @@ class AcceptRequest {
             backgroundColor: Style.sucefullColor,
           ),
         );
+        Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) =>
+              RequestPage(url: url, token: token, urlBasic: urlBasic),
+        ),
+      );
       } else {
         //Caso não seja, será exibido o erro no console.
         print('Erro durante o post $e');
@@ -156,6 +164,7 @@ class RejectRequest {
     BuildContext context,
     //Recebendo dados que serão necessários para realizar a função.
     String url,
+    String urlBasic,
     String token,
     String liberacaoremotaId,
     String _textController,
@@ -183,7 +192,7 @@ class RejectRequest {
           SnackBar(
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'Solicitação remota excluída',
+              'Liberação remota rejeitada',
               style: TextStyle(
                 fontSize: 13,
                 color: Style.tertiaryColor,
@@ -192,6 +201,12 @@ class RejectRequest {
             backgroundColor: Style.warningColor,
           ),
         );
+        Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) =>
+              RequestPage(url: url, token: token, urlBasic: urlBasic),
+        ),
+      );
       } else {
         //Caso não seja, será exibido o erro no console.
         print('Erro durante o post $e');

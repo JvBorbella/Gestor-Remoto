@@ -28,6 +28,7 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestPageState extends State<RequestPage> {
+  late BuildContext modalContext;
   List<RequestInformation> requests = [];
   bool isLoading = true;
 
@@ -123,6 +124,292 @@ class _RequestPageState extends State<RequestPage> {
                         TextEditingController _textController =
                             TextEditingController();
                         _textController.text = '';
+
+                        void _openModalAuth(BuildContext context) {
+                          //Código para abrir modal
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              modalContext = context;
+                              return Container(
+                                //Configurações de tamanho e espaçamento do modal
+                                height: Style.ModalSize(context),
+                                // width: double.maxFinite,
+                                // padding:
+                                //     EdgeInsets.all(Style.PaddingModal(context)),
+                                child: Container(
+                                  //Tamanho e espaçamento interno do modal
+                                  height: Style.InternalModalSize(context),
+                                  margin: EdgeInsets.only(
+                                      left: Style.ModalMargin(context),
+                                      right: Style.ModalMargin(context)),
+                                  padding: EdgeInsets.all(
+                                      Style.InternalModalPadding(context)),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          Style.ModalBorderRadius(context))),
+                                  child: Column(
+                                    //Conteúdo interno do modal
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Deseja continuar com a liberação?',
+                                            overflow: TextOverflow.clip, // corta o texto no limite da largura
+                                            softWrap: true, // permite a quebra de linha conforme necessário
+                                            style: TextStyle(
+                                              fontSize:
+                                                  Style.TextExitConfirmation(
+                                                      context),
+                                              color: Style.primaryColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: Style.height_30(context),
+                                      ),
+                                      Row(
+                                        //Espaçamento entre os Buttons
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          //Buttom de sair
+                                          TextButton(
+                                            onPressed: () async {
+                                              if (_textController
+                                                  .text.isEmpty) {
+                                                await AcceptRequest
+                                                    .acceptrequest(
+                                                  context,
+                                                  widget.url,
+                                                  widget.urlBasic,
+                                                  widget.token,
+                                                  requests[index]
+                                                      .liberacaoremotaId,
+                                                  _textController.text,
+                                                );
+                                              }
+                                              await AcceptRequest.acceptrequest(
+                                                context,
+                                                widget.url,
+                                                widget.urlBasic,
+                                                widget.token,
+                                                requests[index]
+                                                    .liberacaoremotaId,
+                                                _textController.text,
+                                              );
+                                            },
+                                            child: Container(
+                                              height: Style.ButtonExitHeight(
+                                                  context),
+                                              padding: EdgeInsets.all(
+                                                  Style.ButtonExitPadding(
+                                                      context)),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius
+                                                      .circular(Style
+                                                          .ButtonExitBorderRadius(
+                                                              context)),
+                                                  color: Style.primaryColor),
+                                              child: Text(
+                                                'Autorizar',
+                                                style: TextStyle(
+                                                  color: Style.tertiaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      Style.TextButtonExitSize(
+                                                          context),
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                          //Buttom para fechar o modal
+                                          TextButton(
+                                            onPressed: () {
+                                              _closeModal();
+                                            },
+                                            child: Container(
+                                              // width: Style.ButtonCancelWidth(
+                                              //     context),
+                                              height: Style.ButtonCancelHeight(
+                                                  context),
+                                              padding: EdgeInsets.all(
+                                                  Style.ButtonCancelPadding(
+                                                      context)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(Style
+                                                        .ButtonExitBorderRadius(
+                                                            context)),
+                                                border: Border.all(
+                                                    width: Style
+                                                        .WidthBorderImageContainer(
+                                                            context),
+                                                    color:
+                                                        Style.secondaryColor),
+                                                color: Style.tertiaryColor,
+                                              ),
+                                              child: Text(
+                                                'Cancelar',
+                                                style: TextStyle(
+                                                  color: Style.secondaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      Style.TextButtonExitSize(
+                                                          context),
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+
+                        void _openModalReject(BuildContext context) {
+                          //Código para abrir modal
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              modalContext = context;
+                              return Container(
+                                //Configurações de tamanho e espaçamento do modal
+                                height: Style.ModalSize(context),
+                                // width: double.maxFinite,
+                                // padding:
+                                //     EdgeInsets.all(Style.PaddingModal(context)),
+                                child: Container(
+                                  //Tamanho e espaçamento interno do modal
+                                  height: Style.InternalModalSize(context),
+                                  margin: EdgeInsets.only(
+                                      left: Style.ModalMargin(context),
+                                      right: Style.ModalMargin(context)),
+                                  padding: EdgeInsets.all(
+                                      Style.InternalModalPadding(context)),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          Style.ModalBorderRadius(context))),
+                                  child: Column(
+                                    //Conteúdo interno do modal
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Deseja continuar com a rejeição?',
+                                            overflow: TextOverflow.clip, // corta o texto no limite da largura
+                                            softWrap: true, // permite a quebra de linha conforme necessário
+                                            style: TextStyle(
+                                              fontSize:
+                                                  Style.TextExitConfirmation(
+                                                      context),
+                                              color: Style.primaryColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: Style.height_30(context),
+                                      ),
+                                      Row(
+                                        //Espaçamento entre os Buttons
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          //Buttom de sair
+                                          TextButton(
+                                            onPressed: () async {
+                                              await RejectRequest.rejectrequest(
+                                                context,
+                                                url,
+                                                urlBasic,
+                                                token,
+                                                requests[index]
+                                                    .liberacaoremotaId,
+                                                _textController.text,
+                                              );
+                                            }, // Usando o valor
+                                            child: Container(
+                                              height: Style.ButtonExitHeight(
+                                                  context),
+                                              padding: EdgeInsets.all(
+                                                  Style.ButtonExitPadding(
+                                                      context)),
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius
+                                                      .circular(Style
+                                                          .ButtonExitBorderRadius(
+                                                              context)),
+                                                  color: Style.primaryColor),
+                                              child: Text(
+                                                'Não Autorizar',
+                                                style: TextStyle(
+                                                  color: Style.tertiaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      Style.TextButtonExitSize(
+                                                          context),
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                          //Buttom para fechar o modal
+                                          TextButton(
+                                            onPressed: () {
+                                              _closeModal();
+                                            },
+                                            child: Container(
+                                              // width: Style.ButtonCancelWidth(
+                                              //     context),
+                                              height: Style.ButtonCancelHeight(
+                                                  context),
+                                              padding: EdgeInsets.all(
+                                                  Style.ButtonCancelPadding(
+                                                      context)),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(Style
+                                                        .ButtonExitBorderRadius(
+                                                            context)),
+                                                border: Border.all(
+                                                    width: Style
+                                                        .WidthBorderImageContainer(
+                                                            context),
+                                                    color:
+                                                        Style.secondaryColor),
+                                                color: Style.tertiaryColor,
+                                              ),
+                                              child: Text(
+                                                'Cancelar',
+                                                style: TextStyle(
+                                                  color: Style.secondaryColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize:
+                                                      Style.TextButtonExitSize(
+                                                          context),
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+
                         return RequestCard(
                           children: [
                             Container(
@@ -148,14 +435,7 @@ class _RequestPageState extends State<RequestPage> {
                                               urlBasic: urlBasic,
                                             ),
                                             DeleteButton(onPressed: () async {
-                                              await RejectRequest.rejectrequest(
-                                                context,
-                                                url,
-                                                token,
-                                                requests[index]
-                                                    .liberacaoremotaId,
-                                                _textController.text,
-                                              );
+                                              _openModalReject(context);
                                             } // Usando o valor
                                                 )
                                           ],
@@ -209,28 +489,9 @@ class _RequestPageState extends State<RequestPage> {
                                         AuthorizationButton(
                                             text: 'Autorizar',
                                             onPressed: () async {
-                                              if (_textController
-                                                  .text.isEmpty) {
-                                                await AcceptRequest
-                                                    .acceptrequest(
-                                                  context,
-                                                  widget.url,
-                                                  widget.token,
-                                                  requests[index]
-                                                      .liberacaoremotaId,
-                                                  _textController.text,
-                                                );
-                                              }
-                                              await AcceptRequest.acceptrequest(
-                                                context,
-                                                widget.url,
-                                                widget.token,
-                                                requests[index]
-                                                    .liberacaoremotaId,
-                                                _textController.text,
-                                              );
+                                              _openModalAuth(context);
                                             } // Usando o valor do controlador específico
-                                            ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -246,6 +507,11 @@ class _RequestPageState extends State<RequestPage> {
         ),
       ),
     );
+  }
+
+  void _closeModal() {
+    //Função para fechar o modal
+    Navigator.of(modalContext).pop();
   }
 
   Future<void> _loadSavedUrl() async {

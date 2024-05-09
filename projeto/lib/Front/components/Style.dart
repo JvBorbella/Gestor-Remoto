@@ -135,7 +135,7 @@ class Style {
   }
 
   static double TextButtonExitSize(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.0288;
+    return MediaQuery.of(context).size.height * 0.0255;
   }
    //Tamanhos dinâmicos da aba Drawer {
       static double PaddingDrawerButton(BuildContext context) {
