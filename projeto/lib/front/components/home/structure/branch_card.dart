@@ -21,12 +21,11 @@ class _BranchCardState extends State<BranchCard> {
         margin: EdgeInsets.only(right: Style.height_20(context), left: Style.height_20(context), bottom: Style.height_15(context)),
         decoration: BoxDecoration(
             //Estilização do card
-            color: Color(0xffffffff),
             border: Border.all(width: Style.height_1(context), color: Color(0xffD9D9D9)),
-            borderRadius: BorderRadius.circular(Style.height_10(context))),
+            borderRadius: BorderRadius.circular(Style.height_10(context))
+            ),
         //Parte do código para que sejam atribuidos os widgets definidos no código da tela que ficarão dentro do card
         child: Column(
-          
           children: widget.children,
         ),
         padding: EdgeInsets.only(bottom: Style.height_10(context), top: Style.height_5(context)),

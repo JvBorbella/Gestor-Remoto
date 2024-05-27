@@ -92,8 +92,8 @@ class _BranchCardContentState extends State<BranchCardContent> {
             //Linha divisória interna do card
             Divider(
               color: Color(0xffD9D9D9), // Cor da linha
-              height: 20, // Altura da linha
-              thickness: 1,
+              height: Style.height_20(context), // Altura da linha
+              thickness: Style.height_1(context),
             ),
             //Conteúdo abaixo da linha divisória.
             Row(

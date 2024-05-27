@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Gestor Remoto",
       theme: ThemeData(
+        // scaffoldBackgroundColor: Colors.white,
         textTheme: TextTheme(
            bodySmall: TextStyle(
               fontFamily: 'Poppins-Medium',

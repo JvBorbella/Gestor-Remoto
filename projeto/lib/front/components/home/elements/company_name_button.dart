@@ -157,10 +157,6 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
             },
             //Aparência do button
             child: Container(
-              margin: EdgeInsets.all(Style.CompanyNameButtonMargin(context)),
-              width: MediaQuery.of(context).size.width,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(Style.CompanyNameButtonBorderRadius(context))),
               child: Text(
                 //Texto do button está sendo definido na página home.Dart
                 widget.empresaNome,

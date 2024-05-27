@@ -32,7 +32,7 @@ class _NumberOfRequestsState extends State<NumberOfRequests> {
         decoration: BoxDecoration(
           color: widget.solicitacoesremotas > 0
               ? Color(0xffFFD700)
-              : Colors.white,
+              : Style.defaultColor,
           borderRadius: BorderRadius.circular(Style.height_30(context)),
         ),
         width: Style.BackgroundNumberOfRequestsSize(context),

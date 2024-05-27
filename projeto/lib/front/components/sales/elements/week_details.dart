@@ -40,10 +40,10 @@ class _WeekDetailsState extends State<WeekDetails> {
                       padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
                         color: Style.primaryColor,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(Style.height_2(context)),
-                            bottomRight: Radius.circular(Style.height_2(context))),
-                            border: Border.all(color: Style.primaryColor)
+                        // borderRadius: BorderRadius.only(
+                        //     bottomLeft: Radius.circular(Style.height_1(context)),
+                        //     bottomRight: Radius.circular(Style.height_1(context))),
+                            border: Border.all(color: Colors.transparent),
                       ),
                       child: Column(
                         children: [

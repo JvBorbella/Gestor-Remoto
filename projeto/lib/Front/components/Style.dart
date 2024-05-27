@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Style {
 //Cores usadas na aplicação {
+  static const Color defaultColor = Color(0xfff8f9fe);
   static const Color primaryColor = Color(0xff00568e);
   static const Color secondaryColor = Color(0xff42b9f0);
   static const Color tertiaryColor = Color(0xffffffff);

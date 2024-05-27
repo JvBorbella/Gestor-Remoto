@@ -280,7 +280,7 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.all(Style.height_15(context)),
         margin: EdgeInsets.only(bottom: Style.height_20(context)),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Style.defaultColor,
            boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.15),
@@ -289,10 +289,6 @@ class _HomePageState extends State<HomePage> {
                 offset: Offset(0, 3),
               ),
             ],
-            // border: Border.symmetric(
-            //     horizontal: BorderSide(
-            //         width: Style.height_05(context),
-            //         color: Style.quarantineColor))
                     ),
         child: Row(
           children: [

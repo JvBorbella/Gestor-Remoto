@@ -27,6 +27,7 @@ class _MonthDetailsState extends State<MonthDetails> {
     return Material(
       //Código dos valores adicionais do card de vendas
       child: Container(
+        padding: EdgeInsets.zero,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -40,10 +41,10 @@ class _MonthDetailsState extends State<MonthDetails> {
                       padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
                         color: Style.primaryColor,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(Style.height_2(context)),
-                            bottomRight: Radius.circular(Style.height_2(context))),
-                            border: Border.all(color: Style.primaryColor)
+                        // borderRadius: BorderRadius.only(
+                        //     bottomLeft: Radius.circular(Style.height_1(context)),
+                        //     bottomRight: Radius.circular(Style.height_1(context))),
+                            border: Border.all(color: Colors.transparent),
                       ),
                       child: Column(
                         children: [
