@@ -31,10 +31,7 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Container(
         //Estilização da tela splash
-        decoration: BoxDecoration(
-          //Gradiente color usado na tela splash
-          // gradient: Style.gradient
-        ),
+        decoration: BoxDecoration(),
         //Conteúdo da tela
         child: Row(
           //Alinhamentos

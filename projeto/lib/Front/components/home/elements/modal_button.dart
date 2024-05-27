@@ -21,8 +21,6 @@ class _ModalButtonState extends State<ModalButton> {
         return Container(
           //Configurações de tamanho e espaçamento do modal
           height: Style.ModalSize(context),
-          // width: double.maxFinite,
-          // padding: EdgeInsets.all(Style.PaddingModal(context)),
           child: Container(
             //Tamanho e espaçamento interno do modal
             height: Style.InternalModalSize(context),
@@ -37,9 +35,11 @@ class _ModalButtonState extends State<ModalButton> {
                     Text(
                       'Deseja sair da aplicação?',
                       style: TextStyle(
-                        fontSize: Style.TextExitConfirmation(context),
+                        fontSize: Style.height_15(context),
                         color: Style.primaryColor,
                       ),
+                      overflow: TextOverflow.clip,
+                      softWrap: true,
                     ),
                   ],
                 ),
@@ -57,7 +57,7 @@ class _ModalButtonState extends State<ModalButton> {
                       },
                       child: Container(
                         width: Style.ButtonExitWidth(context),
-                        height: Style.ButtonExitHeight(context),
+                        // height: Style.ButtonExitHeight(context),
                         padding: EdgeInsets.all(Style.ButtonExitPadding(context)),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(Style.ButtonExitBorderRadius(context)),
@@ -67,7 +67,7 @@ class _ModalButtonState extends State<ModalButton> {
                           style: TextStyle(
                             color: Style.tertiaryColor,
                             fontWeight: FontWeight.bold,
-                            fontSize: Style.TextButtonExitSize(context),
+                            fontSize: Style.height_10(context),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -79,8 +79,8 @@ class _ModalButtonState extends State<ModalButton> {
                         _closeModal();
                       },
                       child: Container(
-                        width: Style.ButtonCancelWidth(context),
-                        height: Style.ButtonCancelHeight(context),
+                        // width: Style.ButtonCancelWidth(context),
+                        // height: Style.ButtonCancelHeight(context),
                         padding: EdgeInsets.all(Style.ButtonCancelPadding(context)),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(Style.ButtonExitBorderRadius(context)),
@@ -93,7 +93,7 @@ class _ModalButtonState extends State<ModalButton> {
                           style: TextStyle(
                             color: Style.secondaryColor,
                             fontWeight: FontWeight.bold,
-                            fontSize: Style.TextButtonExitSize(context),
+                            fontSize: Style.height_10(context),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -126,8 +126,6 @@ class _ModalButtonState extends State<ModalButton> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        height: 25,
-        width: 70,
         //Área externa do button que abre o modal
         color: Style.primaryColor,
         // padding: EdgeInsets.only(left: 10, top: 5),
@@ -145,11 +143,11 @@ class _ModalButtonState extends State<ModalButton> {
                 children: [
                   Text(
                     'Sair',
-                    style: TextStyle(color: Style.tertiaryColor, fontSize: Style.TextModalButtonSize(context)),
+                    style: TextStyle(
+                      color: Style.tertiaryColor, 
+                      fontSize: Style.TextModalButtonSize(context)
+                      ),
                   ),
-                  // SizedBox(
-                  //   width: Style.SalesCardSpace(context),
-                  // ),
                   Icon(
                     Icons.exit_to_app,
                     color: Style.tertiaryColor,

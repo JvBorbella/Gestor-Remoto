@@ -17,7 +17,7 @@ class _TextCardSalesState extends State<TextCardSales> {
       child: Text(
         widget.text,
         style: TextStyle(
-          // fontSize: 18,
+          fontSize: Style.height_10(context),
           color: Style.primaryColor,
           fontWeight: FontWeight.bold
         ),

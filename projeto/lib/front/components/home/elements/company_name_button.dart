@@ -165,7 +165,7 @@ class _CompanyNameButtonState extends State<CompanyNameButton> {
                 //Texto do button está sendo definido na página home.Dart
                 widget.empresaNome,
                 style: TextStyle(
-                    fontSize: Style.CompanyNameButtonSize(context),
+                    fontSize: Style.height_12(context),
                     fontWeight: FontWeight.bold,
                     color: Style.primaryColor),
                 textAlign: TextAlign.center,

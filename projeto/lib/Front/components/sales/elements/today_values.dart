@@ -41,7 +41,10 @@ class _TodayValuesState extends State<TodayValues> {
                     Text(
                       'Total vendido',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     TextCardSales(text: currencyFormat.format(widget.valorHoje))
                   ],
@@ -51,7 +54,10 @@ class _TodayValuesState extends State<TodayValues> {
                     Text(
                       'Meta',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                    if (widget.valorHoje == 0 && widget.metaHoje == 0)
                       TextCardSales(text: currencyFormat.format(widget.metaHoje))
@@ -93,7 +99,10 @@ class _TodayValuesState extends State<TodayValues> {
                     Text(
                       'Cancelamentos',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                       TextCardSales(
                           text: widget.cancelamentosHoje.toString())
@@ -104,7 +113,10 @@ class _TodayValuesState extends State<TodayValues> {
                     Text(
                       'Vl. Cancelamento',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                       TextCardSales(text: currencyFormat.format(widget.valorcancelamentosHoje))
                   ],

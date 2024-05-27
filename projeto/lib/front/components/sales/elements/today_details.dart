@@ -66,7 +66,7 @@ class _TodayDetailsState extends State<TodayDetails> {
                                       (currencyFormat.format(widget.ticketmedioHoje)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: Style.height_12(context),
+                                          fontSize: Style.height_8(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -89,7 +89,7 @@ class _TodayDetailsState extends State<TodayDetails> {
                                       '${widget.margemHoje.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: Style.height_12(context),
+                                          fontSize: Style.height_8(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -112,6 +112,7 @@ class _TodayDetailsState extends State<TodayDetails> {
                                       widget.ticketHoje.toString(),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
+                                          fontSize: Style.height_8(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

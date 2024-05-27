@@ -41,7 +41,10 @@ class _MonthValuesState extends State<MonthValues> {
                     Text(
                       'Total vendido',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     TextCardSales(text: currencyFormat.format(widget.valorMes))
                   ],
@@ -65,11 +68,11 @@ class _MonthValuesState extends State<MonthValues> {
                         children: [
                           TextCardSales(
                               text: currencyFormat.format(widget.metaMes)),
-                              SizedBox(width: 2,),
+                              SizedBox(width: Style.height_2(context),),
                           Icon(
                             Icons.verified,
                             color: Style.sucefullColor,
-                            size: 16,
+                            size: Style.height_15(context),
                           )
                         ],
                       )
@@ -82,7 +85,7 @@ class _MonthValuesState extends State<MonthValues> {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: Style.height_30(context),
             ),
             //Segunda linha
             Row(
@@ -93,7 +96,10 @@ class _MonthValuesState extends State<MonthValues> {
                     Text(
                       'Cancelamentos',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                       TextCardSales(
                           text: widget.cancelamentosMes.toString())
@@ -104,7 +110,10 @@ class _MonthValuesState extends State<MonthValues> {
                     Text(
                       'Vl. Cancelamento',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                       TextCardSales(text: currencyFormat.format(widget.valorcancelamentosMes))
                   ],
@@ -112,7 +121,7 @@ class _MonthValuesState extends State<MonthValues> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: Style.height_20(context),
             ),
             //Linha divisória
             // Divider(

@@ -82,20 +82,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     child: image.isNotEmpty
                                         ? Image.network(
                                             urlBasic + image,
-                                            alignment: Alignment.center,
-                                            fit: BoxFit.fill,
+                                            alignment: Alignment.topCenter,
+                                            fit: BoxFit.cover,
                                             filterQuality: FilterQuality.high,
                                           ) // Exibe a imagem
                                         : Image.network(
                                             'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                                             color: Style.tertiaryColor,
-                                            alignment: Alignment.center,
-                                            fit: BoxFit.fill,
+                                            alignment: Alignment.topCenter,
+                                            fit: BoxFit.cover,
                                             filterQuality: FilterQuality.high,
                                           ),
                                   ),
                                 ),
                               ],
+                            ),
+                            SizedBox(
+                              width: Style.height_10(context),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,10 +138,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            // Padding(padding: EdgeInsets.only(left: Style.ModalButtonPadding(context))),
                             Container(
-                              height: Style.ModalButtonHeight(context),
-                              width: Style.ModalButtonWidth(context),
                               child: ModalButton(),
                             ),
                           ],

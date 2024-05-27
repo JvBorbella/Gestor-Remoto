@@ -41,7 +41,10 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Total vendido',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     TextCardSales(text: currencyFormat.format(widget.valorSemana))
                   ],
@@ -51,7 +54,10 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Meta',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     if (widget.valorSemana == 0 && widget.metaSemana == 0)
                       TextCardSales(text: currencyFormat.format(widget.metaSemana))
@@ -65,11 +71,11 @@ class _WeekValuesState extends State<WeekValues> {
                         children: [
                           TextCardSales(
                               text: currencyFormat.format(widget.metaSemana)),
-                              SizedBox(width: 2,),
+                              SizedBox(width: Style.height_2(context),),
                           Icon(
                             Icons.verified,
                             color: Style.sucefullColor,
-                            size: 16,
+                            size: Style.height_15(context),
                           )
                         ],
                       )
@@ -82,7 +88,7 @@ class _WeekValuesState extends State<WeekValues> {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: Style.height_30(context),
             ),
             //Segunda linha
             Row(
@@ -93,7 +99,10 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Cancelamentos',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     TextCardSales(text: widget.cancelamentosSemana.toString())
                   ],
@@ -103,7 +112,10 @@ class _WeekValuesState extends State<WeekValues> {
                     Text(
                       'Vl. Cancelamento',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     TextCardSales(
                         text: currencyFormat
@@ -113,43 +125,8 @@ class _WeekValuesState extends State<WeekValues> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: Style.height_20(context),
             ),
-            //Linha divisória
-            // Divider(
-            //   color: Style.quarantineColor, // Cor da linha
-            //   height: 20, // Altura da linha
-            //   thickness: 2,
-            // ),
-            // SizedBox(
-            //   height: 0,
-            // ),
-            // //Valores de metas
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta de hoje',
-            //           style:
-            //               TextStyle( color: Style.quarantineColor),
-            //         ),
-            //         TextCardSales(text: '(Valor)')
-            //       ],
-            //     ),
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta acum.',
-            //           style:
-            //               TextStyle( color: Style.quarantineColor),
-            //         ),
-            //         TextCardSales(text: '(Valor)')
-            //       ],
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

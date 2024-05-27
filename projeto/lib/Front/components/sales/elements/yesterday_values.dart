@@ -41,7 +41,10 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Total vendido',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     TextCardSales(text: currencyFormat.format(widget.valorOntem))
                   ],
@@ -51,7 +54,10 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Meta',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                     if (widget.valorOntem == 0 && widget.metaOntem == 0)
                       TextCardSales(text: currencyFormat.format(widget.metaOntem))
@@ -63,11 +69,11 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                         children: [
                           TextCardSales(
                               text: currencyFormat.format(widget.metaOntem)),
-                              SizedBox(width: 2,),
+                              SizedBox(width: Style.height_2(context),),
                           Icon(
                             Icons.verified,
                             color: Style.sucefullColor,
-                            size: 16,
+                            size: Style.height_15(context),
                           )
                         ],
                       )
@@ -79,7 +85,7 @@ class _YesterdayValuesState extends State<YesterdayValues> {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: Style.height_30(context),
             ),
             //Segunda linha
             Row(
@@ -90,7 +96,10 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Cancelamentos',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                       TextCardSales(
                           text: widget.cancelamentosOntem.toString())
@@ -101,7 +110,10 @@ class _YesterdayValuesState extends State<YesterdayValues> {
                     Text(
                       'Vl. Cancelamento',
                       style:
-                          TextStyle( color: Style.quarantineColor),
+                          TextStyle( 
+                            color: Style.quarantineColor,
+                            fontSize: Style.height_8(context)
+                            ),
                     ),
                       TextCardSales(text: currencyFormat.format(widget.valorcancelamentosOntem))
                   ],
@@ -109,43 +121,8 @@ class _YesterdayValuesState extends State<YesterdayValues> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: Style.height_20(context),
             ),
-            //Linha divisória
-            // Divider(
-            //   color: Style.quarantineColor, // Cor da linha
-            //   height: 20, // Altura da linha
-            //   thickness: 2,
-            // ),
-            // SizedBox(
-            //   height: 0,
-            // ),
-            // //Valores de metas
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta de hoje',
-            //           style:
-            //               TextStyle( color: Style.quarantineColor),
-            //         ),
-            //         TextCardSales(text: '(Valor)')
-            //       ],
-            //     ),
-            //     Column(
-            //       children: [
-            //         Text(
-            //           'Meta acum.',
-            //           style:
-            //               TextStyle( color: Style.quarantineColor),
-            //         ),
-            //         TextCardSales(text: '(Valor)')
-            //       ],
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

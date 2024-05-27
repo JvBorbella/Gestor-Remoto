@@ -13,7 +13,7 @@ class Style {
 
 //Tamanhos dinâmicos dos elementos da tela splash_page {
   static double TextSplashSize(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.05;
+    return MediaQuery.of(context).size.height * 0.035;
   }
 
   static double LogoSplashSize(BuildContext context) {
@@ -77,7 +77,7 @@ class Style {
 
 //Tamanho dinâmico dos elementos de sales_page {
   static double TextDetailsSize(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.015;
+    return MediaQuery.of(context).size.height * 0.0128;
   }
 
   static double SalesCardSpace(BuildContext context) {
@@ -232,7 +232,7 @@ class Style {
           }
 
           static double ButtonExitWidth(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.15;
+            return MediaQuery.of(context).size.height * 0.128;
           }
 
           static double ButtonCancelWidth(BuildContext context) {
@@ -293,7 +293,7 @@ class Style {
   }
 
   static double ContainerImageProfileRequestSize(BuildContext context) {
-    return MediaQuery.of(context).size.height * 0.08;
+    return MediaQuery.of(context).size.height * 0.05;
   }
 
   static double BorderRadiusContainerImage(BuildContext context) {
@@ -335,6 +335,10 @@ class Style {
 
   
 //Espaçamentos globais {
+  static double height_05(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.0008;
+  }
+
   static double height_1(BuildContext context) {
     return MediaQuery.of(context).size.height * 0.0016;
   }
@@ -397,6 +401,14 @@ class Style {
 
   static double height_55(BuildContext context) {
     return MediaQuery.of(context).size.height * 0.088;
+  }
+
+  static double height_100(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.16;
+  }
+
+  static double height_150(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.24;
   }
 
   // static const double inputSpace = 25.0;

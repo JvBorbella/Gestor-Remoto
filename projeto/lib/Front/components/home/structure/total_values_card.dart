@@ -5,10 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:projeto/front/components/Style.dart';
 
 class TotalValuesCard extends StatefulWidget {
-  // final double vendadia;
-  // final double vendadiaanterior;
-  // final double vendasemana;
-  // final double vendames;
   final double children;
   final text;
 
@@ -16,10 +12,6 @@ class TotalValuesCard extends StatefulWidget {
     Key? key,
     required this.children,
     this.text,
-    // required this.vendadia,
-    // required this.vendadiaanterior,
-    // required this.vendasemana,
-    // required this.vendames,
   });
 
   @override
@@ -34,9 +26,6 @@ class _TotalValuesCardState extends State<TotalValuesCard> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        //Espaçamento entre o card e as bordas
-        // margin:
-        //     EdgeInsets.only(top: 5.0, right: 20.0, left: 20.0, bottom: 10.0),
         //Estilização
         decoration: BoxDecoration(
           color: Style.primaryColor,
@@ -54,7 +43,7 @@ class _TotalValuesCardState extends State<TotalValuesCard> {
                   style: TextStyle(
                       color: Color(0xffFFFFFF),
                       fontWeight: FontWeight.bold,
-                      // fontSize: MediaQuery.of(context).size.width * 0.04,
+                      fontSize: Style.height_8(context),
                       ),
                 ),
               ],

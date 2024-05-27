@@ -66,7 +66,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       (currencyFormat.format(widget.ticketmedioMes)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: Style.height_12(context),
+                                          fontSize: Style.height_8(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -89,7 +89,7 @@ class _MonthDetailsState extends State<MonthDetails> {
                                       '${widget.margemMes.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: Style.height_12(context),
+                                          fontSize: Style.height_8(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

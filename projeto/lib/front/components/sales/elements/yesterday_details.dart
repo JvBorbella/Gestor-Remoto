@@ -66,7 +66,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       (currencyFormat.format(widget.ticketmedioOntem)),
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: Style.height_12(context),
+                                          fontSize: Style.height_8(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),
@@ -89,7 +89,7 @@ class _YesterdayDetailsState extends State<YesterdayDetails> {
                                       '${widget.margemOntem.toStringAsFixed(2)}%',
                                       style: TextStyle(
                                           color: Style.tertiaryColor,
-                                          fontSize: Style.height_12(context),
+                                          fontSize: Style.height_8(context),
                                           fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.center,
                                     ),

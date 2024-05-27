@@ -24,10 +24,6 @@ class SalesPage extends StatefulWidget {
   final double valorSemana;
   final double valorMes;
   final double valorMesAnt;
-  // final String url;
-  // final token;
-  // final login;
-  // final image;
   final int ticketHoje;
   final int ticketOntem;
   final int ticketSemana;
@@ -62,10 +58,6 @@ class SalesPage extends StatefulWidget {
   const SalesPage({
     Key? key,
     required this.empresaNome,
-    // this.token,
-    // this.login,
-    // this.image,
-    // this.url = '',
     required this.valorHoje,
     required this.valorOntem,
     required this.valorSemana,
@@ -148,7 +140,9 @@ class _SalesPageState extends State<SalesPage> {
               ),
               Text(
                 widget.empresaNome,
-                style: TextStyle(color: Style.quarantineColor, fontSize: Style.CompanyNameSalesPageSize(context)),
+                style: TextStyle(
+                  color: Style.quarantineColor, 
+                  fontSize: Style.height_15(context)),
                 textAlign: TextAlign.center,
               ),
               SizedBox(

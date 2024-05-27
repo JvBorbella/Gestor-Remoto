@@ -50,6 +50,7 @@ class _InputState extends State<Input> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextField(
+                
                 controller: _textController,
                 keyboardType: widget.type,
                 obscureText: widget.obscureText ?? false,
