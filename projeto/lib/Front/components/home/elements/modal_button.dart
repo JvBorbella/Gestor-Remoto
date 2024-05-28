@@ -125,6 +125,7 @@ class _ModalButtonState extends State<ModalButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Container(
         //Área externa do button que abre o modal
         color: Style.primaryColor,

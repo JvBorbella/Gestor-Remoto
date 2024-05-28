@@ -26,6 +26,7 @@ class _TodayDetailsState extends State<TodayDetails> {
   Widget build(BuildContext context) {
     return Material(
       //Código dos valores adicionais do card de vendas
+      color: Colors.transparent,
       child: Container(
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -40,9 +41,9 @@ class _TodayDetailsState extends State<TodayDetails> {
                       padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
                         color: Style.primaryColor,
-                        // borderRadius: BorderRadius.only(
-                        //     bottomLeft: Radius.circular(Style.height_1(context)),
-                        //     bottomRight: Radius.circular(Style.height_1(context))),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(Style.height_2(context)),
+                            bottomRight: Radius.circular(Style.height_2(context))),
                             border: Border.all(color: Colors.transparent),
                       ),
                       child: Column(

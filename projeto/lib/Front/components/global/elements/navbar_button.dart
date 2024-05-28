@@ -15,10 +15,12 @@ class _NavbarButtonState extends State<NavbarButton> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
        child: Container(
         width: Style.ModalButtonWidth(context),
         //Área externa do button  
         decoration: BoxDecoration(
+          border: Border.all(color: Colors.transparent),
           color: Style.primaryColor,
         ),
         child: Column(
@@ -31,14 +33,11 @@ class _NavbarButtonState extends State<NavbarButton> {
                   MaterialPageRoute(builder: (context) => widget.destination),
                 );
               },
-              child: ButtonTheme(
-                //Estilização do Buttom
-                child: Icon(
+              child: Icon(
                   widget.Icons,
                   color: Style.tertiaryColor,
                   size: Style.SizeDrawerButton(context),
                 ),
-              ),
             ),
           ],
         ),

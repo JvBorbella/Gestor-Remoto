@@ -51,7 +51,11 @@ class _InputState extends State<Input> {
             children: [
               TextField(
                 
-                controller: _textController,
+                controller: _textController, 
+                style: TextStyle(
+                  fontSize: Style.height_12(context),
+                  fontFamily: 'Poppins-Regular'
+                ),
                 keyboardType: widget.type,
                 obscureText: widget.obscureText ?? false,
                 cursorColor: Style.primaryColor,
@@ -59,7 +63,7 @@ class _InputState extends State<Input> {
                   labelText: widget.text,
                   labelStyle: TextStyle(
                     color: Style.quarantineColor,
-                    fontSize: MediaQuery.of(context).size.height * 0.020,
+                    fontSize: Style.height_10(context),
                   ),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
                   enabledBorder: UnderlineInputBorder(

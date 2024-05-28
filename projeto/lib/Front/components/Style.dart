@@ -8,7 +8,7 @@ class Style {
   static const Color tertiaryColor = Color(0xffffffff);
   static const Color quarantineColor = Color(0xffA6A6A6);
   static const Color sucefullColor = Colors.green;
-  static const Color errorColor = Colors.red;
+  static const Color errorColor = Color.fromARGB(255, 156, 30, 21);
   static const Color warningColor = Color(0xffFFD700);
 //}
 

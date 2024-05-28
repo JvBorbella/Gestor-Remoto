@@ -37,6 +37,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Drawer(
           // width: MediaQuery.of(context).size.width * 0.8,
           child: Column(
@@ -150,58 +151,58 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ],
             ),
           ),
-          ListBody(
-            children: [
-              Container(
-                // padding: EdgeInsets.only(left: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: Style.ButtonDrawerSpace(context),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Promoções',
-                        style: TextStyle(
-                            color: Style.primaryColor,
-                            fontSize: Style.ButtonDrawerSize(context),
-                            fontFamily: 'Poppins-Medium'),
-                      ),
-                    ),
-                    SizedBox(
-                      height: Style.ButtonDrawerSpace(context),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Produtos negativos',
-                        style: TextStyle(
-                            color: Style.primaryColor,
-                            fontSize: Style.ButtonDrawerSize(context),
-                            fontFamily: 'Poppins-Medium'),
-                      ),
-                    ),
-                    SizedBox(
-                      height: Style.ButtonDrawerSpace(context),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Funcionários escalados',
-                        style: TextStyle(
-                            color: Style.primaryColor,
-                            fontSize: Style.ButtonDrawerSize(context),
-                            fontFamily: 'Poppins-Medium'),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )
+          // ListBody(
+          //   children: [
+          //     Container(
+          //       // padding: EdgeInsets.only(left: 15),
+          //       child: Column(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         children: [
+          //           SizedBox(
+          //             height: Style.ButtonDrawerSpace(context),
+          //           ),
+          //           TextButton(
+          //             onPressed: () {},
+          //             child: Text(
+          //               'Promoções',
+          //               style: TextStyle(
+          //                   color: Style.primaryColor,
+          //                   fontSize: Style.ButtonDrawerSize(context),
+          //                   fontFamily: 'Poppins-Medium'),
+          //             ),
+          //           ),
+          //           SizedBox(
+          //             height: Style.ButtonDrawerSpace(context),
+          //           ),
+          //           TextButton(
+          //             onPressed: () {},
+          //             child: Text(
+          //               'Produtos negativos',
+          //               style: TextStyle(
+          //                   color: Style.primaryColor,
+          //                   fontSize: Style.ButtonDrawerSize(context),
+          //                   fontFamily: 'Poppins-Medium'),
+          //             ),
+          //           ),
+          //           SizedBox(
+          //             height: Style.ButtonDrawerSpace(context),
+          //           ),
+          //           TextButton(
+          //             onPressed: () {},
+          //             child: Text(
+          //               'Funcionários escalados',
+          //               style: TextStyle(
+          //                   color: Style.primaryColor,
+          //                   fontSize: Style.ButtonDrawerSize(context),
+          //                   fontFamily: 'Poppins-Medium'),
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     )
+          //   ],
+          // )
         ],
       )),
     );

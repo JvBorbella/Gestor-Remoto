@@ -15,11 +15,12 @@ class _SalesCardState extends State<SalesCard> {
   Widget build(BuildContext context) {
     return Material(
       // Código do card usado na tela de vendas detalhadas
+      color: Colors.transparent,
       child: Container(
         margin: EdgeInsets.all(Style.height_12(context)),
         padding: EdgeInsets.zero,
         decoration: BoxDecoration(
-          border: Border.all(width: Style.height_2(context), color: Style.primaryColor),
+          border: Border.all(width: Style.height_1(context), color: Style.primaryColor),
           borderRadius: BorderRadius.circular(Style.height_5(context)),
         ),
         //Parte do código para que sejam atribuidos os widgets definidos no código da tela que ficarão dentro do card
