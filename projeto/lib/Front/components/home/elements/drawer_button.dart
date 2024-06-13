@@ -49,7 +49,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   // height: Style.DrawerHeaderSize(context),
                   decoration: BoxDecoration(color: Style.primaryColor),
                   child: Container(
-                    padding: EdgeInsets.all(Style.PaddingContainerDrawerHeader(context)),
+                    padding: EdgeInsets.all(Style.height_15(context)),
                     child: Column(
                       children: [
                         Row(
@@ -61,7 +61,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               iconSize: Style.IconCloseDrawerSize(context),
                               alignment: Alignment.topRight,
                               style: ButtonStyle(
-                                iconColor: MaterialStatePropertyAll(
+                                iconColor: WidgetStatePropertyAll(
                                     Style.tertiaryColor),
                               ),
                             ),
