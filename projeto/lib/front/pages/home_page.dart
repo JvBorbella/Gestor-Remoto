@@ -742,6 +742,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> fetchDataSalesMonitor() async {
     Map<String, double?>? fetchDataSalesMonitor =
         await DataServiceSalesMonitor.fetchDataSalesMonitor(token, url);
+        print(fetchDataSalesMonitor);
     if (fetchDataSalesMonitor.isNotEmpty) {
       setState(() {
         vendadia = fetchDataSalesMonitor['vendadia'] ?? 0.0;
