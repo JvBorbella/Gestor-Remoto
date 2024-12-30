@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "406747409124",
+    "firebase_url": "https://gestorremoto-default-rtdb.firebaseio.com",
+    "project_id": "gestorremoto",
+    "storage_bucket": "gestorremoto.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406747409124:android:6b89224659b01af9bedaf1",
+        "android_client_info": {
+          "package_name": "com.ideiatecnologia.GestorRemoto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApbaUdpO6I6V9qi_EG78O7kE2C7Lha-GI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
