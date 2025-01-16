@@ -274,12 +274,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
                 importance: Importance.max,
                 priority: Priority.high,
               ),
-              iOS: DarwinNotificationDetails(
-                presentAlert:
-                    true, // Exibe um alerta quando a notificação chega
-                presentBadge: true, // Atualiza o badge no ícone do app
-                presentSound: true, // Reproduz o som de notificação
-              ),
+              // iOS: DarwinNotificationDetails(
+              //   presentAlert:
+              //       true, // Exibe um alerta quando a notificação chega
+              //   presentBadge: true, // Atualiza o badge no ícone do app
+              //   presentSound: true, // Reproduz o som de notificação
+              // ),
             ),
           );
 
