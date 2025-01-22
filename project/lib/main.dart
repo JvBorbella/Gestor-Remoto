@@ -116,6 +116,7 @@ class TokenUrlProvider with ChangeNotifier {
 //   // BackgroundFetch.finish(taskId);
 // }
 
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     await Firebase.initializeApp(); // Inicializa o Firebase aqui
@@ -158,17 +159,26 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // // Initialize WorkManager
-  // await Workmanager().initialize(
-  //   callbackDispatcher,
-  //   isInDebugMode: true, // Set to false in production
-  // );
+  await Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: false, // Set to false in production
+  );
 
-  // // Register periodic task
-  // await Workmanager().registerPeriodicTask(
-  //   'fetchDataInBackground',
-  //   'fetchDataInBackground',
-  //   frequency: Duration(minutes: 15),
-  // );
+  // Register periodic task
+  await Workmanager().registerPeriodicTask(
+    'fetchDataInBackground',
+    'fetchDataInBackground',
+    frequency: Duration(minutes: 15),
+    inputData: {
+      'key': 'value',
+    },
+    constraints: Constraints(
+      networkType: NetworkType.connected, // Garante execução somente online
+      requiresBatteryNotLow: false, // Permite mesmo com bateria baixa
+      requiresCharging: false, // Executa mesmo sem carregamento
+      requiresDeviceIdle: false, // Não precisa estar ocioso
+    ),
+  );
 
   // Carrega o token e URL do armazenamento local antes de iniciar a aplicação
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -224,45 +234,57 @@ void main() async {
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print(
-      "Mensagem recebida no background title: ${message.notification?.title}");
-  print("Mensagem recebida no background body: ${message.notification?.body}");
-
   try {
+    // Inicializa o Firebase no background
+    await Firebase.initializeApp();
+
+    debugPrint(
+        "Mensagem recebida no background title: ${message.notification?.title}");
+    debugPrint(
+        "Mensagem recebida no background body: ${message.notification?.body}");
+
+    // Recupera as preferências armazenadas
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('token') ?? '';
     String url = prefs.getString('url') ?? '';
     bool flagNotify = prefs.getBool('flagNotify') ?? true;
 
-    print("Token: $token, URL: $url, FlagNotify: $flagNotify"); // Log adicional
+    debugPrint("Token: $token, URL: $url, FlagNotify: $flagNotify");
 
     if (token.isNotEmpty && url.isNotEmpty) {
-      if (flagNotify == true) {
-        Workmanager().initialize(
-          callbackDispatcher,
-          isInDebugMode: false, // Mantenha como true para depuração
-        );
+      if (flagNotify) {
+        // Inicializa o WorkManager (recomendado inicializar apenas no main.dart)
+        Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
 
+        // Busca as solicitações remotas
         var solicitacoesremotas =
             await DataServiceSalesMonitor.fetchDataRequests(token, url);
 
-        // Verifique se solicitacoesremotas é maior que zero
-        if (solicitacoesremotas != 0 && solicitacoesremotas != null) {
+        // Garante que solicitacoesremotas não seja nulo antes da comparação
+        if (solicitacoesremotas != null && solicitacoesremotas > 0) {
           final fcmToken = await FirebaseMessaging.instance.getToken();
           await prefs.setString('fcmtoken', fcmToken ?? '');
 
-          print('TOKEN FCM: $fcmToken');
-          print('Solicitações remotas: $solicitacoesremotas'); // Log adicional
+          debugPrint('TOKEN FCM: $fcmToken');
+          debugPrint('Solicitações remotas: $solicitacoesremotas');
 
-          // Envie a notificação para o Firebase
-          // final firebaseMessagingService = FirebaseMessagingService(NotifyService());
-          // await firebaseMessagingService.sendFcmNotification(
-          //   "Novas Solicitações",
-          //   "Há $solicitacoesremotas novo(s) pedido(s) de liberação remota.",
-          //   fcmToken!,
-          // );
-          // Exibir a notificação local
+          // Exibe a notificação local no dispositivo
+          final FlutterLocalNotificationsPlugin
+              flutterLocalNotificationsPlugin =
+              FlutterLocalNotificationsPlugin();
+
+          const AndroidInitializationSettings initializationSettingsAndroid =
+              AndroidInitializationSettings('@mipmap/ic_launcher_icon');
+
+          final InitializationSettings initializationSettings =
+              InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: DarwinInitializationSettings(),
+          );
+
+          await flutterLocalNotificationsPlugin
+              .initialize(initializationSettings);
+
           flutterLocalNotificationsPlugin.show(
             0,
             'Novas Solicitações',
@@ -274,28 +296,29 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
                 importance: Importance.max,
                 priority: Priority.high,
               ),
-              // iOS: DarwinNotificationDetails(
-              //   presentAlert:
-              //       true, // Exibe um alerta quando a notificação chega
-              //   presentBadge: true, // Atualiza o badge no ícone do app
-              //   presentSound: true, // Reproduz o som de notificação
-              // ),
+              iOS: DarwinNotificationDetails(
+                presentAlert:
+                    true, // Exibe um alerta quando a notificação chega
+                presentBadge: true, // Atualiza o badge no ícone do app
+                presentSound: true, // Reproduz o som de notificação
+              ),
             ),
           );
 
-          print('ENVIANDO NOTIFICAÇÃO');
+          debugPrint('Notificação enviada com sucesso!');
         } else {
-          callbackDispatcher();
-          print('Nenhuma solicitação remota disponível.');
+          debugPrint('Nenhuma solicitação remota disponível.');
         }
       } else {
+        // Cancela todas as tarefas do WorkManager se flagNotify for false
         await Workmanager().cancelAll();
+        debugPrint('Notificações desativadas pelo usuário.');
       }
     } else {
-      print('Token ou URL não estão disponíveis.');
+      debugPrint('Token ou URL não estão disponíveis.');
     }
   } catch (e) {
-    print("Erro no fetchDataInBackground: $e");
+    debugPrint("Erro no fetchDataInBackground: $e");
   }
 }
 

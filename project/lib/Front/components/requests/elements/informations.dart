@@ -29,8 +29,7 @@ class _InformationsState extends State<Informations> {
     return Material(
       child: Container(
         //Código dos elementos que ficam dentro do card na tela de solicitações
-        child: Expanded(
-          child: Row(
+        child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -106,7 +105,6 @@ class _InformationsState extends State<Informations> {
               )
             ],
           ),
-        ),
       ),
     );
   }
