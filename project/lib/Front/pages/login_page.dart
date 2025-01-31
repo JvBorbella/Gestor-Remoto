@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/back/login_function.dart';
-import 'package:project/back/save_user_function.dart';
+import 'package:project/back/login_function/login_function.dart';
+import 'package:project/back/save_functions/save_user_function.dart';
 import 'package:project/front/components/global/structure/navbar.dart';
 import 'package:project/front/components/login_config/Elements/simple_button.dart';
 import 'package:project/front/components/login_config/elements/action_button.dart';
@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
     return SafeArea(
         child: WillPopScope(
             child: Scaffold(
-              drawer: Drawer(),
               body: SingleChildScrollView(
                 child: Column(
                   children: [

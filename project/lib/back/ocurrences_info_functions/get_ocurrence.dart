@@ -88,18 +88,10 @@ class DataServiceOcurrence {
       String token,
       String urlBasic,
       String empresaid,
-      String ano,
-      String mes,
-      String dia) async {
+      String data) async {
     List<GetOcurrence>? ocurrences;
-
     try {
-      String dayFormatter = dia.padLeft(2, '0');
-      String monthFormatter = mes.padLeft(2, '0');
-      var urlPost = Uri.parse(
-          '$urlBasic/ideia/core/ocorrencia/$empresaid/$ano-$monthFormatter-$dayFormatter');
-
-      print(urlPost);
+      var urlPost = Uri.parse('''$urlBasic/ideia/core/getdata/ocorrenciaproduto%20o%20WHERE%20o.empresa_id%20=%20'$empresaid'%20AND%20o.datacadastro%20$data/''');
 
       var response = await http.get(
         urlPost,
@@ -128,24 +120,25 @@ class DataServiceOcurrence {
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
 
-        print(response.statusCode);
+        if (jsonData.containsKey('data') && jsonData['data'] is Map) {
+          // Busca a primeira chave dentro de 'data', pois ela é dinâmica
+          var dynamicKey = jsonData['data'].keys.first;
 
-        if (jsonData.containsKey('data') &&
-            jsonData['data'].containsKey('ocorrenciaproduto') &&
-            jsonData['data']['ocorrenciaproduto'].isNotEmpty) {
-          ocurrences = (jsonData['data']['ocorrenciaproduto'] as List)
-              .map((e) => GetOcurrence.fromJson(e))
-              .toList();
+          // Verifica se o valor associado à chave é uma lista
+          var dataList = jsonData['data'][dynamicKey];
+          if (dataList != null && dataList is List) {
+            ocurrences = dataList.map((e) => GetOcurrence.fromJson(e)).toList();
 
-          ocurrences = ocurrences
-              .where((ocurrence) => ocurrence.flagexcluido == 0)
-              .toList();
-        } else {
-          print('Dados ausentes no JSON. Ocorrências');
+            ocurrences = ocurrences
+                .where((ocurrence) => ocurrence.flagexcluido == 0)
+                .toList();
+          } else {
+            print('Dados ausentes no JSON. Ocorrências');
+          }
         }
       }
     } catch (e) {
-      print('Erro durante a requisição Ocorrencia: $e');
+      print('Erro durante a requisição GetOcorrencia: $e');
     }
     return ocurrences;
   }
@@ -196,18 +189,17 @@ class DataServiceOcurrenceItem {
       String urlBasic,
       String empresaid,
       String ocorrenciaprodutoid,
-      String ano,
-      String mes,
-      String dia) async {
+      // String ano,
+      // String mes,
+      // String dia
+      String data) async {
     List<GetOcurrenceItem>? ocurrencesItem;
 
     try {
-      String dayFormatter = dia.padLeft(2, '0');
-      String monthFormatter = mes.padLeft(2, '0');
+      // String dayFormatter = dia.padLeft(2, '0');
+      // String monthFormatter = mes.padLeft(2, '0');
       var urlPost = Uri.parse(
-          '$urlBasic/ideia/core/ocorrencia/$empresaid/$ano-$monthFormatter-$dayFormatter');
-
-      print(urlPost);
+          '''$urlBasic/ideia/core/getdata/ocorrenciaprodutoitem%20o%20WHERE%20o.ocorrenciaproduto_id%20=%20'$ocorrenciaprodutoid'/''');
 
       var response = await http.get(
         urlPost,
@@ -219,21 +211,23 @@ class DataServiceOcurrenceItem {
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
 
-        print(response.statusCode);
+        if (jsonData.containsKey('data') && jsonData['data'] is Map) {
+          // Busca a primeira chave dentro de 'data', pois ela é dinâmica
+          var dynamicKey = jsonData['data'].keys.first;
 
-        if (jsonData.containsKey('data') &&
-            jsonData['data'].containsKey('ocorrenciaproduto') &&
-            jsonData['data']['ocorrenciaprodutoitem'].isNotEmpty) {
-          ocurrencesItem = (jsonData['data']['ocorrenciaprodutoitem'] as List)
-              .map((e) => GetOcurrenceItem.fromJson(e))
-              .toList();
+          // Verifica se o valor associado à chave é uma lista
+          var dataList = jsonData['data'][dynamicKey];
+          if (dataList != null && dataList is List) {
+            ocurrencesItem =
+                dataList.map((e) => GetOcurrenceItem.fromJson(e)).toList();
 
-          ocurrencesItem = ocurrencesItem
-              .where((ocurrenceItem) =>
-                  ocurrenceItem.ocorrenciaprodutoid == ocorrenciaprodutoid)
-              .toList();
-        } else {
-          print('Dados ausentes no JSON. Ocorrências');
+            ocurrencesItem = ocurrencesItem
+                .where((ocurrenceItem) =>
+                    ocurrenceItem.ocorrenciaprodutoid == ocorrenciaprodutoid)
+                .toList();
+          } else {
+            print('Dados ausentes no JSON. Ocorrências');
+          }
         }
       }
     } catch (e) {

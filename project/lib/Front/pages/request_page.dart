@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/back/request_information.dart';
+import 'package:project/back/request_functions/request_information.dart';
 import 'package:project/front/components/global/elements/authorization_button.dart';
 import 'package:project/front/components/global/elements/navbar_button.dart';
 import 'package:project/front/components/global/structure/navbar.dart';

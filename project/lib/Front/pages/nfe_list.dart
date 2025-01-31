@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project/Front/components/Login_Config/Elements/action_button.dart';
+import 'package:project/Front/components/global/elements/calendar.dart';
 import 'package:project/Front/components/global/elements/navbar_button.dart';
 import 'package:project/Front/components/global/structure/navbar.dart';
 import 'package:project/Front/components/style.dart';
 import 'package:project/Front/pages/home_page.dart';
 import 'package:project/Front/pages/nfe_details.dart';
-import 'package:project/back/company_list.dart';
-import 'package:project/back/nfe.dart';
+import 'package:project/back/sales_info_functions/company_list.dart';
+import 'package:project/back/nfe_info_functions/nfe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NfeList extends StatefulWidget {
@@ -53,6 +54,7 @@ class _NfeListState extends State<NfeList> {
 
   List<Nfe> nfe = [];
   List<CompanyList> company = [];
+  List<DateTime?> selectDates = [DateTime.now()];
 
   final searchController = TextEditingController();
 
@@ -139,19 +141,23 @@ class _NfeListState extends State<NfeList> {
                         },
                         controller: searchController,
                         textStyle: WidgetStatePropertyAll(
-                            TextStyle(fontSize: Style.height_15(context))),
+                            TextStyle(fontSize: Style.height_10(context))),
                         enabled: true,
                         leading: IconButton(
                           onPressed: () async {
+                            var concat = selectDates.length == 2
+                                ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                                : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
                             await DataServiceNfe.fetchDataNfe(
                                 context,
                                 urlBasic,
                                 empresa_id,
-                                selectedDate.year.toString(),
-                                selectedDate.month.toString(),
-                                selectedDate.day.toString(),
-                                flagDay,
-                                flagPeriodic,
+                                // selectedDate.year.toString(),
+                                // selectedDate.month.toString(),
+                                // selectedDate.day.toString(),
+                                concat,
+                                // flagDay,
+                                // flagPeriodic,
                                 _onProductAdded,
                                 searchController.text,
                                 codTipoNfe);
@@ -168,7 +174,7 @@ class _NfeListState extends State<NfeList> {
                         ),
                         hintText: 'Pesquise pelo Nº da nota',
                         hintStyle: WidgetStatePropertyAll(TextStyle(
-                            fontSize: Style.height_15(context),
+                            fontSize: Style.height_10(context),
                             color: Style.quarantineColor)),
                         backgroundColor:
                             WidgetStatePropertyAll(Style.disabledColor),
@@ -297,163 +303,24 @@ class _NfeListState extends State<NfeList> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () async {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return AlertDialog(
-                                                        content: Container(
-                                                          alignment:
-                                                              Alignment(0, 0),
-                                                          decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius
-                                                                  .circular(Style
-                                                                      .height_10(
-                                                                          context))),
-                                                          height:
-                                                              Style.height_200(
-                                                                  context),
-                                                          width:
-                                                              Style.width_100(
-                                                                  context),
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceAround,
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    child: Text(
-                                                                      'Como deseja filtrar?',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            Style.height_15(context),
-                                                                        color: Style
-                                                                            .primaryColor,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
-                                                                      ),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .clip,
-                                                                      softWrap:
-                                                                          true,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  ActionButton(
-                                                                      height: Style
-                                                                          .ActionButtonSize(
-                                                                              context),
-                                                                      text:
-                                                                          'Data',
-                                                                      onPressed:
-                                                                          () async {
-                                                                        final DateTime? dateTime = await showDatePicker(
-                                                                            context:
-                                                                                context,
-                                                                            initialDate:
-                                                                                selectedDate,
-                                                                            firstDate:
-                                                                                DateTime(2000),
-                                                                            lastDate: DateTime(3000));
-                                                                        if (dateTime !=
-                                                                            null) {
-                                                                          setModalState(
-                                                                              () {
-                                                                            selectedDate =
-                                                                                dateTime;
-                                                                          });
-                                                                          setState(
-                                                                              () {
-                                                                            selectedDate =
-                                                                                dateTime;
-                                                                          });
-                                                                        }
-                                                                        setState(
-                                                                            () {
-                                                                          flagDay =
-                                                                              1;
-                                                                          flagPeriodic =
-                                                                              0;
-                                                                        });
-                                                                        _closeModal();
-                                                                      }),
-                                                                ],
-                                                              ),
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  ActionButton(
-                                                                      height: Style
-                                                                          .ActionButtonSize(
-                                                                              context),
-                                                                      text:
-                                                                          'Período',
-                                                                      onPressed:
-                                                                          () async {
-                                                                        final DateTime? dateTime = await showDatePicker(
-                                                                            context:
-                                                                                context,
-                                                                            initialDate:
-                                                                                selectedDate,
-                                                                            firstDate:
-                                                                                DateTime(2000),
-                                                                            lastDate: DateTime(3000));
-                                                                        if (dateTime !=
-                                                                            null) {
-                                                                          setModalState(
-                                                                              () {
-                                                                            selectedDate =
-                                                                                dateTime;
-                                                                          });
-                                                                          setState(
-                                                                              () {
-                                                                            selectedDate =
-                                                                                dateTime;
-                                                                          });
-                                                                        }
-                                                                        setState(
-                                                                            () {
-                                                                          flagDay =
-                                                                              0;
-                                                                          flagPeriodic =
-                                                                              1;
-                                                                        });
-                                                                        _closeModal();
-                                                                      }),
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
+                                                  final selectedDates =
+                                                      await showCalendarDialog(
+                                                          context);
+                                                  var concat = selectDates
+                                                              .length ==
+                                                          2
+                                                      ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                                                      : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                                                  if (selectedDates != null) {
+                                                    setModalState(() {
+                                                      selectDates =
+                                                          selectedDates;
+                                                    });
+                                                    setState(() {
+                                                      selectDates =
+                                                          selectedDates;
+                                                    });
+                                                  }
                                                 },
                                                 child: Text(
                                                   'Data/Período',
@@ -470,30 +337,24 @@ class _NfeListState extends State<NfeList> {
                                                       true, // permite a quebra de linha conforme necessário
                                                 ),
                                               ),
-                                              if (flagDay == 1)
-                                                Container(
-                                                  child: Text(
-                                                    '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year}',
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            Style.height_8(
-                                                                context),
-                                                        color: Style
-                                                            .secondaryColor),
-                                                  ),
-                                                )
-                                              else if (flagPeriodic == 1)
-                                                Container(
-                                                  child: Text(
-                                                    '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(DateTime.now().toString()))}',
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            Style.height_8(
-                                                                context),
-                                                        color: Style
-                                                            .secondaryColor),
-                                                  ),
-                                                )
+                                              Container(
+                                                child: Text(
+                                                  selectDates.isNotEmpty
+                                                      ? selectDates
+                                                          .map((date) =>
+                                                              DateFormat(
+                                                                      'dd/MM/yyyy')
+                                                                  .format(
+                                                                      date!))
+                                                          .join(' - ')
+                                                      : 'Selecione uma ou mais datas',
+                                                  style: TextStyle(
+                                                      fontSize: Style.height_8(
+                                                          context),
+                                                      color:
+                                                          Style.secondaryColor),
+                                                ),
+                                              )
                                             ],
                                           ),
                                           SizedBox(
@@ -509,7 +370,6 @@ class _NfeListState extends State<NfeList> {
                                                   if (value != '') {
                                                     setState(() {
                                                       codTipoNfe = value;
-                                                      print(codTipoNfe);
                                                       if (codTipoNfe == '100') {
                                                         setModalState(() {
                                                           tipoNfe =
@@ -1083,15 +943,19 @@ class _NfeListState extends State<NfeList> {
   }
 
   Future<void> fetchDataNFe({bool? ascending}) async {
+    var concat = selectDates.length == 2
+        ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+        : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
     List<Nfe>? fetchedData = await DataServiceNfe.fetchDataNfe(
         context,
         urlBasic,
         empresa_id,
-        selectedDate.year.toString(),
-        selectedDate.month.toString(),
-        selectedDate.day.toString(),
-        flagDay,
-        flagPeriodic,
+        // selectedDate.year.toString(),
+        // selectedDate.month.toString(),
+        // selectedDate.day.toString(),
+        concat,
+        // flagDay,
+        // flagPeriodic,
         _onProductAdded,
         searchController.text,
         codTipoNfe);

@@ -8,7 +8,7 @@ class NfeItems {
   String? codigo;
   String? nome;
   int? quantidade_comercial;
-  dynamic? valor_unit_comercial;
+  dynamic valor_unit_comercial;
 
   NfeItems({
     required this.codigo,
@@ -40,14 +40,9 @@ class DataServiceNfeItem {
     List<NfeItems>? nfeItems;
 
     try {
-      String rawQueryDay =
-          '''documentonfeitem%20di%20WHERE%20di.documentonfe_id%20=%20'$documentonfe_id'/''';
-      String queryDay =
-          "documentonfeitem di WHERE di.documentonfe_id = '$documentonfe_id'/";
+      String rawQueryDay = '''documentonfeitem%20di%20WHERE%20di.documentonfe_id%20=%20'$documentonfe_id'/''';
 
       var urlPost = Uri.parse('$urlBasic/ideia/core/getdata/$rawQueryDay');
-
-      print(urlPost);
 
       var response = await http.get(
         urlPost,
@@ -62,14 +57,11 @@ class DataServiceNfeItem {
         if (jsonData.containsKey('data') && jsonData['data'] is Map) {
           // Busca a primeira chave dentro de 'data', pois ela é dinâmica
           var dynamicKey = jsonData['data'].keys.first;
-          print('Chave dinâmica encontrada: $dynamicKey');
 
           // Verifica se o valor associado à chave é uma lista
           var dataList = jsonData['data'][dynamicKey];
           if (dataList != null && dataList is List) {
             nfeItems = dataList.map((e) => NfeItems.fromJson(e)).toList();
-
-            print('A chave dinâmica contém uma lista válida.');
           } else {
             print('A chave dinâmica não contém uma lista válida.');
           }

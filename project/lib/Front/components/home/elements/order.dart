@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/back/company_sales_monitor.dart';
+import 'package:project/back/sales_info_functions/company_sales_monitor.dart';
 import 'package:project/front/components/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

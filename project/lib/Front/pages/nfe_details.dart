@@ -4,7 +4,7 @@ import 'package:project/Front/components/global/elements/navbar_button.dart';
 import 'package:project/Front/components/global/structure/navbar.dart';
 import 'package:project/Front/components/style.dart';
 import 'package:project/Front/pages/nfe_list.dart';
-import 'package:project/back/nfe_items.dart';
+import 'package:project/back/nfe_info_functions/nfe_items.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NfeDetails extends StatefulWidget {

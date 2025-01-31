@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/Front/components/sales/elements/today_details.dart';
-import 'package:project/back/company_sales_monitor.dart';
+import 'package:project/back/sales_info_functions/company_sales_monitor.dart';
 import 'package:project/front/components/global/elements/navbar_button.dart';
 import 'package:project/front/components/global/structure/navbar.dart';
 import 'package:project/front/components/sales/elements/month_details.dart';

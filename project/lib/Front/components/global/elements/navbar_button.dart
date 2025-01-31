@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:project/front/components/Style.dart';
 
 class NavbarButton extends StatefulWidget {
-  final Widget destination;
+  final destination;
   final Icons;
+  final volta;
 
-  const NavbarButton({Key? key, required this.destination, required this.Icons})
+  const NavbarButton({Key? key, this.destination, required this.Icons, this.volta})
       : super(key: key);
 
   @override
@@ -30,6 +31,8 @@ class _NavbarButtonState extends State<NavbarButton> {
             GestureDetector(
               //Função que está sendo definida na página em que este código está sendo chamado
               onTap: () {
+                widget.volta == 'volta' ? Navigator.pop(context) :
+
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => widget.destination),
                 );

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:project/Front/components/style.dart';
 
 //Código onde serão acessados os dados de vendas do dia.
@@ -14,24 +13,24 @@ class Nfe {
   String? serie;
   DateTime? dt_doc;
   DateTime? dt_e_s;
-  dynamic? vl_doc;
-  dynamic? vl_desc;
-  dynamic? vl_merc;
-  dynamic? vl_frete;
-  dynamic? vl_bc_icms;
-  dynamic? vl_icms;
-  dynamic? vl_bc_icms_st;
-  dynamic? vl_icms_st;
-  dynamic? vl_ipi;
-  dynamic? vl_cofins;
-  dynamic? vl_pis_st;
-  dynamic? vl_pis;
-  dynamic? vl_cofins_st;
-  dynamic? vl_ii;
-  dynamic? vl_out_da;
-  dynamic? vl_seg;
-  dynamic? vl_icmsfecp;
-  dynamic? vl_icmsfecp_st;
+  dynamic vl_doc;
+  dynamic vl_desc;
+  dynamic vl_merc;
+  dynamic vl_frete;
+  dynamic vl_bc_icms;
+  dynamic vl_icms;
+  dynamic vl_bc_icms_st;
+  dynamic vl_icms_st;
+  dynamic vl_ipi;
+  dynamic vl_cofins;
+  dynamic vl_pis_st;
+  dynamic vl_pis;
+  dynamic vl_cofins_st;
+  dynamic vl_ii;
+  dynamic vl_out_da;
+  dynamic vl_seg;
+  dynamic vl_icmsfecp;
+  dynamic vl_icmsfecp_st;
   String? desc_nat_op;
   String? cod_mod;
   String? em_razaosocial;
@@ -190,39 +189,17 @@ class DataServiceNfe {
       BuildContext context,
       String urlBasic,
       String empresa_id,
-      String ano,
-      String mes,
-      String dia,
-      int flagDay,
-      int flagPeriodic,
+      String data,
       VoidCallback? onProductAdded,
       String searchController,
       String codTipoNfe) async {
     List<Nfe>? nfe;
 
-    String dayFormatter = dia.padLeft(2, '0');
-    String monthFormatter = mes.padLeft(2, '0');
-    String dateNowFormatter = DateFormat('yyyy-MM-dd')
-        .format(DateTime.parse(DateTime.now().toString()));
-
-    print(searchController);
-
-    if (flagDay == 1) {
-      try {
-        String dayFormatter = dia.padLeft(2, '0');
-        String monthFormatter = mes.padLeft(2, '0');
-
-        String rawQueryDay =
-            '''documentonfe%20d%20WHERE%20d.dt_doc%20=%20'$ano-$monthFormatter-$dayFormatter'%20AND%20('$empresa_id'%20=%20''%20OR%20d.empresa_id%20=%20'$empresa_id')%20AND%20d.num_doc%20LIKE%20'$searchController%25'/''';
-        String queryDay =
-            "documentonfe d WHERE d.dt_doc = '$ano-$monthFormatter-$dayFormatter' AND ('$empresa_id' = '' OR d.empresa_id = '$empresa_id') AND d.num_doc LIKE ''$searchController%''/";
-
-        var encodedQuery = Uri.encodeComponent(rawQueryDay);
+    try {
+        String rawQueryDay = '''documentonfe%20d%20WHERE%20d.dt_doc%20$data%20AND%20('$empresa_id'%20=%20''%20OR%20d.empresa_id%20=%20'$empresa_id')%20AND%20d.num_doc%20LIKE%20'$searchController%25'/''';
 
         var urlPost = Uri.parse('$urlBasic/ideia/core/getdata/$rawQueryDay');
 
-        print('URL nfe Day: $urlPost');
-
         var response = await http.get(
           urlPost,
           headers: {
@@ -230,15 +207,12 @@ class DataServiceNfe {
           },
         );
 
-        print('StatusCode Nfe${response.statusCode}');
-
         if (response.statusCode == 200) {
           var jsonData = json.decode(response.body);
 
           if (jsonData.containsKey('data') && jsonData['data'] is Map) {
             // Busca a primeira chave dentro de 'data', pois ela é dinâmica
             var dynamicKey = jsonData['data'].keys.first;
-            print('Chave dinâmica encontrada: $dynamicKey');
 
             // Verifica se o valor associado à chave é uma lista
             var dataList = jsonData['data'][dynamicKey];
@@ -259,8 +233,6 @@ class DataServiceNfe {
               } else {
                 nfe = dataList.map((e) => Nfe.fromJson(e)).toList();
               }
-
-              print('A chave dinâmica contém uma lista válida.');
             } else {
               print('A chave dinâmica não contém uma lista válida.');
             }
@@ -288,176 +260,5 @@ class DataServiceNfe {
         print('Erro durante a requisição nfeValues: $e');
       }
       return nfe;
-    } else if (flagPeriodic == 1) {
-      try {
-        String dayFormatter = dia.padLeft(2, '0');
-        String monthFormatter = mes.padLeft(2, '0');
-        String dateNowFormatter = DateFormat('yyyy-MM-dd')
-            .format(DateTime.parse(DateTime.now().toString()));
-
-        String rawQueryPeriodic =
-            '''documentonfe%20d%20WHERE%20d.dt_doc%20%3E=%20'$ano-$monthFormatter-$dayFormatter'%20AND%20d.dt_doc%20%3C=%20'$dateNowFormatter'%20AND%20('$empresa_id'%20=%20''%20OR%20d.empresa_id%20=%20'$empresa_id')%20AND%20d.num_doc%20LIKE%20'$searchController%25'/''';
-        String queryPeriodic =
-            "documentonfe d WHERE d.dt_doc >= '$ano-$monthFormatter-$dayFormatter' AND d.dt_doc <= '$dateNowFormatter' AND ('$empresa_id' = '' OR d.empresa_id = '$empresa_id') AND d.num_doc LIKE ''$searchController%''/";
-
-        var encodedQuery = Uri.encodeComponent(rawQueryPeriodic);
-
-        var urlPost =
-            Uri.parse('$urlBasic/ideia/core/getdata/$rawQueryPeriodic');
-
-        print('URL nfe Periodic: $urlPost');
-
-        var response = await http.get(
-          urlPost,
-          headers: {
-            'Accept': 'text/html',
-          },
-        );
-
-        print(' StatusCode Nfe${response.statusCode}');
-
-        if (response.statusCode == 200) {
-          var jsonData = json.decode(response.body);
-
-          if (jsonData.containsKey('data') && jsonData['data'] is Map) {
-            // Busca a primeira chave dentro de 'data', pois ela é dinâmica
-            var dynamicKey = jsonData['data'].keys.first;
-            print('Chave dinâmica encontrada: $dynamicKey');
-
-            // Verifica se o valor associado à chave é uma lista
-            var dataList = jsonData['data'][dynamicKey];
-            if (dataList != null && dataList is List) {
-              nfe = dataList.map((e) => Nfe.fromJson(e)).toList();
-
-              if (codTipoNfe != '' && codTipoNfe != 'open') {
-                nfe = nfe
-                    .where((nfe) => nfe.codigoretorno == '$codTipoNfe')
-                    .toList();
-              } else if (codTipoNfe == 'open') {
-                nfe = nfe
-                    .where((nfe) =>
-                        nfe.codigoretorno != '100' &&
-                        nfe.codigoretorno != '101' &&
-                        nfe.codigoretorno != '110')
-                    .toList();
-              } else {
-                nfe = dataList.map((e) => Nfe.fromJson(e)).toList();
-              }
-
-              print('A chave dinâmica contém uma lista válida.');
-            } else {
-              print('A chave dinâmica não contém uma lista válida.');
-            }
-          } else {
-            if (onProductAdded != null) {
-              onProductAdded!();
-            }
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
-                content: Text(
-                  'Não há documentos fiscais neste período',
-                  style: TextStyle(
-                    fontSize: Style.SaveUrlMessageSize(context),
-                    color: Style.tertiaryColor,
-                  ),
-                ),
-                backgroundColor: Style.errorColor,
-              ),
-            );
-            print('Estrutura "data" ausente ou inválida no JSON.');
-          }
-        } else {
-          print('Erro HTTP: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Erro durante a requisição nfeValues: $e');
-      }
-      return nfe;
-    } else {
-      try {
-        //Query principal
-        String rawQueryToday =
-            '''documentonfe%20d%20WHERE%20d.dt_doc%20=%20CURRENT_DATE()%20AND%20('$empresa_id'%20=%20''%20OR%20d.empresa_id%20=%20'$empresa_id')%20AND%20d.num_doc%20LIKE%20'$searchController%25'/''';
-        String queryToday =
-            "documentonfe d WHERE d.dt_doc = CURRENT_DATE() AND ('$empresa_id' = '' OR d.empresa_id = '$empresa_id') AND d.num_doc LIKE ''$searchController%''/";
-
-        var encodedQuery = Uri.encodeComponent(rawQueryToday);
-
-        var urlPost = Uri.parse('$urlBasic/ideia/core/getdata/$rawQueryToday');
-
-        print('URL nfe Today: $urlPost');
-
-        var response = await http.get(
-          urlPost,
-          headers: {
-            'Accept': 'text/html',
-          },
-        );
-
-        print(' StatusCode Nfe${response.statusCode}');
-
-        if (response.statusCode == 200) {
-          var jsonData = json.decode(response.body);
-
-          if (jsonData.containsKey('data') && jsonData['data'] is Map) {
-            // Busca a primeira chave dentro de 'data', pois ela é dinâmica
-            var dynamicKey = jsonData['data'].keys.first;
-            print('Chave dinâmica encontrada: $dynamicKey');
-
-            // Verifica se o valor associado à chave é uma lista
-            var dataList = jsonData['data'][dynamicKey];
-            if (dataList != null && dataList is List) {
-              nfe = dataList.map((e) => Nfe.fromJson(e)).toList();
-
-              if (codTipoNfe != '' && codTipoNfe != 'open') {
-                nfe = nfe
-                    .where((nfe) => nfe.codigoretorno == '$codTipoNfe')
-                    .toList();
-              } else if (codTipoNfe == 'open') {
-                nfe = nfe
-                    .where((nfe) =>
-                        nfe.codigoretorno != '100' &&
-                        nfe.codigoretorno != '101' &&
-                        nfe.codigoretorno != '110')
-                    .toList();
-              } else {
-                nfe = dataList.map((e) => Nfe.fromJson(e)).toList();
-              }
-
-              print('A chave dinâmica contém uma lista válida.');
-            } else {
-              print('A chave dinâmica não contém uma lista válida.');
-            }
-          } else {
-            if (onProductAdded != null) {
-              onProductAdded!();
-            }
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                behavior: SnackBarBehavior.floating,
-                padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
-                content: Text(
-                  'Não há documentos fiscais neste período',
-                  style: TextStyle(
-                    fontSize: Style.SaveUrlMessageSize(context),
-                    color: Style.tertiaryColor,
-                  ),
-                ),
-                backgroundColor: Style.errorColor,
-              ),
-            );
-            print('Estrutura "data" ausente ou inválida no JSON.');
-          }
-        } else {
-          print('Erro HTTP: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Erro durante a requisição nfeValues: $e');
-      }
-      return nfe;
-    }
   }
 }

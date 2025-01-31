@@ -1,11 +1,9 @@
-// import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:project/Front/components/global/structure/navbar.dart';
-// import 'package:project/Front/pages/request_page.dart';
-import 'package:project/back/company_sales_monitor.dart';
-import 'package:project/back/sales_monitor.dart';
+import 'package:project/back/sales_info_functions/company_sales_monitor.dart';
+import 'package:project/back/sales_info_functions/sales_monitor.dart';
 import 'package:project/front/components/global/structure/request_card.dart';
 import 'package:project/front/components/home/elements/content_verification.dart';
 import 'package:project/front/components/home/elements/drawer_button.dart';
@@ -14,11 +12,7 @@ import 'package:project/front/components/request_home/elements/number_of_request
 import 'package:project/front/components/request_home/elements/request_button.dart';
 import 'package:project/front/components/request_home/structure/conditional_text_card_requests.dart';
 import 'package:project/front/components/style.dart';
-// import 'package:project/main.dart';
-// import 'package:project/notify_service.dart';
-// import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:project/front/pages/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -30,7 +24,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late BuildContext modalContext;
   String urlController = '';
   List<CompanySalesMonitor> empresasHoje = [];
   List<CompanySalesMonitor> empresasOntem = [];
@@ -42,9 +35,8 @@ class _HomePageState extends State<HomePage> {
   late double vendasemana = 0.0;
   late double vendames = 0.0;
   late int solicitacoesremotas = -1;
-  bool isLoading = true; // Valor padrão de carregamento
-  NumberFormat currencyFormat =
-      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  bool isLoading = true;
+  NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
   String token = '';
   String login = '';
   String image = '';
@@ -52,50 +44,14 @@ class _HomePageState extends State<HomePage> {
   String urlBasic = '';
   String email = '';
   String selectedOptionChild = '';
-
   String cond_pgto = 'dinheiro';
 
   @override
   void initState() {
     super.initState();
-    // _loadSavedUrl();
-    // _loadSavedToken();
-    // _loadSavedLogin();
-    // _loadSavedImage();
-    // _loadSavedUrlBasic();
-    // _loadSavedEmail();
-    //    final tokenUrlProvider = Provider.of<TokenUrlProvider>(context, listen: false);
-    // tokenUrlProvider.loadSavedToken();
-    // tokenUrlProvider.loadSavedUrl();
     getNotification();
     loadData();
-    // _configureBackgroundFetch();
   }
-
-//   void _configureBackgroundFetch() {
-//   BackgroundFetch.configure(
-//     BackgroundFetchConfig(
-//       minimumFetchInterval: 0, // Melhor definir como 15 para evitar problemas
-//       stopOnTerminate: false,
-//       enableHeadless: true,
-//     ), (String taskId) async {
-//       // Função que será executada periodicamente em background
-//       print("BackgroundFetch executado: $taskId");
-//       await fetchDataRequests();  // Função para buscar dados
-//       // BackgroundFetch.finish(taskId); // Finaliza a tarefa de background
-//     },
-//   ).then((int status) {
-//     print('BackgroundFetch configurado com status: $status');
-//   }).catchError((e) {
-//     print('Erro ao configurar BackgroundFetch: $e');
-//   });
-// }
-
-// @override
-// void dispose() {
-//   BackgroundFetch.stop();
-//   super.dispose();
-// }
 
   @override
   void didChangeDependencies() {
@@ -109,25 +65,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _closeModal() {
-    //Função para fechar o modal
     Navigator.of(context).pop();
   }
 
   bool valor = false;
-
-  // showNotification () {
-  //   setState(() {
-  //     valor = !valor;
-  //     Provider.of<NotifyService>(context, listen: false).showNotification(
-  //         CustomNotify(
-  //           id: 1,
-  //           title: 'Gestor Remoto',
-  //           body: 'Há ${solicitacoesremotas} novo(s) pedido(s) de liberação remota',
-  //           payload: RequestPage().toString()
-  //         )
-  //       );
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -575,8 +516,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             onWillPop: () async {
-               _openModal(context);
-              return true;
+              return false;
             }));
   }
 
@@ -812,7 +752,6 @@ class _HomePageState extends State<HomePage> {
   Future<void> fetchDataSalesMonitor() async {
     Map<String, double?>? fetchDataSalesMonitor =
         await DataServiceSalesMonitor.fetchDataSalesMonitor(token, url);
-    print(fetchDataSalesMonitor);
     if (fetchDataSalesMonitor.isNotEmpty) {
       setState(() {
         vendadia = fetchDataSalesMonitor['vendadia'] ?? 0.0;
@@ -846,124 +785,5 @@ class _HomePageState extends State<HomePage> {
     if (solicitacoesremotas > 0) {
       // showNotification();
     } else {}
-  }
-
-  void _openModal(BuildContext context) {
-    //Código para abrir modal
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        modalContext = context;
-        return Container(
-            //Configurações de tamanho e espaçamento do modal
-            height: Style.ModalSize(context),
-            child: WillPopScope(
-                child: Container(
-                  //Tamanho e espaçamento interno do modal
-                  height: Style.InternalModalSize(context),
-                  margin: EdgeInsets.only(
-                      left: Style.ModalMargin(context),
-                      right: Style.ModalMargin(context)),
-                  padding: EdgeInsets.all(Style.InternalModalPadding(context)),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          Style.ModalBorderRadius(context))),
-                  child: Column(
-                    //Conteúdo interno do modal
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Deseja sair da aplicação?',
-                            style: TextStyle(
-                              fontSize: Style.height_15(context),
-                              color: Style.primaryColor,
-                            ),
-                            overflow: TextOverflow.clip,
-                            softWrap: true,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: Style.height_30(context),
-                      ),
-                      Row(
-                        //Espaçamento entre os Buttons
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          //Buttom de sair
-                          TextButton(
-                            onPressed: () async {
-                              _sair();
-                            },
-                            child: Container(
-                              width: Style.ButtonExitWidth(context),
-                              // height: Style.ButtonExitHeight(context),
-                              padding: EdgeInsets.all(
-                                  Style.ButtonExitPadding(context)),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      Style.ButtonExitBorderRadius(context)),
-                                  color: Style.primaryColor),
-                              child: Text(
-                                'Sair',
-                                style: TextStyle(
-                                  color: Style.tertiaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Style.height_10(context),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          //Buttom para fechar o modal
-                          TextButton(
-                            onPressed: () {
-                              _closeModal();
-                            },
-                            child: Container(
-                              // width: Style.ButtonCancelWidth(context),
-                              // height: Style.ButtonCancelHeight(context),
-                              padding: EdgeInsets.all(
-                                  Style.ButtonCancelPadding(context)),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    Style.ButtonExitBorderRadius(context)),
-                                border: Border.all(
-                                    width: Style.WidthBorderImageContainer(
-                                        context),
-                                    color: Style.secondaryColor),
-                                color: Style.tertiaryColor,
-                              ),
-                              child: Text(
-                                'Cancelar',
-                                style: TextStyle(
-                                  color: Style.secondaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: Style.height_10(context),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                onWillPop: () async {
-                  _closeModal();
-                  return true;
-                }));
-      },
-    );
-  }
-
-  void _sair() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-        (route) => false);
   }
 }

@@ -6,8 +6,8 @@ import 'package:project/Front/components/style.dart';
 import 'package:project/Front/components/global/elements/navbar_button.dart';
 import 'package:project/Front/components/global/structure/navbar.dart';
 import 'package:project/Front/pages/home_page.dart';
-import 'package:project/back/company_sales_monitor.dart';
-import 'package:project/back/credit_consult.dart';
+import 'package:project/back/sales_info_functions/company_sales_monitor.dart';
+import 'package:project/back/customer_info_functions/credit_consult.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConsultPage extends StatefulWidget {

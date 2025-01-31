@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project/Front/components/Login_Config/Elements/input_blocked.dart';
+import 'package:project/Front/components/global/elements/navbar_button.dart';
 import 'package:project/Front/pages/ocurrences_page.dart';
-import 'package:project/back/get_ocurrence.dart';
-import 'package:project/back/person.dart';
-import 'package:project/front/components/global/elements/navbar_button.dart';
+import 'package:project/back/ocurrences_info_functions/get_ocurrence.dart';
+import 'package:project/back/customer_info_functions/person.dart';
+
 import 'package:project/front/components/global/structure/navbar.dart';
 import 'package:project/Front/components/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -100,8 +101,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
               children: [
                 Navbar(text: 'Detalhes da Ocorrência', children: [
                   NavbarButton(
-                      destination:
-                          OcurrencesPage(selectDate: widget.selectDate),
+                      volta: 'volta',
                       Icons: Icons.arrow_back_ios_new)
                 ]),
                 Container(
@@ -825,9 +825,9 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
           ),
         ),
         onWillPop: () async {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) =>
-                  OcurrencesPage(selectDate: widget.selectDate)));
+          // Navigator.of(context).pushReplacement(MaterialPageRoute(
+          //     builder: (context) =>
+          //         OcurrencesPage(selectDate: widget.selectDate)));
           return true;
         });
   }
@@ -876,9 +876,11 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
             urlBasic,
             empresaid,
             widget.ocorrenciaprodutoid,
-            widget.dataano,
-            widget.datames,
-            widget.datadia);
+            // widget.dataano,
+            // widget.datames,
+            // widget.datadia,
+            widget.selectDate
+            );
     if (fetchedData != null) {
       setState(() {
         ocurrencesItem = fetchedData;

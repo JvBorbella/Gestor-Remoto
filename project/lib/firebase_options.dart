@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     projectId: 'gestorremoto',
     databaseURL: 'https://gestorremoto-default-rtdb.firebaseio.com',
     storageBucket: 'gestorremoto.firebasestorage.app',
-    iosBundleId: 'com.ideiatecnologia.GestorRemoto',
+    iosBundleId: 'com.ideiatecnologia.GestorRemoto2',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -76,7 +76,7 @@ class DefaultFirebaseOptions {
     projectId: 'gestorremoto',
     databaseURL: 'https://gestorremoto-default-rtdb.firebaseio.com',
     storageBucket: 'gestorremoto.firebasestorage.app',
-    iosBundleId: 'com.ideiatecnologia.GestorRemoto',
+    iosBundleId: 'com.ideiatecnologia.GestorRemoto2',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -88,5 +88,4 @@ class DefaultFirebaseOptions {
     databaseURL: 'https://gestorremoto-default-rtdb.firebaseio.com',
     storageBucket: 'gestorremoto.firebasestorage.app',
   );
-
 }

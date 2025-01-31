@@ -1,16 +1,15 @@
 import 'dart:io';
-// import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:project/back/sales_info_functions/sales_monitor.dart';
 import 'package:project/firebase_options.dart';
 import 'package:project/front/pages/splash_page.dart';
-// import 'package:project/back/notify_service.dart';
 import 'package:project/notify_service.dart';
 import 'package:project/services/firebase_messaging_service.dart';
 import 'package:provider/provider.dart';
-import 'package:project/back/sales_monitor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -20,6 +19,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('pt', 'BR'), // Português do Brasil
+      ],
       debugShowCheckedModeBanner: false,
       title: "Gestor Remoto",
       theme: ThemeData(
@@ -95,27 +102,6 @@ class TokenUrlProvider with ChangeNotifier {
   }
 }
 
-// void backgroundFetchHeadlessTask(HeadlessTask task) async {
-//   String taskId = task.taskId;
-//   bool isTimeout = task.timeout;
-//   if (isTimeout) {
-//     BackgroundFetch.finish(taskId);
-//     return;
-//   }
-
-//   // Busque os dados de solicitacoesremotas
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   String token = prefs.getString('token') ?? '';
-//   String url = prefs.getString('url') ?? '';
-
-//   if (token.isNotEmpty && url.isNotEmpty) {
-//     await DataServiceSalesMonitor.fetchDataRequests(token, url);
-//     print('Executando tarefa headless com token: $token e url: $url');
-//   }
-
-//   // BackgroundFetch.finish(taskId);
-// }
-
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
@@ -173,10 +159,7 @@ void main() async {
       'key': 'value',
     },
     constraints: Constraints(
-      networkType: NetworkType.connected, // Garante execução somente online
-      requiresBatteryNotLow: false, // Permite mesmo com bateria baixa
-      requiresCharging: false, // Executa mesmo sem carregamento
-      requiresDeviceIdle: false, // Não precisa estar ocioso
+      networkType: NetworkType.connected,
     ),
   );
 
@@ -205,32 +188,6 @@ void main() async {
 
   _configureWorkmanager();
 }
-
-// void _configureBackgroundFetch() {
-//   BackgroundFetch.configure(
-//     BackgroundFetchConfig(
-//       minimumFetchInterval: 15, // Intervalo mínimo de 15 minutos
-//       stopOnTerminate: false,   // Continuar após o app ser fechado
-//       enableHeadless: true,     // Headless mode habilitado para funcionar quando o app estiver fechado
-//       startOnBoot: true,        // Iniciar ao reiniciar o dispositivo
-//       requiresCharging: false,  // Permitir mesmo sem carregar o dispositivo
-//       requiresDeviceIdle: false, // Executar mesmo com o dispositivo em uso
-//     ),
-//     (taskId) async {
-//       print("[BackgroundFetch] Evento recebido: $taskId");
-
-//       // Obtenha uma instância de NotifyService
-//       final notifyService = NotifyService();
-//       await fetchDataInBackground(notifyService);
-
-//       BackgroundFetch.finish(taskId);
-//     },
-//   ).then((int status) {
-//     print('BackgroundFetch configurado com status: $status');
-//   }).catchError((e) {
-//     print('Erro ao configurar BackgroundFetch: $e');
-//   });
-// }
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -340,7 +297,6 @@ Future<void> fetchDataInBackground(NotifyService notifyService) async {
         await prefs.setString('fcmtoken', fcmToken ?? '');
 
         print('TOKEN FCM: $fcmToken');
-        print('Solicitações remotas: $solicitacoesremotas'); // Log adicional
 
         // Envie a notificação para o Firebase
         final firebaseMessagingService =
@@ -352,7 +308,6 @@ Future<void> fetchDataInBackground(NotifyService notifyService) async {
         );
         print('ENVIANDO NOTIFICAÇÃO');
 
-        // print('Notificação enviada com sucesso');
       } else {
         callbackDispatcher();
         print('Nenhuma solicitação remota disponível.');
@@ -375,38 +330,3 @@ void setupFirebaseMessagingListeners() {
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-
-// Future<void> fetchDataRequests() async {
-//   final provider = Provider.of<TokenUrlProvider>(navigatorKey.currentContext!,
-//       listen: false);
-
-//   if (provider.token.isNotEmpty && provider.url.isNotEmpty) {
-//     int? solicitacoesremotas = await DataServiceSalesMonitor.fetchDataRequests(
-//         provider.token, provider.url);
-
-//     if (solicitacoesremotas != null && solicitacoesremotas > 0) {
-//       print('R E S U L T A D O: $solicitacoesremotas');
-
-//       var androidDetails = AndroidNotificationDetails(
-//         'channelId',
-//         'channelName',
-//         importance: Importance.max,
-//         priority: Priority.high,
-//         ticker: 'ticker',
-//       );
-//       var generalNotificationDetails =
-//           NotificationDetails(android: androidDetails);
-
-//       await flutterLocalNotificationsPlugin.show(
-//         0,
-//         'Novas solicitações',
-//         'Você tem $solicitacoesremotas novas solicitações remotas.',
-//         generalNotificationDetails,
-//       );
-//     } else {
-//       print('Nenhuma solicitação remota disponível.');
-//     }
-//   } else {
-//     print('Token ou URL vazios.');
-//   }
-// }

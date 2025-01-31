@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:project/Front/components/style.dart';
-
-//Código onde serão acessados os dados de vendas do dia.
 
 class PaymentCondition {
   String? condicaopagamento_id;

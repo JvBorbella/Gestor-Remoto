@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project/Front/components/global/elements/calendar.dart';
 import 'package:project/Front/components/style.dart';
 import 'package:project/Front/pages/home_page.dart';
 import 'package:project/Front/pages/ocurrences_details_page.dart';
-import 'package:project/back/get_ocurrence.dart';
-import 'package:project/back/person.dart';
+import 'package:project/back/ocurrences_info_functions/get_ocurrence.dart';
+import 'package:project/back/customer_info_functions/person.dart';
 import 'package:project/front/components/global/elements/navbar_button.dart';
 import 'package:project/front/components/global/structure/navbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OcurrencesPage extends StatefulWidget {
   final selectDate;
+  final selectedDates;
 
-  const OcurrencesPage({Key? key, this.selectDate});
+  const OcurrencesPage({Key? key, this.selectDate, this.selectedDates});
 
   @override
   State<OcurrencesPage> createState() => _OcurrencesPageState();
@@ -29,6 +31,7 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
   String pessoa_id = '';
 
   DateTime selectedDate = DateTime.now();
+  List<DateTime?> selectDates = [DateTime.now()];
 
   bool isLoading = true;
   bool isLoadingOcurrence = true;
@@ -41,7 +44,6 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
     if (widget.selectDate != null) {
       selectedDate = widget.selectDate;
     }
-    print('Data: $selectedDate');
   }
 
   @override
@@ -84,25 +86,30 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                 children: [
                   IconButton(
                     onPressed: () async {
-                      final DateTime? dateTime = await showDatePicker(
-                          context: context,
-                          initialDate: selectedDate,
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(3000));
-                      if (dateTime != null) {
-                        setState(() {
-                          selectedDate = dateTime;
-                        });
-                      }
+                      final selectedDates = await showCalendarDialog(context);
+                      var concat = selectDates.length == 2
+                          ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                          : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
                       await DataServiceOcurrence.fetchDataOcurrence(
-                        context,
-                        token,
-                        urlBasic,
-                        empresaid,
-                        selectedDate.year.toString(),
-                        selectedDate.month.toString().padLeft(2, '0'),
-                        selectedDate.day.toString().padLeft(2, '0'),
-                      );
+                          context,
+                          token,
+                          urlBasic,
+                          empresaid,
+                          // selectedDate.year.toString(),
+                          // selectedDate.month.toString().padLeft(2, '0'),
+                          // selectedDate.day.toString().padLeft(2, '0'),
+                          // selectDates.length == 2
+                          //     ? selectDates
+                          //         .map((date) =>
+                          //             DateFormat('BETWEEN%20yyy-MM-dd')
+                          //                 .format(date!))
+                          //         .join("'%20AND%20'")
+                          //         .toString()
+                          //     : selectDates
+                          //         .map((date) =>
+                          //             DateFormat('yyy-MM-dd').format(date!))
+                          //         .join("")
+                          concat);
                       isLoadingOcurrence = true;
                       setState(() {
                         fetchDataOcurrences();
@@ -116,7 +123,13 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                     width: Style.height_10(context),
                   ),
                   Text(
-                      '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(DateTime.now().toString()))}'),
+                    selectDates.isNotEmpty
+                        ? selectDates
+                            .map((date) =>
+                                DateFormat('dd/MM/yyyy').format(date!))
+                            .join(' - ')
+                        : 'Selecione uma ou mais datas',
+                  ),
                 ],
               )),
           Expanded(
@@ -161,26 +174,53 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                         children: [
                           IconButton(
                             onPressed: () async {
-                              final DateTime? dateTime = await showDatePicker(
-                                  context: context,
-                                  initialDate: selectedDate,
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(3000));
-                              if (dateTime != null) {
+                              final selectedDates =
+                                  await showCalendarDialog(context);
+
+                              if (selectedDates != null) {
                                 setState(() {
-                                  selectedDate = dateTime;
+                                  selectDates = selectedDates;
                                 });
                               }
-                              isLoadingOcurrence = true;
+                              var concat = selectDates.length == 2
+                                  ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                                  : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                              // final DateTime? dateTime = await showDatePicker(
+                              //     context: context,
+                              //     initialDate: selectedDate,
+                              //     firstDate: DateTime(2000),
+                              //     lastDate: DateTime(3000));
+                              // if (dateTime != null) {
+                              //   setState(() {
+                              //     selectedDate = dateTime;
+                              //   });
+                              // }
+                              if (selectedDates != selectDates) {
+                                isLoadingOcurrence = false;
+                              } else {
+                                isLoadingOcurrence = true;
+                              }
+
                               await DataServiceOcurrence.fetchDataOcurrence(
-                                context,
-                                token,
-                                urlBasic,
-                                empresaid,
-                                selectedDate.year.toString(),
-                                selectedDate.month.toString().padLeft(2, '0'),
-                                selectedDate.day.toString().padLeft(2, '0'),
-                              );
+                                  context,
+                                  token,
+                                  urlBasic,
+                                  empresaid,
+                                  // selectedDate.year.toString(),
+                                  // selectedDate.month.toString().padLeft(2, '0'),
+                                  // selectedDate.day.toString().padLeft(2, '0'),
+                                  // selectDates.length == 2
+                                  //     ? selectDates
+                                  //         .map((date) =>
+                                  //             DateFormat('BETWEEN%20yyy-MM-dd')
+                                  //                 .format(date!))
+                                  //         .join("'%20AND%20'")
+                                  //         .toString()
+                                  //     : selectDates
+                                  //         .map((date) => DateFormat('yyy-MM-dd')
+                                  //             .format(date!))
+                                  //         .join("")
+                                  concat);
                               setState(() {
                                 fetchDataOcurrences();
                               });
@@ -193,7 +233,15 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                             width: Style.height_10(context),
                           ),
                           Text(
-                              '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(DateTime.now().toString()))}'),
+                            selectDates.isNotEmpty
+                                ? selectDates
+                                    .map((date) =>
+                                        DateFormat('dd/MM/yyyy').format(date!))
+                                    .join(' - ')
+                                : 'Selecione uma ou mais datas',
+                          ),
+                          // Text(
+                          //     '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(DateTime.now().toString()))}'),
                         ],
                       )),
                   Expanded(
@@ -370,8 +418,12 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                                                           context),
                                                       fontWeight:
                                                           FontWeight.bold)),
-                                            if (ocurrences[index].flagdivergencia == 0 ||
-                                                ocurrences[index].flagdivergencia == 1)
+                                            if (ocurrences[index]
+                                                        .flagdivergencia ==
+                                                    0 ||
+                                                ocurrences[index]
+                                                        .flagdivergencia ==
+                                                    1)
                                               Text(
                                                 'Há divergências ⚠️',
                                                 style: TextStyle(
@@ -388,77 +440,92 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                                                                 .primaryColor)),
                                                 onPressed: () async {
                                                   await Navigator.of(context)
-                                                      .pushReplacement(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  OcurrencesDetails(
-                                                                    pessoaid: ocurrences[
+                                                      .push(MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              OcurrencesDetails(
+                                                                pessoaid:
+                                                                    ocurrences[
                                                                             index]
                                                                         .pessoaid,
-                                                                    nome: ocurrences[
-                                                                            index]
-                                                                        .nome
-                                                                        .toString(),
-                                                                    codigo: ocurrences[
-                                                                            index]
-                                                                        .codigo
-                                                                        .toString(),
-                                                                    numero: ocurrences[
-                                                                            index]
-                                                                        .numero
-                                                                        .toString(),
-                                                                    identificador: ocurrences[
-                                                                            index]
-                                                                        .identificador
-                                                                        .toString(),
-                                                                    obs: ocurrences[
-                                                                            index]
-                                                                        .obs
-                                                                        .toString(),
-                                                                    justificativacancelamento: ocurrences[
+                                                                nome: ocurrences[
+                                                                        index]
+                                                                    .nome
+                                                                    .toString(),
+                                                                codigo: ocurrences[
+                                                                        index]
+                                                                    .codigo
+                                                                    .toString(),
+                                                                numero: ocurrences[
+                                                                        index]
+                                                                    .numero
+                                                                    .toString(),
+                                                                identificador: ocurrences[
+                                                                        index]
+                                                                    .identificador
+                                                                    .toString(),
+                                                                obs: ocurrences[
+                                                                        index]
+                                                                    .obs
+                                                                    .toString(),
+                                                                justificativacancelamento:
+                                                                    ocurrences[
                                                                             index]
                                                                         .justificativacancelamento
                                                                         .toString(),
-                                                                    dataentrega:
-                                                                        ocurrences[index]
-                                                                            .dataentrega,
-                                                                    datacadastro:
-                                                                        ocurrences[index]
-                                                                            .datacadastro,
-                                                                    flagfinalizada:
-                                                                        ocurrences[index]
-                                                                            .flagfinalizada,
-                                                                    flagprocessada:
-                                                                        ocurrences[index]
-                                                                            .flagprocessada,
-                                                                    flagcancelado:
-                                                                        ocurrences[index]
-                                                                            .flagcancelado,
-                                                                    datahoracancelamento:
-                                                                        ocurrences[index]
-                                                                            .datahoracancelamento,
-                                                                    datafinalizada:
-                                                                        ocurrences[index]
-                                                                            .datafinalizada,
-                                                                    dataprocessada:
-                                                                        ocurrences[index]
-                                                                            .dataprocessada,
-                                                                    ocorrenciaprodutoid:
-                                                                        ocurrences[index]
-                                                                            .ocorrenciaprodutoid,
-                                                                    dataano: selectedDate
+                                                                dataentrega:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .dataentrega,
+                                                                datacadastro:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .datacadastro,
+                                                                flagfinalizada:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .flagfinalizada,
+                                                                flagprocessada:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .flagprocessada,
+                                                                flagcancelado:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .flagcancelado,
+                                                                datahoracancelamento:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .datahoracancelamento,
+                                                                datafinalizada:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .datafinalizada,
+                                                                dataprocessada:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .dataprocessada,
+                                                                ocorrenciaprodutoid:
+                                                                    ocurrences[
+                                                                            index]
+                                                                        .ocorrenciaprodutoid,
+                                                                dataano:
+                                                                    selectedDate
                                                                         .year
                                                                         .toString(),
-                                                                    datames: selectedDate
+                                                                datames:
+                                                                    selectedDate
                                                                         .month
                                                                         .toString(),
-                                                                    datadia:
-                                                                        selectedDate
-                                                                            .day
-                                                                            .toString(),
-                                                                    selectDate:
-                                                                        selectedDate,
-                                                                  )));
+                                                                datadia:
+                                                                    selectedDate
+                                                                        .day
+                                                                        .toString(),
+                                                                selectDate: selectDates
+                                                                            .length ==
+                                                                        2
+                                                                    ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                                                                    : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'",
+                                                              )));
                                                 },
                                                 child: Container(
                                                   width:
@@ -556,20 +623,28 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
     setState(() {
       nomepessoa = fetchData['nome'] ?? '';
     });
-    print('Nomepessoa: ' + nomepessoa);
   }
 
   Future<void> fetchDataOcurrences() async {
-    List<GetOcurrence>? fetchedData =
-        await DataServiceOcurrence.fetchDataOcurrence(
-      context,
-      token,
-      urlBasic,
-      empresaid,
-      selectedDate.year.toString(),
-      selectedDate.month.toString(),
-      selectedDate.day.toString(),
-    );
+    var concat = selectDates.length == 2
+        ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+        : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+    List<GetOcurrence>? fetchedData = await DataServiceOcurrence.fetchDataOcurrence(
+        context,
+        token,
+        urlBasic,
+        empresaid,
+        // selectedDate.year.toString(),
+        // selectedDate.month.toString(),
+        // selectedDate.day.toString(),
+        // selectDates.length == 2 ? selectDates
+        //                           .map((date) =>
+        //                               DateFormat('yyy-MM-dd').format(date!))
+        //                           .join("'%20AND%20'").toString() : selectDates
+        //                           .map((date) =>
+        //                               DateFormat('yyy-MM-dd').format(date!))
+        //                           .join(""));
+        concat);
     if (fetchedData != null) {
       setState(() {
         ocurrences = fetchedData;

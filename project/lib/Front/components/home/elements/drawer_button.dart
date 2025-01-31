@@ -3,11 +3,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:project/Front/pages/nfe_list.dart';
-// import 'package:project/Front/pages/consult.dart';
 import 'package:project/Front/pages/ocurrences_page.dart';
 import 'package:project/Front/pages/sales_graphic.dart';
-import 'package:project/back/sales_monitor.dart';
-// import 'package:project/back/credit_consult.dart';
+import 'package:project/back/sales_info_functions/sales_monitor.dart';
 import 'package:project/front/components/style.dart';
 import 'package:project/front/components/home/elements/modal_button.dart';
 import 'package:project/main.dart';
@@ -192,16 +190,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           SizedBox(
                             height: Style.height_5(context),
                           ),
-                          // TextButton(
-                          //   onPressed: () {},
-                          //   child: Text(
-                          //     'Promoções Relâmpago',
-                          //     style: TextStyle(
-                          //         color: Style.primaryColor,
-                          //         fontSize: Style.ButtonDrawerSize(context),
-                          //         fontFamily: 'Poppins-Medium'),
-                          //   ),
-                          // ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -220,14 +208,42 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            '⚙️ Configurações',
-                                            style: TextStyle(
-                                              fontSize:
-                                                  Style.height_15(context),
-                                              fontWeight: FontWeight.bold,
-                                              color: Style.secondaryColor,
-                                            ),
+                                          SizedBox(
+                                                height: Style.height_10(context),
+                                              ),
+                                           Row(
+                                            children: [
+                                              if (_isExpandedConfig)
+                                                Transform.rotate(
+                                                  angle:
+                                                      3.1416, // 180 graus em radianos (π)
+                                                  child: Icon(
+                                               Icons.arrow_drop_down_outlined,
+                                                size: Style.height_20(context),
+                                                color: Style.primaryColor,
+                                              ),
+                                                ) else
+                                              Icon(
+                                               Icons.arrow_drop_down_outlined,
+                                                size: Style.height_20(context),
+                                                color: Style.primaryColor,
+                                              ),
+                                              SizedBox(
+                                                width: Style.width_10(context),
+                                              ),
+                                              Text(
+                                                'Configurações',
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      Style.height_15(context),
+                                                  color: Style.primaryColor,
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: Style.height_10(context),
                                           ),
                                           AnimatedContainer(
                                             padding: EdgeInsets.only(
@@ -247,7 +263,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                     Row(
                                                       children: [
                                                         Checkbox(
-                                                          activeColor: Style.secondaryColor,
+                                                          activeColor: Style
+                                                              .secondaryColor,
                                                           value: flagNotify,
                                                           onChanged:
                                                               (value) async {
@@ -255,8 +272,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                               flagNotify =
                                                                   value!;
                                                             });
-                                                            print(
-                                                                'Value: $flagNotify');
                                                             SharedPreferences
                                                                 sharedPreferences =
                                                                 await SharedPreferences
@@ -289,13 +304,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         ],
                                       ),
                                     ),
-                                    // Container(
-                                    //   padding: EdgeInsets.only(
-                                    //     left: Style.height_15(context),
-                                    //     top: Style.height_12(context),
-                                    //     bottom: Style.height_8(context),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -319,23 +327,51 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       padding: EdgeInsets.only(
                                           left: Style.height_10(context)),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            '🖥️ Monitores',
-                                            style: TextStyle(
-                                              fontSize:
-                                                  Style.height_15(context),
-                                              fontWeight: FontWeight.bold,
-                                              color: Style.secondaryColor,
-                                            ),
+                                          Row(
+                                            children: [
+                                              if (_isExpandedMonit)
+                                                Transform.rotate(
+                                                  angle:
+                                                      3.1416, // 180 graus em radianos (π)
+                                                  child: Icon(
+                                               Icons.arrow_drop_down_outlined,
+                                                size: Style.height_20(context),
+                                                color: Style.primaryColor,
+                                              ),
+                                                ) else
+                                              Icon(
+                                               Icons.arrow_drop_down_outlined,
+                                                size: Style.height_20(context),
+                                                color: Style.primaryColor,
+                                              ),
+                                              SizedBox(
+                                                width: Style.width_10(context),
+                                              ),
+                                              Text(
+                                                'Monitores',
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      Style.height_15(context),
+                                                  color: Style.primaryColor,
+                                                  fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: Style.height_10(context),
                                           ),
                                           AnimatedContainer(
                                             padding: EdgeInsets.only(
-                                                left: Style.height_12(context)),
+                                                left: Style.height_12(context),
+                                                top: Style.height_2(context)),
                                             duration:
-                                                Duration(milliseconds: 300),
+                                                Duration(milliseconds: 1200),
                                             // height: _isExpanded
                                             //     ? Style.height_50(context)
                                             //     : 0,
@@ -347,8 +383,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                 child: Column(
                                                   children: [
                                                     Column(
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         TextButton(
                                                           onPressed: () async {
@@ -363,19 +403,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                           child: Text(
                                                             'Lista de ocorrências',
                                                             style: TextStyle(
-                                                                color: Style
-                                                                    .secondaryColor,
-                                                                fontSize:
-                                                                Style.height_12(
-                                                                    context),
-                                                                fontFamily:
-                                                                    'Poppins-Medium',
-                                                                    ),
+                                                              color: Style
+                                                                  .secondaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: Style
+                                                                  .height_12(
+                                                                      context),
+                                                              fontFamily:
+                                                                  'Poppins-Medium',
+                                                            ),
                                                           ),
                                                         ),
                                                         SizedBox(
-                                                          height: Style
-                                                              .height_5(
+                                                          height:
+                                                              Style.height_5(
                                                                   context),
                                                         ),
                                                         TextButton(
@@ -393,16 +436,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                             style: TextStyle(
                                                                 color: Style
                                                                     .secondaryColor,
-                                                                fontSize:
-                                                                Style.height_12(
-                                                                    context),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: Style
+                                                                    .height_12(
+                                                                        context),
                                                                 fontFamily:
                                                                     'Poppins-Medium'),
                                                           ),
                                                         ),
                                                         SizedBox(
-                                                          height: Style
-                                                              .height_5(
+                                                          height:
+                                                              Style.height_5(
                                                                   context),
                                                         ),
                                                         TextButton(
@@ -420,9 +466,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                             style: TextStyle(
                                                                 color: Style
                                                                     .secondaryColor,
-                                                                fontSize:
-                                                                Style.height_12(
-                                                                    context),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: Style
+                                                                    .height_12(
+                                                                        context),
                                                                 fontFamily:
                                                                     'Poppins-Medium'),
                                                           ),
@@ -435,13 +484,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         ],
                                       ),
                                     ),
-                                    // Container(
-                                    //   padding: EdgeInsets.only(
-                                    //     left: Style.height_15(context),
-                                    //     top: Style.height_12(context),
-                                    //     bottom: Style.height_8(context),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),

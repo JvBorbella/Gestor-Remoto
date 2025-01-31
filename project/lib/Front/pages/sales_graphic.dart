@@ -1,11 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project/Front/components/global/elements/calendar.dart';
 import 'package:project/Front/components/global/elements/navbar_button.dart';
 import 'package:project/Front/components/style.dart';
 import 'package:project/Front/pages/home_page.dart';
-import 'package:project/back/payment_condition.dart';
-import 'package:project/back/payment_values.dart';
+import 'package:project/back/payment_cond_functions/payment_condition.dart';
+import 'package:project/back/payment_cond_functions/payment_values.dart';
 import 'package:project/front/components/global/structure/navbar.dart';
 import 'package:project/front/components/login_config/elements/action_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,7 @@ class _SalesGraphicState extends State<SalesGraphic> {
   int flagPeriodic = 0;
 
   String dataInicial = 'Filtre a data';
+  List<DateTime?> selectDates = [DateTime.now()];
 
   @override
   void initState() {
@@ -216,127 +218,30 @@ class _SalesGraphicState extends State<SalesGraphic> {
                     children: [
                       GestureDetector(
                           onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  content: Container(
-                                    alignment: Alignment(0, 0),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            Style.height_10(context))),
-                                    height: Style.height_200(context),
-                                    width: Style.width_100(context),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                'Como deseja filtrar?',
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      Style.height_15(context),
-                                                  color: Style.primaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                                overflow: TextOverflow.clip,
-                                                softWrap: true,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            ActionButton(
-                                                height: Style.ActionButtonSize(
-                                                    context),
-                                                text: 'Data',
-                                                onPressed: () async {
-                                                  final DateTime? dateTime =
-                                                      await showDatePicker(
-                                                          context: context,
-                                                          initialDate:
-                                                              selectedDate,
-                                                          firstDate:
-                                                              DateTime(2000),
-                                                          lastDate:
-                                                              DateTime(3000));
-                                                  if (dateTime != null) {
-                                                    setState(() {
-                                                      selectedDate = dateTime;
-                                                      loadingPieChart = true;
-                                                    });
-                                                  }
-                                                  setState(() {
-                                                    flagDay = 1;
-                                                    flagPeriodic = 0;
-                                                    fetchDataPaymentValues();
-                                                    dataInicial =
-                                                        '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year}';
-                                                  });
-                                                  _closeModal();
-                                                }),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            ActionButton(
-                                                height: Style.ActionButtonSize(
-                                                    context),
-                                                text: 'Período',
-                                                onPressed: () async {
-                                                  final DateTime? dateTime =
-                                                      await showDatePicker(
-                                                          context: context,
-                                                          initialDate:
-                                                              selectedDate,
-                                                          firstDate:
-                                                              DateTime(2000),
-                                                          lastDate:
-                                                              DateTime(3000));
-                                                  if (dateTime != null) {
-                                                    setState(() {
-                                                      selectedDate = dateTime;
-                                                      loadingPieChart = true;
-                                                    });
-                                                  }
-                                                  setState(() {
-                                                    flagDay = 0;
-                                                    flagPeriodic = 1;
-                                                    fetchDataPaymentValues();
-                                                    dataInicial =
-                                                        '${selectedDate.day.toString().padLeft(2, '0')}/${selectedDate.month.toString().padLeft(2, '0')}/${selectedDate.year} - ${DateFormat('dd/MM/yyyy').format(DateTime.parse(DateTime.now().toString()))}';
-                                                  });
-                                                  _closeModal();
-                                                }),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
+                            final selectedDates =
+                                await showCalendarDialog(context);
+                            if (selectedDates != selectDates) {
+                                loadingPieChart = true;
+                              }
+                            var concat = selectDates.length == 2
+                                ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                                : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                            if (selectedDates != null) {
+                              setState(() {
+                                selectDates = selectedDates;
+                                fetchDataPaymentValues();
+                              });
+                            }
                           },
                           child: Container(
                             padding: EdgeInsets.all(Style.height_12(context)),
                             child: Text(
-                              dataInicial,
+                              selectDates.isNotEmpty
+                                  ? selectDates
+                                      .map((date) => DateFormat('dd/MM/yyyy')
+                                          .format(date!))
+                                      .join(' - ')
+                                  : 'Selecione uma ou mais datas',
                               style: TextStyle(
                                 color: Style.secondaryColor,
                                 fontWeight: FontWeight.bold,
@@ -372,7 +277,6 @@ class _SalesGraphicState extends State<SalesGraphic> {
                           setState(() {
                             loadingPieChart = true;
                             cond_pgto = value;
-                            print(cond_pgto);
                           });
                           setState(() {
                             fetchDataPaymentValues();
@@ -601,8 +505,6 @@ class _SalesGraphicState extends State<SalesGraphic> {
       setState(() {
         payments = fetchedData;
       });
-      print(
-          'Body do Json Payments Condition na tela sales_graphic: $fetchDataPayments');
     }
   }
 
@@ -614,17 +516,12 @@ class _SalesGraphicState extends State<SalesGraphic> {
   }
 
   Future<void> fetchDataPaymentValues({bool? ascending}) async {
+    var concat = selectDates.length == 2
+        ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+        : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
     List<PaymentValues>? fetchedData =
-        await DataServicePaymentValues.fetchDataPaymentValues(
-            context,
-            urlBasic,
-            cond_pgto,
-            selectedDate.year.toString(),
-            selectedDate.month.toString(),
-            selectedDate.day.toString(),
-            flagDay,
-            flagPeriodic,
-            _onProductAdded);
+        await DataServicePaymentValues.fetchDataPaymentValues(context, urlBasic,
+            cond_pgto, concat, flagDay, flagPeriodic, _onProductAdded);
 
     if (fetchedData != null) {
       setState(() {
