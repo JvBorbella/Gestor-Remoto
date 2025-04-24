@@ -59,7 +59,7 @@ class DataServiceCreditConsult {
               behavior: SnackBarBehavior.floating,
               padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
               content: Text(
-                '${valor == null ? 'Não há créditos para este cliente' : valor}',
+                '${valor ?? 'Não há créditos para este cliente'}',
                 style: TextStyle(
                   fontSize: Style.SaveUrlMessageSize(context),
                   color: Style.tertiaryColor,

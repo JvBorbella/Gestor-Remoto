@@ -39,7 +39,7 @@ class _RequestButtonState extends State<RequestButton> {
           //Estilização
           border: Border.all(
               width: Style.height_2(context), color: Color(0xff42B9F0)),
-          borderRadius: BorderRadius.circular(Style.height_5(context)),
+          borderRadius: BorderRadius.circular(Style.height_35(context)),
         ),
         //Conteúdo interno do button
         child: Column(
@@ -59,7 +59,7 @@ class _RequestButtonState extends State<RequestButton> {
                 style: TextStyle(
                   color: Color(0xff42b9f0),
                   fontWeight: FontWeight.bold,
-                  fontSize: Style.TextRequestButtonHeight(context),
+                  fontSize: Style.height_10(context),
                 ),
               ),
             ),
@@ -67,7 +67,7 @@ class _RequestButtonState extends State<RequestButton> {
         ),
         //Tamanho e espaçamento
         width: Style.RequestButtonWidth(context),
-        height: Style.RequestButtonHeight(context),
+        height: Style.height_50(context),
         padding: EdgeInsets.all(0),
       ),
     ));

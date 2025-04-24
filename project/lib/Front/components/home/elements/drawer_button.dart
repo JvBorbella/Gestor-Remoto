@@ -8,7 +8,9 @@ import 'package:project/Front/pages/sales_graphic.dart';
 import 'package:project/back/sales_info_functions/sales_monitor.dart';
 import 'package:project/front/components/style.dart';
 import 'package:project/front/components/home/elements/modal_button.dart';
+import 'package:project/front/pages/estoque.dart';
 import 'package:project/main.dart';
+import 'package:project/services/foreground_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -33,6 +35,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   bool flagNotify = true;
   bool _isExpandedConfig = false;
   bool _isExpandedMonit = false;
+  bool _isExpandedConsult = false;
 
   @override
   void didChangeDependencies() {
@@ -133,7 +136,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Olá, ' + login + '!',
+                                            'Olá, $login!',
                                             style: TextStyle(
                                               fontFamily: 'Poppins-Medium',
                                               fontSize:
@@ -209,36 +212,41 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                                height: Style.height_10(context),
-                                              ),
-                                           Row(
+                                            height: Style.height_10(context),
+                                          ),
+                                          Row(
                                             children: [
                                               if (_isExpandedConfig)
                                                 Transform.rotate(
                                                   angle:
                                                       3.1416, // 180 graus em radianos (π)
                                                   child: Icon(
-                                               Icons.arrow_drop_down_outlined,
-                                                size: Style.height_20(context),
-                                                color: Style.primaryColor,
-                                              ),
-                                                ) else
-                                              Icon(
-                                               Icons.arrow_drop_down_outlined,
-                                                size: Style.height_20(context),
-                                                color: Style.primaryColor,
-                                              ),
+                                                    Icons
+                                                        .arrow_drop_down_outlined,
+                                                    size: Style.height_20(
+                                                        context),
+                                                    color: Style.primaryColor,
+                                                  ),
+                                                )
+                                              else
+                                                Icon(
+                                                  Icons
+                                                      .arrow_drop_down_outlined,
+                                                  size:
+                                                      Style.height_20(context),
+                                                  color: Style.primaryColor,
+                                                ),
                                               SizedBox(
                                                 width: Style.width_10(context),
                                               ),
                                               Text(
                                                 'Configurações',
                                                 style: TextStyle(
-                                                  fontSize:
-                                                      Style.height_15(context),
-                                                  color: Style.primaryColor,
-                                                  fontWeight: FontWeight.bold
-                                                ),
+                                                    fontSize: Style.height_15(
+                                                        context),
+                                                    color: Style.primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ],
                                           ),
@@ -282,6 +290,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                                     flagNotify);
                                                             if (flagNotify ==
                                                                 true) {
+                                                              // startForegroundService();
                                                               _configureWorkmanager();
                                                             }
                                                           },
@@ -339,27 +348,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                   angle:
                                                       3.1416, // 180 graus em radianos (π)
                                                   child: Icon(
-                                               Icons.arrow_drop_down_outlined,
-                                                size: Style.height_20(context),
-                                                color: Style.primaryColor,
-                                              ),
-                                                ) else
-                                              Icon(
-                                               Icons.arrow_drop_down_outlined,
-                                                size: Style.height_20(context),
-                                                color: Style.primaryColor,
-                                              ),
+                                                    Icons
+                                                        .arrow_drop_down_outlined,
+                                                    size: Style.height_20(
+                                                        context),
+                                                    color: Style.primaryColor,
+                                                  ),
+                                                )
+                                              else
+                                                Icon(
+                                                  Icons
+                                                      .arrow_drop_down_outlined,
+                                                  size:
+                                                      Style.height_20(context),
+                                                  color: Style.primaryColor,
+                                                ),
                                               SizedBox(
                                                 width: Style.width_10(context),
                                               ),
                                               Text(
                                                 'Monitores',
                                                 style: TextStyle(
-                                                  fontSize:
-                                                      Style.height_15(context),
-                                                  color: Style.primaryColor,
-                                                  fontWeight: FontWeight.bold
-                                                ),
+                                                    fontSize: Style.height_15(
+                                                        context),
+                                                    color: Style.primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ],
                                           ),
@@ -474,6 +488,131 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                                         context),
                                                                 fontFamily:
                                                                     'Poppins-Medium'),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: Style.height_15(context),
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isExpandedConsult = !_isExpandedConsult;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                          left: Style.height_10(context)),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              if (_isExpandedConsult)
+                                                Transform.rotate(
+                                                  angle:
+                                                      3.1416, // 180 graus em radianos (π)
+                                                  child: Icon(
+                                                    Icons
+                                                        .arrow_drop_down_outlined,
+                                                    size: Style.height_20(
+                                                        context),
+                                                    color: Style.primaryColor,
+                                                  ),
+                                                )
+                                              else
+                                                Icon(
+                                                  Icons
+                                                      .arrow_drop_down_outlined,
+                                                  size:
+                                                      Style.height_20(context),
+                                                  color: Style.primaryColor,
+                                                ),
+                                              SizedBox(
+                                                width: Style.width_10(context),
+                                              ),
+                                              Text(
+                                                'Consultas',
+                                                style: TextStyle(
+                                                    fontSize: Style.height_15(
+                                                        context),
+                                                    color: Style.primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: Style.height_10(context),
+                                          ),
+                                          AnimatedContainer(
+                                            padding: EdgeInsets.only(
+                                                left: Style.height_12(context),
+                                                top: Style.height_2(context)),
+                                            duration:
+                                                Duration(milliseconds: 1200),
+                                            // height: _isExpanded
+                                            //     ? Style.height_50(context)
+                                            //     : 0,
+                                            child: Visibility(
+                                                visible: _isExpandedConsult,
+                                                maintainAnimation: true,
+                                                maintainState: true,
+                                                maintainSize: false,
+                                                child: Column(
+                                                  children: [
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushReplacement(
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                EstoquePage()));
+                                                          },
+                                                          child: Text(
+                                                            'Consultar Estoque',
+                                                            style: TextStyle(
+                                                              color: Style
+                                                                  .secondaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: Style
+                                                                  .height_12(
+                                                                      context),
+                                                              fontFamily:
+                                                                  'Poppins-Medium',
+                                                            ),
                                                           ),
                                                         ),
                                                       ],

@@ -40,7 +40,8 @@ class CompanySalesMonitor {
 
 class DataServiceToday {
   static Future<List<CompanySalesMonitor>?> fetchDataToday(
-      String token, String url, {bool? ascending}) async {
+      String token, String url,
+      {bool? ascending}) async {
     List<CompanySalesMonitor>? empresasHoje;
 
     try {
@@ -72,6 +73,18 @@ class DataServiceToday {
             }
           });
         } else {
+          if (empresasHoje != null) {
+            empresasHoje.add(CompanySalesMonitor(
+              empresaNome: 'N/A',
+              valortotal: 0.0,
+              ticket: 0.0,
+              cancelamentos: 0.0,
+              ticketmedio: 0.0,
+              margem: 0.0,
+              meta: 0.0,
+              valorcancelamentos: 0.0,
+            ));
+          }
           print('Dados ausentes no JSON. TODAY');
         }
       }
@@ -84,7 +97,8 @@ class DataServiceToday {
 
 class DataServiceYesterday {
   static Future<List<CompanySalesMonitor>?> fetchDataYesterday(
-      String token, String url, {bool? ascending}) async {
+      String token, String url,
+      {bool? ascending}) async {
     List<CompanySalesMonitor>? empresasOntem;
 
     try {
@@ -116,7 +130,19 @@ class DataServiceYesterday {
             }
           });
         } else {
-          print('Dados ausentes no JSON. YESTERDAY');
+          if (empresasOntem != null) {
+            empresasOntem.add(CompanySalesMonitor(
+              empresaNome: 'N/A',
+              valortotal: 0.0,
+              ticket: 0.0,
+              cancelamentos: 0.0,
+              ticketmedio: 0.0,
+              margem: 0.0,
+              meta: 0.0,
+              valorcancelamentos: 0.0,
+            ));
+            print('Dados ausentes no JSON. YESTERDAY');
+          }
         }
       }
     } catch (e) {
@@ -128,7 +154,8 @@ class DataServiceYesterday {
 
 class DataServiceWeek {
   static Future<List<CompanySalesMonitor>?> fetchDataWeek(
-      String token, String url, {bool? ascending}) async {
+      String token, String url,
+      {bool? ascending}) async {
     List<CompanySalesMonitor>? empresasSemana;
 
     try {
@@ -172,7 +199,8 @@ class DataServiceWeek {
 
 class DataServiceMonth {
   static Future<List<CompanySalesMonitor>?> fetchDataMonth(
-      String token, String url, {bool? ascending}) async {
+      String token, String url,
+      {bool? ascending}) async {
     List<CompanySalesMonitor>? empresasMes;
 
     try {
@@ -242,7 +270,6 @@ class DataServicePrevMonth {
 
           // Comparação com os dados do mês atual e ajuste da lista
           await _adjustListSize(empresasMesAnt, token, url);
-
         } else {
           print('Dados ausentes no JSON. PREV. MONTH');
         }
@@ -253,7 +280,8 @@ class DataServicePrevMonth {
     return empresasMesAnt;
   }
 
-  static Future<void> _adjustListSize(List<CompanySalesMonitor>? prevMonthData, String token, String url) async {
+  static Future<void> _adjustListSize(List<CompanySalesMonitor>? prevMonthData,
+      String token, String url) async {
     // Obtém os dados do mês atual
     var currentMonthData = await DataServiceMonth.fetchDataMonth(token, url);
 
@@ -276,4 +304,3 @@ class DataServicePrevMonth {
     }
   }
 }
-

@@ -64,6 +64,7 @@ class LoginFunction {
           await sharedPreferences.setString('email', email);
           await sharedPreferences.setString('empresa_id', empresaid);
           print(token);
+          print('empresa_id ; $empresaid');
 
           // Feito o processo acima, a função redireciona para a página Home(), passando para ela os dados que serão utilizados.
 // Após o login bem-sucedido, salve o token e a URL no Provider

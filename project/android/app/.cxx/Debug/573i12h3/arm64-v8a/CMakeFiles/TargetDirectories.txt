@@ -1,0 +1,2 @@
+C:/Users/joaob/Documents/gestor_remoto/project/android/app/.cxx/Debug/573i12h3/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/joaob/Documents/gestor_remoto/project/android/app/.cxx/Debug/573i12h3/arm64-v8a/CMakeFiles/rebuild_cache.dir

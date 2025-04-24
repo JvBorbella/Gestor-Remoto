@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 4.4.2+5
+version: 4.5.3+8
 
 environment:
   sdk: ">=3.1.5 <4.0.0"
@@ -38,7 +38,7 @@ dependencies:
   provider: ^6.1.2
   item_count_number_button: ^1.9.2
   brasil_fields: ^1.15.0
-  mask_text_input_formatter: ^2.0.0
+  mask_text_input_formatter: ^2.9.0
   flutter_multi_formatter: ^2.3.0
   # background_fetch: ^1.1.3
   firebase_core: ^3.8.0
@@ -52,18 +52,30 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  sunmi_printer_plus: ^3.0.1
+  sunmi_printer_plus: ^4.1.0
   pos_connect_aidl: ^1.0.5
   easy_date_formatter: ^0.0.1
   date_time_formatter: ^0.0.2+2
   permission_handler: ^11.3.1
   # background_fetch: ^1.3.7
   googleapis_auth: ^1.6.0
-  workmanager: ^0.5.2
-  fl_chart: ^0.69.2
+  workmanager:
+    git:
+      url: https://github.com/fluttercommunity/flutter_workmanager.git
+      path: workmanager
+      ref: main
+  fl_chart: ^0.70.2
   firebase_data_connect: ^0.1.2+5
   flutter_local_notifications: ^18.0.1
   calendar_date_picker2: ^1.1.8
+  flutter_foreground_task: ^8.17.0
+  pdf: ^3.11.3
+  path_provider: ^2.1.5
+  flutter_pdfview: ^1.4.0
+  #share_plus: ^10.1.3
+  printing: ^5.14.2
+  xml: ^6.5.0
+  google_fonts: ^6.2.1
   
 
 dev_dependencies:
@@ -89,15 +101,19 @@ flutter:
 
   fonts:
     - family: Poppins-Regular
+    - family: times
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/times.ttf
 
   assets:
     - assets/images/logo1.jpg
     - assets/images/logo2.png
+    - assets/images/robot.png
     - assets/images/image_card/image_card.png
     - assets/images/icon_person/icon_person.png
     - assets/images/icon_remove/icon_remove.png
+    - assets/images/product/Barcode.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -72,7 +72,6 @@ class NotifyService {
 
   // Função para exibir notificação
   void showNotification(CustomNotify notification) {
-    print('[NotifyService] Exibindo notificação: ${notification.title}');
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_launcher');
     androidDetails = const AndroidNotificationDetails(
@@ -84,7 +83,6 @@ class NotifyService {
       enableVibration: true,
       largeIcon: const DrawableResourceAndroidBitmap('ic_launcher'),
     );
-    print('[NotifyService] Notificação exibida.');
 
     // localNotificationsPlugin.show(
     //   0,

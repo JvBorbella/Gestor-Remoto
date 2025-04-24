@@ -106,7 +106,7 @@ class TokenUrlProvider with ChangeNotifier {
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     await Firebase.initializeApp(); // Inicializa o Firebase aqui
-    print('Chamando workManager');
+    print('Chamando workManager: $task');
 
     // await fetchDataInBackground(NotifyService());
     await _firebaseMessagingBackgroundHandler(RemoteMessage());
@@ -127,7 +127,12 @@ void _configureWorkmanager() async {
 
   Workmanager().registerPeriodicTask(
       'fetchDataInBackground', 'fetchDataInBackground',
-      frequency: Duration(minutes: 15), initialDelay: Duration(minutes: 15));
+      frequency: Duration(minutes: 15), initialDelay: Duration(minutes: 1));
+
+//   Workmanager().registerOneOffTask(
+//   'testTask',
+//   'testTask',
+// );
 
   print("Workmanager configurado e tarefa registrada.");
 }
@@ -254,8 +259,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
                 priority: Priority.high,
               ),
               iOS: DarwinNotificationDetails(
-                presentAlert:
-                    true, // Exibe um alerta quando a notificação chega
+                presentAlert: true, // Exibe um alerta quando a notificação chega
                 presentBadge: true, // Atualiza o badge no ícone do app
                 presentSound: true, // Reproduz o som de notificação
               ),

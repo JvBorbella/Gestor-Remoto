@@ -7,6 +7,7 @@ import 'package:project/Front/components/global/structure/navbar.dart';
 import 'package:project/Front/components/style.dart';
 import 'package:project/Front/pages/home_page.dart';
 import 'package:project/Front/pages/nfe_details.dart';
+import 'package:project/back/nfe_info_functions/payment_nfe.dart';
 import 'package:project/back/sales_info_functions/company_list.dart';
 import 'package:project/back/nfe_info_functions/nfe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -450,7 +451,7 @@ class _NfeListState extends State<NfeList> {
                                                     Style.height_8(context)),
                                           ),
                                           SizedBox(
-                                            height: Style.height_30(context),
+                                            height: Style.height_10(context),
                                           ),
                                           Container(
                                             child: GestureDetector(
@@ -574,12 +575,59 @@ class _NfeListState extends State<NfeList> {
                                   desc_nat_op: nfe[index].desc_nat_op,
                                   cod_mod: nfe[index].cod_mod,
                                   em_razaosocial: nfe[index].em_razaosocial,
+                                  em_cnpj: nfe[index].em_cnpj,
+                                  em_cpf: nfe[index].em_cpf,
+                                  em_ie: nfe[index].em_ie,
+                                  em_fone: nfe[index].em_fone,
+                                  em_end: nfe[index].em_end,
+                                  em_num: nfe[index].em_num,
+                                  em_bairro: nfe[index].em_bairro,
+                                  em_mun: nfe[index].em_mun,
+                                  em_uf: nfe[index].em_uf,
+                                  em_cep: nfe[index].em_cep,
                                   dest_razaosocial: nfe[index].dest_razaosocial,
+                                  dest_cnpj: nfe[index].dest_cnpj,
+                                  dest_cpf: nfe[index].dest_cpf,
+                                  dest_end: nfe[index].dest_end,
+                                  dest_num: nfe[index].dest_num,
+                                  dest_cep: nfe[index].dest_cep,
+                                  dest_bairro: nfe[index].dest_bairro,
+                                  dest_mun: nfe[index].dest_mun,
+                                  dest_fone: nfe[index].dest_fone,
+                                  dest_ie: nfe[index].dest_ie,
+                                  dest_uf: nfe[index].dest_uf,
+                                  trans_razaosocial: nfe[index].trans_razaosocial,
+                                  trans_cnpj: nfe[index].trans_cnpj,
+                                  trans_cpf: nfe[index].trans_cpf,
+                                  trans_ie: nfe[index].trans_ie,
+                                  trans_fone: nfe[index].trans_fone,
+                                  trans_end: nfe[index].trans_end,
+                                  trans_num: nfe[index].trans_num,
+                                  trans_mun: nfe[index].trans_mun,
+                                  trans_uf: nfe[index].trans_uf,
+                                  trans_cep: nfe[index].trans_cep,
+                                  trans_placa: nfe[index].trans_placa,
+                                  trans_placa_uf: nfe[index].trans_placa_uf,
+                                  quant_volume: nfe[index].quant_volume,
+                                  peso_liq: nfe[index].peso_liq,
+                                  peso_bruto: nfe[index].peso_bruto,
+                                  marca: nfe[index].marca,
+                                  especie: nfe[index].especie,
+                                  codigorastreio: nfe[index].codigorastreio,
+                                  ind_frete: nfe[index].ind_frete,
                                   codigoretorno: nfe[index].codigoretorno,
                                   descricaoretorno: nfe[index].descricaoretorno,
                                   finalidade: nfe[index].finalidade,
-                                ),
-                              ));
+
+                                  empresa_codigo: nfe[index].empresa_codigo,
+                                  empresaNome: nfe[index].empresa_nome,
+                                  mensagem: nfe[index].mensagem,
+
+                                  protocolo: nfe[index].protocolo,
+                                  datahoraaut: nfe[index].datahoraaut,
+                                ), 
+                              ),
+                              );
                             },
                             child: Container(
                               padding: EdgeInsets.all(Style.height_8(context)),
@@ -943,19 +991,36 @@ class _NfeListState extends State<NfeList> {
   }
 
   Future<void> fetchDataNFe({bool? ascending}) async {
-    var concat = selectDates.length == 2
-        ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
-        : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+    var concat = '';
+    print(selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)));
+    print('A'+DateFormat('(yyyy-MM-dd)').format(DateTime.now()));
+    if (selectDates.length == 1 &&
+        DateFormat('yyyy-MM-dd').format(selectDates.first!) ==
+        DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+      setState(() {
+        concat =
+            "=%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}'";
+      });
+    } else if (selectDates.length == 1 &&
+        selectDates != DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+      setState(() {
+        concat =
+            "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+      });
+    } else if (selectDates.length == 2) {
+      setState(() {
+        concat =
+            "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'";
+      });
+    }
+    // var concat = selectDates.length == 2
+    //     ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+    //     : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
     List<Nfe>? fetchedData = await DataServiceNfe.fetchDataNfe(
         context,
         urlBasic,
         empresa_id,
-        // selectedDate.year.toString(),
-        // selectedDate.month.toString(),
-        // selectedDate.day.toString(),
         concat,
-        // flagDay,
-        // flagPeriodic,
         _onProductAdded,
         searchController.text,
         codTipoNfe);

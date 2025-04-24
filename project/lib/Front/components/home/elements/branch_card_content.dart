@@ -65,7 +65,7 @@ class _BranchCardContentState extends State<BranchCardContent> {
                       'Ontem',
                       style: TextStyle(color: Style.quarantineColor),
                     ),
-                    if (widget.valorOntem == 0)
+                    if (widget.valorOntem == 0.0)
                       DayValues(text: currencyFormat.format(widget.valorOntem))
                     else
                       DayValues(text: currencyFormat.format(widget.valorOntem)),

@@ -36,7 +36,8 @@ class _HomePageState extends State<HomePage> {
   late double vendames = 0.0;
   late int solicitacoesremotas = -1;
   bool isLoading = true;
-  NumberFormat currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  NumberFormat currencyFormat =
+      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
   String token = '';
   String login = '';
   String image = '';
@@ -79,6 +80,7 @@ class _HomePageState extends State<HomePage> {
               height: Style.CircularProgressIndicatorWidth(context),
               width: Style.CircularProgressIndicatorWidth(context),
               child: CircularProgressIndicator(
+                // year2023: false,
                 strokeWidth: Style.CircularProgressIndicatorSize(context),
               )),
         ),
@@ -251,7 +253,7 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: Style.height_30(context),
+                                  height: Style.height_25(context),
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

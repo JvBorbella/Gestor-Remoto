@@ -1,0 +1,2 @@
+C:/Users/joaob/Documents/gestor_remoto/project/android/app/.cxx/RelWithDebInfo/1d4w2c2y/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/joaob/Documents/gestor_remoto/project/android/app/.cxx/RelWithDebInfo/1d4w2c2y/armeabi-v7a/CMakeFiles/rebuild_cache.dir
