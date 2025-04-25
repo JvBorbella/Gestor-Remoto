@@ -7,6 +7,7 @@ import 'package:project/Front/components/style.dart';
 class StockConsult {
   //--- Produto ---
   String? imagem_url;
+  String? imagem_id;
   String? codigo;
   String? nome;
   dynamic tpreco01;
@@ -35,6 +36,7 @@ class StockConsult {
 
   StockConsult({
     required this.imagem_url,
+    required this.imagem_id,
     required this.codigo,
     required this.nome,
     required this.tpreco01,
@@ -62,6 +64,7 @@ class StockConsult {
   factory StockConsult.fromJson(Map<String, dynamic> json) {
     return StockConsult(
       imagem_url: (json['imagem_url'] ?? '').toString(),
+      imagem_id: (json['imagem_id'] ?? '').toString(),
       codigo: (json['codigo'] ?? '').toString(),
       nome: (json['nome'] ?? '').toString(),
       tpreco01: json['tpreco01'] is int

@@ -379,6 +379,7 @@ class _EstoquePageState extends State<EstoquePage> {
                         SizedBox(
                           height: Style.height_5(context),
                         ),
+                        if(empresa_id.isEmpty)
                         Container(
                           padding: EdgeInsets.all(Style.height_15(context)),
                           margin:
@@ -472,7 +473,7 @@ class _EstoquePageState extends State<EstoquePage> {
                               ),
                             ],
                           ),
-                        ),
+                        ) else
                         SizedBox(
                           height: Style.height_5(context),
                         ),
