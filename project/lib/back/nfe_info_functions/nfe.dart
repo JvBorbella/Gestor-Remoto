@@ -82,8 +82,8 @@ class Nfe {
   String? empresa_codigo;
   String? mensagem;
 
-  String? protocolo;
-  dynamic? datahoraaut;
+  String? xmldistribuicao;
+  //dynamic? datahoraaut;
 
   Nfe({
     required this.documentonfe_id,
@@ -160,8 +160,8 @@ class Nfe {
     required this.empresa_nome,
     required this.empresa_codigo,
     required this.mensagem,
-    required this.protocolo,
-    required this.datahoraaut,
+    required this.xmldistribuicao,
+    //required this.datahoraaut,
   });
 
   factory Nfe.fromJson(Map<String, dynamic> json) {
@@ -319,9 +319,8 @@ class Nfe {
       empresa_codigo: (json['empresa_codigo'] ?? '').toString(),
       mensagem: (json['mensagem'] ?? '').toString(),
 
-      protocolo: (json['protocolo'] ?? '').toString(),
-      datahoraaut:
-          json['datahora'] != null ? DateTime.parse(json['datahora']) : null,
+      xmldistribuicao: (json['xmldistribuicao'] ?? '').toString(),
+      //datahoraaut: json['datahora'] != null ? DateTime.parse(json['datahora']) : null,
     );
   }
 }
@@ -343,7 +342,7 @@ class DataServiceNfe {
       var numController = searchController.length < 11 ? searchController : '';
 
       String rawQueryDay =
-          '''documentonfe%20d%20LEFT%20JOIN%20empresa%20e%20ON%20d.empresa_id%20=%20e.empresa_id%20LEFT%20JOIN%20mensagemfiscal%20m%20ON%20e.mensagemfiscal_id%20=%20m.mensagemfiscal_id%20LEFT%20JOIN%20documentonfeenvio%20de%20ON%20d.documentonfe_id%20=%20de.documentonfe_id%20LEFT%20JOIN%20pessoa%20p%20ON%20d.pessoa_destinatario_id%20=%20p.pessoa_id%20WHERE%20d.dt_doc%20$data%20AND%20('$empresa_id'%20=%20''%20OR%20d.empresa_id%20=%20'$empresa_id')%20AND%20d.num_doc%20LIKE%20'$numController%25'%20AND%20('$cpfController'%20=%20''%20OR%20p.cpf%20=%20'$cpfController')%20AND%20('$cnpjController'%20=%20''%20OR%20p.cnpj%20=%20'$cnpjController')/''';
+          '''documentonfe%20d%20LEFT%20JOIN%20empresa%20e%20ON%20d.empresa_id%20=%20e.empresa_id%20LEFT%20JOIN%20mensagemfiscal%20m%20ON%20e.mensagemfiscal_id%20=%20m.mensagemfiscal_id%20LEFT%20JOIN%20documentonfedistribuicao%20de%20ON%20d.documentonfe_id%20=%20de.documentonfe_id%20LEFT%20JOIN%20pessoa%20p%20ON%20d.pessoa_destinatario_id%20=%20p.pessoa_id%20WHERE%20d.dt_doc%20$data%20AND%20('$empresa_id'%20=%20''%20OR%20d.empresa_id%20=%20'$empresa_id')%20AND%20d.num_doc%20LIKE%20'$numController%25'%20AND%20('$cpfController'%20=%20''%20OR%20p.cpf%20=%20'$cpfController')%20AND%20('$cnpjController'%20=%20''%20OR%20p.cnpj%20=%20'$cnpjController')/''';
 
       var urlPost = Uri.parse('$urlBasic/ideia/core/getdata/$rawQueryDay');
 

@@ -18,6 +18,7 @@ import 'package:project/back/teste.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:xml/xml.dart';
 
 class NfeDetails extends StatefulWidget {
   final documentonfe_id;
@@ -103,8 +104,8 @@ class NfeDetails extends StatefulWidget {
   final empresaNome;
   final mensagem;
 
-  final protocolo;
-  final datahoraaut;
+  final xmldistribuicao;
+  //final datahoraaut;
 
   const NfeDetails({
     Key? key,
@@ -188,8 +189,8 @@ class NfeDetails extends StatefulWidget {
     this.empresa_codigo,
     this.empresaNome,
     this.mensagem,
-    this.protocolo,
-    this.datahoraaut,
+    this.xmldistribuicao,
+    //this.datahoraaut,
   });
 
   @override
@@ -222,11 +223,36 @@ class _NfeDetailsState extends State<NfeDetails> {
   List<NfeItems> nfeItems = [];
   List<PaymentNFe> paymentNfe = [];
 
+  String protocolo = '';
+  dynamic dataProtocolo;
+  String qrCode = '';
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     loadData();
+  }
+
+  void extrairDadosXml(String xmlString) {
+    final document = XmlDocument.parse(xmlString);
+
+    final nProt = document.findAllElements('nProt').firstOrNull?.text ?? '';
+    final dhRecbto =
+        document.findAllElements('dhRecbto').firstOrNull?.text ?? '';
+    final qrCodeXML =
+        document.findAllElements('qrCode').firstOrNull?.text ?? '';
+
+    setState(() {
+      protocolo = nProt;
+      dataProtocolo = DateTime.parse(dhRecbto).toLocal();
+      qrCode = qrCodeXML;
+    });
+
+    print('Protocolo: $nProt');
+    print('Data de Emissão: $dhRecbto');
+    print('Data de Emissão: ${DateTime.parse(dhRecbto).toLocal()}');
+    print('QR Code: $qrCode');
   }
 
   @override
@@ -1218,6 +1244,8 @@ class _NfeDetailsState extends State<NfeDetails> {
       _loadSavedUrlBasic(),
     ]);
 
+    extrairDadosXml(widget.xmldistribuicao);
+
     if (urlBasic.isNotEmpty) {
       await Future.wait([fetchDataNFeItems()]);
       await Future.wait([fetchDataPaymentNFe()]);
@@ -1256,8 +1284,8 @@ class _NfeDetailsState extends State<NfeDetails> {
   }
 
   Future<void> generateAndOpenPdf() async {
-    final TimesNewRoman = pw.Font.ttf(
-        await rootBundle.load('assets/fonts/times.ttf'));
+    final TimesNewRoman =
+        pw.Font.ttf(await rootBundle.load('assets/fonts/times.ttf'));
     // final NotoSansMono = pw.Font.ttf(
     //     await rootBundle.load('assets/fonts/NotoSansMono-Regular.ttf'));
     // final SpaceMono = pw.Font.ttf(
@@ -1291,13 +1319,14 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         pw.Text(
                                             "RECEBEMOS DE ${widget.em_razaosocial} OS PRODUTOS / SERVIÇOS CONSTANTES DA NOTA FISCAL INDICADO AO LADO",
                                             style: pw.TextStyle(
-                                              fontSize: 6,
-                                              font: TimesNewRoman
-                                            ),
+                                                fontSize: 6,
+                                                font: TimesNewRoman),
                                             textAlign: pw.TextAlign.center),
                                         pw.Text(
                                             "EMISSÃO: ${DateFormat('dd/MM/yyyy').format(widget.dt_e_s)}  -  DEST. / REM.: ${widget.dest_razaosocial}  -  VALOR TOTAL: ${currencyFormatDefault.format(widget.vl_doc)}",
-                                            style: pw.TextStyle(fontSize: 6, font: TimesNewRoman),
+                                            style: pw.TextStyle(
+                                                fontSize: 6,
+                                                font: TimesNewRoman),
                                             textAlign: pw.TextAlign.center),
                                       ],
                                     ),
@@ -1319,8 +1348,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                                               pw.CrossAxisAlignment.start,
                                           children: [
                                             pw.Text("DATA DE RECEBIMENTO",
-                                                style:
-                                                    pw.TextStyle(fontSize: 4, font: TimesNewRoman)),
+                                                style: pw.TextStyle(
+                                                    fontSize: 4,
+                                                    font: TimesNewRoman)),
                                           ],
                                         ),
                                       ),
@@ -1336,8 +1366,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                                           children: [
                                             pw.Text(
                                                 "IDENTIFICAÇÃO E ASSINATURA DO RECEBEDOR",
-                                                style:
-                                                    pw.TextStyle(fontSize: 4, font: TimesNewRoman)),
+                                                style: pw.TextStyle(
+                                                    fontSize: 4,
+                                                    font: TimesNewRoman)),
                                           ],
                                         ),
                                       ),
@@ -1358,21 +1389,19 @@ class _NfeDetailsState extends State<NfeDetails> {
                                           pw.CrossAxisAlignment.center,
                                       children: [
                                         pw.Text("NF-e",
-                                        style: pw.TextStyle(
-                                          font: TimesNewRoman
-                                        ),
+                                            style: pw.TextStyle(
+                                                font: TimesNewRoman),
                                             textAlign: pw.TextAlign.center),
                                         pw.Text(
                                             "Nº ${widget.num_doc.toString().padLeft(5, '000.')}",
                                             style: pw.TextStyle(
-                                              font: TimesNewRoman,
+                                                font: TimesNewRoman,
                                                 fontWeight: pw.FontWeight.bold),
                                             textAlign: pw.TextAlign.center),
                                         pw.Text(
                                             "SÉRIE ${widget.serie.toString().padLeft(3, '0')}",
                                             style: pw.TextStyle(
-                                              font: TimesNewRoman
-                                            ),
+                                                font: TimesNewRoman),
                                             textAlign: pw.TextAlign.center),
                                       ],
                                     ),
@@ -1395,14 +1424,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("IDENTIFICAÇAO DO EMITENTE",
-                                      style: pw.TextStyle(fontSize: 6, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 6, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 15),
                                 pw.Center(
                                   child: pw.Text('${widget.em_razaosocial}',
                                       style: pw.TextStyle(
-                                        font: TimesNewRoman,
+                                          font: TimesNewRoman,
                                           fontWeight: pw.FontWeight.bold,
                                           fontSize: 8),
                                       textAlign: pw.TextAlign.center,
@@ -1411,8 +1441,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 ),
                                 pw.SizedBox(height: 5),
                                 pw.Text(
-                                    "${widget.em_end}, ${widget.em_num} - ${widget.em_bairro} -  ${'CEP: ' + cepFormatter.maskText(widget.em_cep)} - ${widget.em_mun} - ${widget.em_uf} '${'TEL.:'+ telMaskFormatter.maskText(widget.em_fone)}",
-                                    style: pw.TextStyle(fontSize: 7, font: TimesNewRoman),
+                                    "${widget.em_end}, ${widget.em_num} - ${widget.em_bairro} -  ${'CEP: ' + cepFormatter.maskText(widget.em_cep)} - ${widget.em_mun} - ${widget.em_uf} '${'TEL.:' + telMaskFormatter.maskText(widget.em_fone)}",
+                                    style: pw.TextStyle(
+                                        fontSize: 7, font: TimesNewRoman),
                                     softWrap: true,
                                     overflow: pw.TextOverflow.clip,
                                     textAlign: pw.TextAlign.left),
@@ -1433,7 +1464,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 pw.Center(
                                   child: pw.Text("DANFE",
                                       style: pw.TextStyle(
-                                        font: TimesNewRoman,
+                                          font: TimesNewRoman,
                                           fontSize: 10,
                                           fontWeight: pw.FontWeight.bold)),
                                 ),
@@ -1441,7 +1472,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 pw.Text(
                                     "DOCUMENTO AUXILIAR DA NOTA FISCAL ELETRÔNICA",
                                     style: pw.TextStyle(
-                                      font: TimesNewRoman,
+                                        font: TimesNewRoman,
                                         fontSize: 7,
                                         fontWeight: pw.FontWeight.bold),
                                     textAlign: pw.TextAlign.center),
@@ -1456,8 +1487,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                                                 pw.MainAxisAlignment.start,
                                             children: [
                                               pw.Text('0 - ENTRADA',
-                                                  style:
-                                                      pw.TextStyle(fontSize: 6, font: TimesNewRoman),
+                                                  style: pw.TextStyle(
+                                                      fontSize: 6,
+                                                      font: TimesNewRoman),
                                                   textAlign: pw.TextAlign.left)
                                             ]),
                                         pw.Row(
@@ -1465,8 +1497,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                                                 pw.MainAxisAlignment.start,
                                             children: [
                                               pw.Text('1 - SAÍDA',
-                                                  style:
-                                                      pw.TextStyle(fontSize: 6, font: TimesNewRoman),
+                                                  style: pw.TextStyle(
+                                                      fontSize: 6,
+                                                      font: TimesNewRoman),
                                                   textAlign: pw.TextAlign.left)
                                             ]),
                                       ]),
@@ -1482,7 +1515,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                                 child: pw.Text(
                                                     '${widget.finalidade}',
                                                     style: pw.TextStyle(
-                                                        fontSize: 9, font: TimesNewRoman),
+                                                        fontSize: 9,
+                                                        font: TimesNewRoman),
                                                     textAlign:
                                                         pw.TextAlign.center)))
                                       ]),
@@ -1491,13 +1525,14 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 pw.Text(
                                     "Nº ${widget.num_doc.toString().padLeft(5, '000.')}    fl. ${context.pageNumber} /${context.pagesCount}",
                                     style: pw.TextStyle(
-                                      font: TimesNewRoman,
+                                        font: TimesNewRoman,
                                         fontSize: 8,
                                         fontWeight: pw.FontWeight.bold),
                                     textAlign: pw.TextAlign.center),
                                 pw.Text(
                                     "SÉRIE ${widget.serie.toString().padLeft(3, '0')}",
-                                    style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                    style: pw.TextStyle(
+                                        fontSize: 8, font: TimesNewRoman),
                                     textAlign: pw.TextAlign.center),
                               ],
                             ),
@@ -1540,14 +1575,16 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("CHAVE DE ACESSO",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Center(
                                     child: pw.Text(
                                         '${chvFormatter.maskText(widget.chv_nfe)}',
-                                        style: pw.TextStyle(fontSize: 7, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 7, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.center,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1568,7 +1605,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Text(
                                       'Consulta de autenticidade no portal nacional da NF-e www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora',
-                                      style: pw.TextStyle(fontSize: 7, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 7, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.center,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip)
@@ -1591,13 +1629,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("NATUREZA DE OPERAÇÃO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
                                   pw.Text('${widget.desc_nat_op}',
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -1618,21 +1658,23 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("PROTOCOLO DE AUTORIZAÇÃO DE USO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text('${widget.protocolo}',
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text('${protocolo}',
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
-                                    pw.SizedBox(
-                                      width: 4
-                                    ),
-                                    pw.Text('${widget.datahoraaut != null ? DateFormat('dd/MM/yyyy hh:mm:ss').format(widget.datahoraaut) : ''}',
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.SizedBox(width: 4),
+                                  pw.Text(
+                                      '${dataProtocolo != null ? DateFormat('dd/MM/yyyy hh:mm:ss').format(dataProtocolo) : ''}',
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -1655,13 +1697,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("iNSCRIÇÃO ESTADUAL",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
                                   pw.Text('${widget.em_ie}',
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -1682,7 +1726,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("INSCRIÇÃO ESTADUAL DO SUBST. TRIB.",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -1702,7 +1747,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("CNPJ/CPF",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -1713,7 +1759,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                               .maskText(widget.em_cpf)
                                           : cnpjMaskFormatter
                                               .maskText(widget.em_cnpj),
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -1727,7 +1774,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                       if (context.pageNumber == 1) ...[
                         pw.Text('DESTINATÁRIO / REMETENTE',
                             style: pw.TextStyle(
-                                fontWeight: pw.FontWeight.bold, fontSize: 9, font: TimesNewRoman)),
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 9,
+                                font: TimesNewRoman)),
                         pw.Row(children: [
                           pw.Column(children: [
                             pw.Container(
@@ -1741,13 +1790,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("NOME/RAZÃO SOCIAL",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text('${widget.dest_razaosocial}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1768,7 +1819,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("CNPJ/CPF",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
@@ -1779,7 +1831,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                                 .maskText(widget.dest_cpf)
                                             : cnpjMaskFormatter
                                                 .maskText(widget.dest_cnpj),
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1800,14 +1853,16 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("DATA DE EMISSÃO",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text(
                                         '${DateFormat('dd/MM/yyyy').format(widget.dt_e_s)}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1830,14 +1885,16 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("ENDEREÇO",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text(
                                         '${widget.dest_end}, ${widget.dest_num}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1858,13 +1915,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("BAIRRO/DISTRITO",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text('${widget.dest_bairro}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1885,14 +1944,16 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("CEP",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text(
                                         '${cepFormatter.maskText(widget.dest_cep)}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1913,14 +1974,16 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("DATA SAÍDA/ENTRADA",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text(
                                         '${DateFormat('dd/MM/yyyy').format(widget.dt_e_s)}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1943,13 +2006,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("MUNICÍPIO",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text('${widget.dest_mun}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1970,13 +2035,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("FONE/FAX",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text('${widget.dest_fone}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -1997,13 +2064,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("UF",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text('${widget.dest_uf}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -2024,13 +2093,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("INSCRIÇÃO ESTADUAL",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text('${widget.dest_ie}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -2051,14 +2122,16 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 children: [
                                   pw.Row(children: [
                                     pw.Text("HORA DA SAÍDA",
-                                        style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 4, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left),
                                   ]),
                                   pw.SizedBox(height: 4),
                                   pw.Row(children: [
                                     pw.Text(
                                         '${DateFormat('HH:mm:ss').format(widget.dt_e_s)}',
-                                        style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                        style: pw.TextStyle(
+                                            fontSize: 8, font: TimesNewRoman),
                                         textAlign: pw.TextAlign.left,
                                         softWrap: true,
                                         overflow: pw.TextOverflow.clip),
@@ -2073,7 +2146,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                         pw.SizedBox(height: 5),
                         pw.Text('CÁLCULO DO IMPOSTO',
                             style: pw.TextStyle(
-                                fontWeight: pw.FontWeight.bold, fontSize: 9, font: TimesNewRoman)),
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 9,
+                                font: TimesNewRoman)),
                         pw.Row(children: [
                           pw.Container(
                             width: 103.75,
@@ -2086,7 +2161,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("BASE DE CÁLCULO DO ICMS",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2095,7 +2171,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_bc_icms)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2114,7 +2191,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("VALOR DO ICMS",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2123,7 +2201,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_icms)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2142,7 +2221,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("BASE CÁLC. ICMS SUBST",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2151,7 +2231,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_bc_icms_st)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2170,7 +2251,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("VALOR DO ICMS SUBST.",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2179,7 +2261,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_icms_st)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2198,7 +2281,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("VALOR TOTAL DOS PRODUTOS",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2207,7 +2291,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_merc)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2228,7 +2313,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("VALOR DO FRETE",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2237,7 +2323,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_frete)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2256,7 +2343,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("VALOR DO SEGURO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2265,7 +2353,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_seg)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2284,7 +2373,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("DESCONTO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2293,7 +2383,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_desc)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2312,7 +2403,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("OUTRAS DESP. ACESS.",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2321,7 +2413,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_out_da)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2340,7 +2433,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("VALOR DO IPI",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2349,7 +2443,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_ipi)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2368,7 +2463,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("VALOR TOTAL DA NOTA",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
@@ -2377,7 +2473,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     children: [
                                       pw.Text(
                                           '${currencyFormat.format(widget.vl_doc)}',
-                                          style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                          style: pw.TextStyle(
+                                              fontSize: 8, font: TimesNewRoman),
                                           textAlign: pw.TextAlign.left,
                                           softWrap: true,
                                           overflow: pw.TextOverflow.clip),
@@ -2391,7 +2488,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                         pw.SizedBox(height: 5),
                         pw.Text('TRANSPORTADOR / VOLUMES TRANSPORTADOS',
                             style: pw.TextStyle(
-                                fontWeight: pw.FontWeight.bold, fontSize: 9, font: TimesNewRoman)),
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 9,
+                                font: TimesNewRoman)),
                         pw.Row(children: [
                           pw.Container(
                             width: 180,
@@ -2403,14 +2502,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("RAZÃO SOCIAL",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.trans_razaosocial,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.trans_razaosocial,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2428,14 +2528,18 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("FRETE POR CONTA",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
                                   pw.Text(
-                                    widget.ind_frete == 0 ? '${widget.ind_frete} - REMETENTE' : '${widget.ind_frete} - CONSUMIDOR',
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                      widget.ind_frete == 0
+                                          ? '${widget.ind_frete} - REMETENTE'
+                                          : '${widget.ind_frete} - CONSUMIDOR',
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2453,13 +2557,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("CÓDIGO ANTT",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
                                   pw.Text('${widget.codigorastreio}',
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2477,14 +2583,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("PLACA DO VEÍCULO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.trans_placa,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.trans_placa,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2502,14 +2609,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("UF",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.trans_placa_uf,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.trans_placa_uf,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2527,15 +2635,20 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("CNPJ/CPF",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
                                   pw.Text(
-                                    widget.trans_cnpj.isNotEmpty ? cnpjMaskFormatter.maskText(widget.trans_cnpj)
-                                      : cpfMaskFormatter.maskText(widget.trans_cpf),
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                      widget.trans_cnpj.isNotEmpty
+                                          ? cnpjMaskFormatter
+                                              .maskText(widget.trans_cnpj)
+                                          : cpfMaskFormatter
+                                              .maskText(widget.trans_cpf),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2555,14 +2668,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("ENDEREÇO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.trans_end,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.trans_end,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2580,14 +2694,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("MUNICÍPIO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.trans_mun,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.trans_mun,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2605,14 +2720,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("UF",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.trans_uf,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.trans_uf,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2630,14 +2746,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("INSCRIÇÃO ESTADUAL",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.trans_ie,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.trans_ie,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2657,14 +2774,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("QUANTIDADE",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.quant_volume.toString(),
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.quant_volume.toString(),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2682,14 +2800,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("ESPÉCIE",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.especie,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.especie,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2707,14 +2826,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("MARCA",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.marca,
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.marca,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2732,13 +2852,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("NUMERAÇÃO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
                                   pw.Text('',
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2756,14 +2878,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("PESO BRUTO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.peso_bruto.toString(),
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.peso_bruto.toString(),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2781,14 +2904,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                               children: [
                                 pw.Row(children: [
                                   pw.Text("PESO LÍQUIDO",
-                                      style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                      style: pw.TextStyle(
+                                          fontSize: 4, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left),
                                 ]),
                                 pw.SizedBox(height: 4),
                                 pw.Row(children: [
-                                  pw.Text(
-                                    widget.peso_liq.toString(),
-                                      style: pw.TextStyle(fontSize: 8, font: TimesNewRoman),
+                                  pw.Text(widget.peso_liq.toString(),
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: TimesNewRoman),
                                       textAlign: pw.TextAlign.left,
                                       softWrap: true,
                                       overflow: pw.TextOverflow.clip),
@@ -2802,11 +2926,15 @@ class _NfeDetailsState extends State<NfeDetails> {
                       if (context.pageNumber == 1) ...[
                         pw.Text('DADOS DO PRODUTO / SERVIÇOS',
                             style: pw.TextStyle(
-                                fontWeight: pw.FontWeight.bold, fontSize: 9, font: TimesNewRoman)),
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 9,
+                                font: TimesNewRoman)),
                       ] else
                         pw.Text('CONTINUAÇÃO DOS DADOS DO PRODUTO / SERVIÇOS',
                             style: pw.TextStyle(
-                                fontWeight: pw.FontWeight.bold, fontSize: 9, font: TimesNewRoman)),
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 9,
+                                font: TimesNewRoman)),
                     ]),
             build: (pw.Context context) {
               return [
@@ -2870,7 +2998,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                     pw.Row(children: [
                       pw.Text('DADOS ADICIONAIS',
                           style: pw.TextStyle(
-                              fontWeight: pw.FontWeight.bold, fontSize: 9, font: TimesNewRoman)),
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 9,
+                              font: TimesNewRoman)),
                     ]),
                     pw.Row(children: [
                       pw.Container(
@@ -2882,7 +3012,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                           children: [
                             pw.Row(children: [
                               pw.Text("INFROMAÇÕES COMPLEMENTARES",
-                                  style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                  style: pw.TextStyle(
+                                      fontSize: 4, font: TimesNewRoman),
                                   textAlign: pw.TextAlign.left),
                             ]),
                             pw.SizedBox(height: 4),
@@ -2890,7 +3021,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                               pw.Container(
                                 width: 361,
                                 child: pw.Text('${widget.mensagem}',
-                                    style: pw.TextStyle(fontSize: 10, font: TimesNewRoman),
+                                    style: pw.TextStyle(
+                                        fontSize: 10, font: TimesNewRoman),
                                     textAlign: pw.TextAlign.left,
                                     softWrap: true,
                                     overflow: pw.TextOverflow.clip),
@@ -2908,7 +3040,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                           children: [
                             pw.Row(children: [
                               pw.Text("RESERVADO AO FÍSICO",
-                                  style: pw.TextStyle(fontSize: 4, font: TimesNewRoman),
+                                  style: pw.TextStyle(
+                                      fontSize: 4, font: TimesNewRoman),
                                   textAlign: pw.TextAlign.left),
                             ]),
                             pw.SizedBox(height: 4),
@@ -2916,19 +3049,17 @@ class _NfeDetailsState extends State<NfeDetails> {
                         ),
                       ),
                     ]),
-                    pw.SizedBox(
-                      height: 5
-                    ),
+                    pw.SizedBox(height: 5),
                     pw.Row(
-                      mainAxisAlignment: pw.MainAxisAlignment.end,
-                      children: [
-                        pw.Text('Ideia Tecnologia',
-                            style: pw.TextStyle(
-                                //fontWeight: pw.FontWeight.bold,
-                                font: TimesNewRoman,
-                                fontItalic: pw.Font.timesBoldItalic(),
-                                fontSize: 5))
-                      ])
+                        mainAxisAlignment: pw.MainAxisAlignment.end,
+                        children: [
+                          pw.Text('Ideia Tecnologia',
+                              style: pw.TextStyle(
+                                  //fontWeight: pw.FontWeight.bold,
+                                  font: TimesNewRoman,
+                                  fontItalic: pw.Font.timesBoldItalic(),
+                                  fontSize: 5))
+                        ])
                   ],
                 ),
               );
@@ -3195,8 +3326,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                         pw.Center(
                           child: pw.BarcodeWidget(
                             barcode: pw.Barcode.qrCode(),
-                            data:
-                                "https://consultadfe.fazenda.rj.gov.br/consultaNFCe/QRCode?p=${widget.chv_nfe}|2|1|3|66113B460E8D5468D517CD8047969263EE107CC3", // Substituir pelo link real da SEFAZ
+                            data: '${qrCode}',
+                            //"https://consultadfe.fazenda.rj.gov.br/consultaNFCe/QRCode?p=${widget.chv_nfe}|2|1|3|66113B460E8D5468D517CD8047969263EE107CC3", // Substituir pelo link real da SEFAZ
                             width: 80,
                             height: 80,
                           ),
@@ -3205,12 +3336,12 @@ class _NfeDetailsState extends State<NfeDetails> {
                             width: 70,
                             child: widget.dest_cpf.isNotEmpty
                                 ? pw.Text(
-                                    'CONSUMIDOR CPF: ${cpfMaskFormatter.maskText(widget.dest_cpf)} ${widget.dest_razaosocial} ${widget.dest_razaosocial} ${widget.dest_end} ${widget.dest_num} ${widget.dest_bairro} ${widget.dest_mun} NFC-e nº ${widget.num_doc.toString().padLeft(9, '0')} Série ${widget.serie.toString().padLeft(3, '0')} ${DateFormat('dd/MM/yyyy hh:mm:ss').format(widget.dt_e_s)} Protocolo de Autorização: ${widget.protocolo} Data de Autorização: ${widget.datahoraaut != null ? DateFormat('dd/MM/yyyy hh:mm:ss').format(widget.datahoraaut) : ''}',
+                                    'CONSUMIDOR CPF: ${cpfMaskFormatter.maskText(widget.dest_cpf)} ${widget.dest_razaosocial} ${widget.dest_razaosocial} ${widget.dest_end} ${widget.dest_num} ${widget.dest_bairro} ${widget.dest_mun} NFC-e nº ${widget.num_doc.toString().padLeft(9, '0')} Série ${widget.serie.toString().padLeft(3, '0')} ${DateFormat('dd/MM/yyyy hh:mm:ss').format(widget.dt_e_s)} Protocolo de Autorização: ${protocolo} Data de Autorização: ${dataProtocolo != null ? DateFormat('dd/MM/yyyy HH:mm:ss').format(dataProtocolo) : ''}',
                                     style: pw.TextStyle(fontSize: 7),
                                     textAlign: pw.TextAlign.center,
                                     softWrap: true)
                                 : pw.Text(
-                                    'CONSUMIDOR NÃO IDENTIFICADO NFC-e nº ${widget.num_doc.toString().padLeft(9, '0')} Série ${widget.serie.toString().padLeft(3, '0')} ${DateFormat('dd/MM/yyyy hh:mm:ss').format(widget.dt_e_s)} Protocolo de Autorização: ${widget.protocolo} Data de Autorização: ${widget.datahoraaut != null ? DateFormat('dd/MM/yyyy hh:mm:ss').format(widget.datahoraaut) : ''}',
+                                    'CONSUMIDOR NÃO IDENTIFICADO NFC-e nº ${widget.num_doc.toString().padLeft(9, '0')} Série ${widget.serie.toString().padLeft(3, '0')} ${DateFormat('dd/MM/yyyy hh:mm:ss').format(widget.dt_e_s)} Protocolo de Autorização: ${protocolo} Data de Autorização: ${dataProtocolo != null ? DateFormat('dd/MM/yyyy HH:mm:ss').format(dataProtocolo) : ''}',
                                     style: pw.TextStyle(fontSize: 7),
                                     textAlign: pw.TextAlign.center,
                                     softWrap: true))

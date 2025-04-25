@@ -623,8 +623,8 @@ class _NfeListState extends State<NfeList> {
                                   empresaNome: nfe[index].empresa_nome,
                                   mensagem: nfe[index].mensagem,
 
-                                  protocolo: nfe[index].protocolo,
-                                  datahoraaut: nfe[index].datahoraaut,
+                                  xmldistribuicao: nfe[index].xmldistribuicao,
+                                  //datahoraaut: nfe[index].datahoraaut,
                                 ), 
                               ),
                               );

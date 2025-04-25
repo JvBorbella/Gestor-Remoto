@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:project/back/product/stock_consult.dart';
 import 'package:project/back/sales_info_functions/company_list.dart';
 import 'package:project/front/components/global/elements/navbar_button.dart';
@@ -8,6 +9,7 @@ import 'package:project/front/components/global/structure/request_card.dart';
 import 'package:project/front/components/nfe/structure/primary_card.dart';
 import 'package:project/front/components/style.dart';
 import 'package:project/front/pages/home_page.dart';
+import 'package:project/front/pages/teste.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EstoquePage extends StatefulWidget {
@@ -29,12 +31,17 @@ class _EstoquePageState extends State<EstoquePage> {
   bool isLoading = true;
   bool loadStock = false;
 
+  bool flagcam = false;
+
   String empresaid = '';
   String empresa_nome = '';
   String empresa_codigo = '';
 
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: '');
+
+  final TextEditingController _controller = TextEditingController();
+  bool _scanned = false;
 
   @override
   void initState() {
@@ -65,15 +72,60 @@ class _EstoquePageState extends State<EstoquePage> {
                   ? Column(
                       children: [
                         Navbar(text: 'Consulta Estoque', children: [
-                          NavbarButton(
-                            Icons: Icons.arrow_back_ios_new_rounded,
-                            //volta: 'volta',
-                            destination: HomePage(),
-                          ),
-                          SizedBox(
-                            height: Style.height_15(context),
-                          ),
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              NavbarButton(Icons: Icons.arrow_back_ios_new),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    flagcam = !flagcam;
+                                  });
+                                },
+                                icon: Icon(Icons.qr_code_scanner),
+                                color: Style.tertiaryColor,
+                              ),
+                            ],
+                          ))
                         ]),
+                        SizedBox(
+                          height: Style.height_5(context),
+                        ),
+                        if (flagcam)
+                        Container(
+                          padding: EdgeInsets.all(
+                              Style.height_8(context)
+                            ),
+                            child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Style.primaryColor,
+                                width: Style.height_2(context)
+                              ),
+                              borderRadius: BorderRadius.circular(Style.height_5(context))
+                            ),
+                            height: Style.height_200(context),
+                            child: MobileScanner(
+                              //allowDuplicates: false,
+                              onDetect: (barcodes) {
+                                final String? code = barcodes.raw.toString();
+                                if (code != null && !_scanned) {
+                                  debugPrint('Código detectado: $code');
+            // Pode navegar ou mostrar um dialog aqui
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Código: $code')),
+            );
+                                  setState(() {
+                                    searchController.text = code;
+                                    _scanned = true; // evita múltiplas leituras
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                          
                         Container(
                           padding: EdgeInsets.all(Style.height_15(context)),
                           child: TextField(
@@ -379,104 +431,105 @@ class _EstoquePageState extends State<EstoquePage> {
                         SizedBox(
                           height: Style.height_5(context),
                         ),
-                        if(empresa_id.isEmpty)
-                        Container(
-                          padding: EdgeInsets.all(Style.height_15(context)),
-                          margin:
-                              EdgeInsets.only(bottom: Style.height_20(context)),
-                          decoration: BoxDecoration(
-                            color: Style.defaultColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.15),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: Style.height_30(context),
-                                child: PopupMenuButton<String>(
-                                  itemBuilder: (BuildContext context) =>
-                                      buildMenuItems(company),
-                                  onSelected: (value) async {
-                                    if (value != '') {
-                                      setState(() {
-                                        empresa_id = value;
-                                        // Busca o nome da empresa correspondente ao ID selecionado
-                                        final selectedCompany =
-                                            company.firstWhere(
-                                          (company) =>
-                                              company.empresa_id == value,
-                                        );
-                                        empresa_nome =
-                                            selectedCompany?.empresa_nome ??
-                                                ''; // Atualiza o nome
-                                        empresa_codigo =
-                                            selectedCompany?.empresa_codigo ??
-                                                ''; // Atualiza o nome
-                                      });
-                                      fetchDataStock();
-                                    } else {
-                                      setState(() {
-                                        empresa_id = '';
-                                        empresa_nome = '';
-                                        empresa_codigo = '';
-                                      });
-                                      fetchDataStock();
-                                    }
-                                  },
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.filter_list_outlined,
-                                          color: Style.primaryColor,
-                                          size: Style.height_20(context),
-                                        ),
-                                        SizedBox(
-                                          width: Style.height_5(context),
-                                        ),
-                                        Text(
-                                          empresa_nome.isEmpty
-                                              ? 'Filtro de empresa'
-                                              : '',
-                                          style: TextStyle(
-                                              fontSize:
-                                                  Style.height_12(context)),
-                                        ),
-                                        Container(
-                                          width: Style.width_180(context),
-                                          child: Text(
-                                            '${empresa_codigo} ${empresa_nome}',
-                                            style: TextStyle(
-                                              color: Style.secondaryColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize:
-                                                  Style.height_12(context),
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            overflow: TextOverflow
-                                                .clip, // corta o texto no limite da largura
-                                            softWrap:
-                                                true, // permite a quebra de linha conforme necessário
-                                          ),
-                                        )
-                                      ]),
+                        if (empresa_id.isEmpty)
+                          Container(
+                            padding: EdgeInsets.all(Style.height_15(context)),
+                            margin: EdgeInsets.only(
+                                bottom: Style.height_20(context)),
+                            decoration: BoxDecoration(
+                              color: Style.defaultColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.15),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: Style.height_30(context),
+                                  child: PopupMenuButton<String>(
+                                    itemBuilder: (BuildContext context) =>
+                                        buildMenuItems(company),
+                                    onSelected: (value) async {
+                                      if (value != '') {
+                                        setState(() {
+                                          empresaid = value;
+                                          // Busca o nome da empresa correspondente ao ID selecionado
+                                          final selectedCompany =
+                                              company.firstWhere(
+                                            (company) =>
+                                                company.empresa_id == value,
+                                          );
+                                          empresa_nome =
+                                              selectedCompany?.empresa_nome ??
+                                                  ''; // Atualiza o nome
+                                          empresa_codigo =
+                                              selectedCompany?.empresa_codigo ??
+                                                  ''; // Atualiza o nome
+                                        });
+                                        fetchDataStock();
+                                      } else {
+                                        setState(() {
+                                          empresaid = '';
+                                          empresa_nome = '';
+                                          empresa_codigo = '';
+                                        });
+                                        fetchDataStock();
+                                      }
+                                    },
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.filter_list_outlined,
+                                            color: Style.primaryColor,
+                                            size: Style.height_20(context),
+                                          ),
+                                          SizedBox(
+                                            width: Style.height_5(context),
+                                          ),
+                                          Text(
+                                            empresa_nome.isEmpty
+                                                ? 'Filtro de empresa'
+                                                : '',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    Style.height_12(context)),
+                                          ),
+                                          Container(
+                                            width: Style.width_180(context),
+                                            child: Text(
+                                              '${empresa_codigo} ${empresa_nome}',
+                                              style: TextStyle(
+                                                color: Style.secondaryColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    Style.height_12(context),
+                                              ),
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow
+                                                  .clip, // corta o texto no limite da largura
+                                              softWrap:
+                                                  true, // permite a quebra de linha conforme necessário
+                                            ),
+                                          )
+                                        ]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        else
+                          SizedBox(
+                            height: Style.height_5(context),
                           ),
-                        ) else
-                        SizedBox(
-                          height: Style.height_5(context),
-                        ),
                         ..._buildGroupedCards(),
                       ],
                     ),
@@ -509,7 +562,7 @@ class _EstoquePageState extends State<EstoquePage> {
         await DataServiceStockConsult.fetchDataStockConsult(
       context,
       urlBasic,
-      empresa_id,
+      empresaid,
       searchController.text,
     );
 
@@ -529,6 +582,8 @@ class _EstoquePageState extends State<EstoquePage> {
       _loadSavedEmpresa(),
     ]);
     await Future.wait([fetchDataCompany()]);
+
+    empresaid = empresa_id;
 
     searchController.clear();
 
