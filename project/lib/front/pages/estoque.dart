@@ -48,6 +48,7 @@ class _EstoquePageState extends State<EstoquePage> {
     // TODO: implement initState
     super.initState();
     loadData();
+    flagClear = false;
     print(empresa_id);
   }
 
@@ -69,14 +70,17 @@ class _EstoquePageState extends State<EstoquePage> {
         child: WillPopScope(
             child: Scaffold(
               body: stock.isEmpty
-                  ? Column(
+                  ? ListView(
                       children: [
                         Navbar(text: 'Consulta Estoque', children: [
                           Expanded(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              NavbarButton(Icons: Icons.arrow_back_ios_new),
+                              NavbarButton(
+                                Icons: Icons.arrow_back_ios_new,
+                                destination: HomePage(),
+                              ),
                               IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -93,39 +97,40 @@ class _EstoquePageState extends State<EstoquePage> {
                           height: Style.height_5(context),
                         ),
                         if (flagcam)
-                        Container(
-                          padding: EdgeInsets.all(
-                              Style.height_8(context)
-                            ),
+                          Container(
+                            padding: EdgeInsets.all(Style.height_8(context)),
                             child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Style.primaryColor,
-                                width: Style.height_2(context)
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Style.primaryColor,
+                                      width: Style.height_2(context)),
+                                  borderRadius: BorderRadius.circular(
+                                      Style.height_5(context))),
+                              height: Style.height_200(context),
+                              child: MobileScanner(
+                                //allowDuplicates: false,
+                                onDetect: (BarcodeCapture) {
+                                  final String? code = BarcodeCapture
+                                      .barcodes.first.displayValue;
+                                  if (code != null && !_scanned) {
+                                    debugPrint('Código detectado: $code');
+                                    // Pode navegar ou mostrar um dialog aqui
+                                    // ScaffoldMessenger.of(context).showSnackBar(
+                                    //   SnackBar(content: Text('Código: $code')),
+                                    // );
+                                    setState(() {
+                                      searchController.text = code;
+                                      flagClear = true;
+                                      loadStock = true;
+                                      fetchDataStock();
+                                      _scanned =
+                                          false; // evita múltiplas leituras
+                                    });
+                                  }
+                                },
                               ),
-                              borderRadius: BorderRadius.circular(Style.height_5(context))
-                            ),
-                            height: Style.height_200(context),
-                            child: MobileScanner(
-                              //allowDuplicates: false,
-                              onDetect: (barcodes) {
-                                final String? code = barcodes.raw.toString();
-                                if (code != null && !_scanned) {
-                                  debugPrint('Código detectado: $code');
-            // Pode navegar ou mostrar um dialog aqui
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Código: $code')),
-            );
-                                  setState(() {
-                                    searchController.text = code;
-                                    _scanned = true; // evita múltiplas leituras
-                                  });
-                                }
-                              },
                             ),
                           ),
-                        ),
-                          
                         Container(
                           padding: EdgeInsets.all(Style.height_15(context)),
                           child: TextField(
@@ -185,7 +190,8 @@ class _EstoquePageState extends State<EstoquePage> {
                             ),
                           ),
                         ),
-                        Expanded(
+                        Container(
+                          height: flagcam == true ? Style.height_250(context) : Style.height_400(context),
                           child: Center(
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -220,15 +226,64 @@ class _EstoquePageState extends State<EstoquePage> {
                   : ListView(
                       children: [
                         Navbar(text: 'Consulta Estoque', children: [
-                          NavbarButton(
-                            Icons: Icons.arrow_back_ios_new_rounded,
-                            //volta: 'volta',
-                            destination: HomePage(),
-                          ),
-                          SizedBox(
-                            height: Style.height_15(context),
-                          ),
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              NavbarButton(
+                                Icons: Icons.arrow_back_ios_new,
+                                destination: HomePage(),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    flagcam = !flagcam;
+                                  });
+                                },
+                                icon: Icon(Icons.qr_code_scanner),
+                                color: Style.tertiaryColor,
+                              ),
+                            ],
+                          ))
                         ]),
+                        SizedBox(
+                          height: Style.height_5(context),
+                        ),
+                        if (flagcam)
+                          Container(
+                            padding: EdgeInsets.all(Style.height_8(context)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Style.primaryColor,
+                                      width: Style.height_2(context)),
+                                  borderRadius: BorderRadius.circular(
+                                      Style.height_5(context))),
+                              height: Style.height_200(context),
+                              child: MobileScanner(
+                                //allowDuplicates: false,
+                                onDetect: (BarcodeCapture) {
+                                  final String? code = BarcodeCapture
+                                      .barcodes.first.displayValue;
+                                  if (code != null && !_scanned) {
+                                    debugPrint('Código detectado: $code');
+                                    // Pode navegar ou mostrar um dialog aqui
+                                    // ScaffoldMessenger.of(context).showSnackBar(
+                                    //   SnackBar(content: Text('Código: $code')),
+                                    // );
+                                    setState(() {
+                                      searchController.text = code;
+                                      flagClear = true;
+                                      loadStock = true;
+                                      fetchDataStock();
+                                      _scanned =
+                                          false; // evita múltiplas leituras
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
                         Container(
                           padding: EdgeInsets.all(Style.height_12(context)),
                           child: TextField(

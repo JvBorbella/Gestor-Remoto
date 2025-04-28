@@ -32,7 +32,6 @@ class _NavbarButtonState extends State<NavbarButton> {
               //Função que está sendo definida na página em que este código está sendo chamado
               onTap: () {
                 widget.volta == 'volta' ? Navigator.pop(context) :
-
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => widget.destination),
                 );
