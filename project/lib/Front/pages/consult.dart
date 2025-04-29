@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:project/Front/components/Login_Config/Elements/action_button.dart';
-import 'package:project/Front/components/Login_Config/Elements/input.dart';
+
 import 'package:project/Front/components/style.dart';
 import 'package:project/Front/components/global/elements/navbar_button.dart';
 import 'package:project/Front/components/global/structure/navbar.dart';
 import 'package:project/Front/pages/home_page.dart';
+import 'package:project/back/consult/credit_consult.dart';
 import 'package:project/back/sales_info_functions/company_sales_monitor.dart';
-import 'package:project/back/customer_info_functions/credit_consult.dart';
+import 'package:project/front/components/login_config/elements/input.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConsultPage extends StatefulWidget {
@@ -18,12 +22,6 @@ class ConsultPage extends StatefulWidget {
 }
 
 class _ConsultPageState extends State<ConsultPage> {
-  List<CompanySalesMonitor> empresasHoje = [];
-  List<CompanySalesMonitor> empresasOntem = [];
-  List<CompanySalesMonitor> empresasSemana = [];
-  List<CompanySalesMonitor> empresasMes = [];
-  List<CompanySalesMonitor> empresasMesAnt = [];
-
   String token = '';
   String urlBasic = '';
   String url = '';
@@ -33,6 +31,15 @@ class _ConsultPageState extends State<ConsultPage> {
 
   final _cpfController = TextEditingController();
 
+  List<CreditConsult> creditConsult = [];
+  double valortotal = 0.0;
+
+  NumberFormat currencyFormat =
+      NumberFormat.currency(locale: 'pt_BR', symbol: '');
+
+  bool flagReturn = false;
+  bool flagLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -40,12 +47,19 @@ class _ConsultPageState extends State<ConsultPage> {
     loadData();
   }
 
+  final cpfCnpjFormatter = MaskTextInputFormatter(
+    mask: '000.000.000-00',
+    filter: {"0": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+    initialText: '',
+  );
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: WillPopScope(
             child: Scaffold(
-              body: Column(
+              body: ListView(
                 children: [
                   Navbar(
                     text: 'Consultar Créditos',
@@ -56,7 +70,11 @@ class _ConsultPageState extends State<ConsultPage> {
                       ),
                     ],
                   ),
-                  Expanded(
+                  SizedBox(
+                    height: Style.height_5(context),
+                  ),
+                  Container(
+                    height: Style.height_150(context),
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -67,51 +85,344 @@ class _ConsultPageState extends State<ConsultPage> {
                               text: 'Informe o CPF do cliente',
                               type: TextInputType.number,
                               controller: _cpfController,
-                              inputFormatters: [
-                                MaskedInputFormatter(
-                                    '000.000.000-00'), // Máscara de CPF
-                              ],
+                              onChanged: (value) {
+                                cpfCnpjFormatter.updateMask(
+                                  mask: _cpfController.text.length <= 13
+                                      ? '000.000.000-00'
+                                      : '00.000.000/0000-00',
+                                );
+                              },
+                              inputFormatters: [cpfCnpjFormatter],
                             ),
                           ),
                           ActionButton(
                             text: 'Consultar',
                             height: Style.ActionButtonSize(context),
                             onPressed: () async {
-                              await DataServiceCreditConsult
-                                  .fetchDataCreditConsult(context, token,
-                                      urlBasic, empresaid, _cpfController.text);
+                              setState(() {
+                                flagReturn = false;
+                                flagLoading = true;
+                              });
+                              fetchDataCredit();
                             },
                           ),
                           SizedBox(
-                            height: Style.height_10(context),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Créditos disponíveis: ',
-                                  style: TextStyle(
-                                    fontSize: Style.height_10(context),
-                                    color: Style.primaryColor,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                '',
-                                style: TextStyle(
-                                  fontSize: Style.height_10(context),
-                                  color: Style.secondaryColor,
-                                ),
-                              ),
-                            ],
+                            height: Style.height_5(context),
                           ),
                         ],
                       ),
                     ),
                   ),
+                  if (flagLoading)
+                    Center(
+                      child: Container(
+                          height: Style.CircularProgressIndicatorWidth(context),
+                          width: Style.CircularProgressIndicatorWidth(context),
+                          child: CircularProgressIndicator(
+                            strokeWidth:
+                                Style.CircularProgressIndicatorSize(context),
+                          )),
+                    )
+                  else
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            creditConsult.isEmpty
+                                ? ''
+                                : 'Cliente: ${creditConsult.first.nome}',
+                            style: TextStyle(
+                              fontSize: Style.height_15(context),
+                              color: Style.primaryColor,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            valortotal != 0.0
+                                ? 'Créditos disponíveis: ${currencyFormat.format(valortotal)}'
+                                : '',
+                            style: TextStyle(
+                              fontSize: Style.height_15(context),
+                              color: Style.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (flagReturn)
+                    Container(
+                      padding: EdgeInsets.all(Style.height_12(context)),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1, color: Style.quarantineColor),
+                              borderRadius: BorderRadius.circular(
+                                  Style.height_10(context))),
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Style.primaryColor,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(
+                                          Style.height_10(context)),
+                                      topRight: Radius.circular(
+                                          Style.height_10(context)),
+                                    )),
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment(0, 0),
+                                      padding: EdgeInsets.only(
+                                        top: Style.height_5(context),
+                                        bottom: Style.height_5(context),
+                                      ),
+                                      width: Style.width_53(context),
+                                      height: Style.height_50(context),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              right: BorderSide(
+                                                  width: 2,
+                                                  color: const Color.fromARGB(
+                                                      255, 1, 64, 106)))),
+                                      child: Text(
+                                        'Nº Vale',
+                                        style: TextStyle(
+                                            color: Style.tertiaryColor,
+                                            fontSize: Style.height_8(context),
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment(0, 0),
+                                      padding: EdgeInsets.only(
+                                        top: Style.height_5(context),
+                                        bottom: Style.height_5(context),
+                                      ),
+                                      width: Style.width_100(context),
+                                      height: Style.height_50(context),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              right: BorderSide(
+                                                  width: 2,
+                                                  color: const Color.fromARGB(
+                                                      255, 1, 64, 106)))),
+                                      child: Text(
+                                        'Desc.',
+                                        style: TextStyle(
+                                            color: Style.tertiaryColor,
+                                            fontSize: Style.height_8(context),
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment(0, 0),
+                                      padding: EdgeInsets.only(
+                                        top: Style.height_5(context),
+                                        bottom: Style.height_5(context),
+                                      ),
+                                      height: Style.height_50(context),
+                                      width: Style.height_50(context),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              right: BorderSide(
+                                                  width: 2,
+                                                  color: const Color.fromARGB(
+                                                      255, 1, 64, 106)))),
+                                      child: Text(
+                                        'Cadastro.',
+                                        style: TextStyle(
+                                            color: Style.tertiaryColor,
+                                            fontSize: Style.height_8(context),
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment(0, 0),
+                                      padding: EdgeInsets.only(
+                                        top: Style.height_5(context),
+                                        bottom: Style.height_5(context),
+                                      ),
+                                      height: Style.height_50(context),
+                                      width: Style.height_50(context),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              right: BorderSide(
+                                                  width: 2,
+                                                  color: const Color.fromARGB(
+                                                      255, 1, 64, 106)))),
+                                      child: Text(
+                                        'Vencimento.',
+                                        style: TextStyle(
+                                            color: Style.tertiaryColor,
+                                            fontSize: Style.height_8(context),
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment(0, 0),
+                                      padding: EdgeInsets.only(
+                                        top: Style.height_5(context),
+                                        bottom: Style.height_5(context),
+                                      ),
+                                      width: Style.height_45(context),
+                                      height: Style.height_50(context),
+                                      child: Text(
+                                        'Valor',
+                                        style: TextStyle(
+                                            color: Style.tertiaryColor,
+                                            fontSize: Style.height_8(context),
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: creditConsult.length,
+                                  itemBuilder: (context, index) {
+                                    return Row(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment(0, 0),
+                                          padding: EdgeInsets.all(
+                                              Style.height_5(context)),
+                                          width: Style.width_53(context),
+                                          height: Style.height_50(context),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  right: BorderSide(
+                                                      width: 2,
+                                                      color: Style
+                                                          .disabledColor))),
+                                          child: Text(
+                                            (creditConsult[index]
+                                                    .numerodocumento)
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize:
+                                                    Style.height_8(context),
+                                                fontWeight: FontWeight.bold),
+                                            softWrap: true,
+                                            overflow: TextOverflow.clip,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment(0, 0),
+                                          padding: EdgeInsets.all(
+                                              Style.height_5(context)),
+                                          width: Style.width_100(context),
+                                          height: Style.height_50(context),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  right: BorderSide(
+                                                      width: 2,
+                                                      color: Style
+                                                          .disabledColor))),
+                                          child: Text(
+                                            (creditConsult[index].descricao)
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize:
+                                                    Style.height_8(context),
+                                                fontWeight: FontWeight.bold),
+                                            softWrap: true,
+                                            overflow: TextOverflow.clip,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment(0, 0),
+                                          padding: EdgeInsets.only(
+                                            top: Style.height_12(context),
+                                            bottom: Style.height_12(context),
+                                          ),
+                                          width: Style.height_50(context),
+                                          height: Style.height_50(context),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  right: BorderSide(
+                                                      width: 2,
+                                                      color: Style
+                                                          .disabledColor))),
+                                          child: Text(
+                                            '${DateFormat('dd/MM/yyyy').format(creditConsult[index].datadocumento)}'
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize:
+                                                    Style.height_8(context),
+                                                fontWeight: FontWeight.bold),
+                                            softWrap: true,
+                                            overflow: TextOverflow.clip,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment(0, 0),
+                                          padding: EdgeInsets.only(
+                                            top: Style.height_12(context),
+                                            bottom: Style.height_12(context),
+                                          ),
+                                          width: Style.height_50(context),
+                                          height: Style.height_50(context),
+                                          decoration: BoxDecoration(
+                                              border: Border(
+                                                  right: BorderSide(
+                                                      width: 2,
+                                                      color: Style
+                                                          .disabledColor))),
+                                          child: Text(
+                                            '${DateFormat('dd/MM/yyyy').format(creditConsult[index].datavencimento)}'
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize:
+                                                    Style.height_8(context),
+                                                fontWeight: FontWeight.bold),
+                                            softWrap: true,
+                                            overflow: TextOverflow.clip,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        Container(
+                                          alignment: Alignment(0, 0),
+                                          padding: EdgeInsets.only(
+                                            top: Style.height_12(context),
+                                            bottom: Style.height_12(context),
+                                          ),
+                                          width: Style.height_45(context),
+                                          height: Style.height_50(context),
+                                          decoration: BoxDecoration(),
+                                          child: Text(
+                                            '${currencyFormat.format(creditConsult[index].valor)}',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    Style.height_8(context),
+                                                fontWeight: FontWeight.bold),
+                                            softWrap: true,
+                                            overflow: TextOverflow.clip,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                            ],
+                          )),
+                    )
                 ],
               ),
             ),
@@ -154,36 +465,35 @@ class _ConsultPageState extends State<ConsultPage> {
     });
   }
 
-  Future<void> fetchDataToday({bool? ascending}) async {
-    List<CompanySalesMonitor>? fetchedData =
-        await DataServiceToday.fetchDataToday(token, url, ascending: ascending);
+  Future<void> fetchDataCredit({bool? ascending}) async {
+    List<CreditConsult>? fetchedData =
+        await DataServiceCreditConsult.fetchDataCreditConsult(
+            context, urlBasic, empresaid, _cpfController.text);
 
     if (fetchedData != null) {
       setState(() {
-        empresasHoje = fetchedData;
-
-        // Ordena as outras listas de acordo com a ordem das vendas do dia
-        empresasOntem.sort((a, b) => empresasHoje
-            .indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
-            .compareTo(empresasHoje.indexWhere(
-                (empresa) => empresa.empresaNome == b.empresaNome)));
-
-        empresasSemana.sort((a, b) => empresasHoje
-            .indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
-            .compareTo(empresasHoje.indexWhere(
-                (empresa) => empresa.empresaNome == b.empresaNome)));
-
-        empresasMes.sort((a, b) => empresasHoje
-            .indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
-            .compareTo(empresasHoje.indexWhere(
-                (empresa) => empresa.empresaNome == b.empresaNome)));
-
-        empresasMesAnt.sort((a, b) => empresasHoje
-            .indexWhere((empresa) => empresa.empresaNome == a.empresaNome)
-            .compareTo(empresasHoje.indexWhere(
-                (empresa) => empresa.empresaNome == b.empresaNome)));
+        creditConsult = fetchedData;
+        flagReturn = true;
+        flagLoading = false;
+      });
+      _calculateTotal();
+    } else {
+      setState(() {
+        valortotal = 0.0;
+        flagLoading = false;
       });
     }
+  }
+
+  double _calculateTotal() {
+    double total = 0.0;
+    for (var credit in creditConsult) {
+      total += credit.valor;
+    }
+    setState(() {
+      valortotal = total;
+    });
+    return total;
   }
 
   Future<void> loadData() async {
@@ -194,6 +504,5 @@ class _ConsultPageState extends State<ConsultPage> {
       _loadSavedUrlBasic(),
       _loadSavedEmpresa()
     ]);
-    await Future.wait([fetchDataToday()]);
   }
 }

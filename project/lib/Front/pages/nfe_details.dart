@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -11,10 +9,8 @@ import 'package:printing/printing.dart';
 import 'package:project/Front/components/global/elements/navbar_button.dart';
 import 'package:project/Front/components/global/structure/navbar.dart';
 import 'package:project/Front/components/style.dart';
-import 'package:project/Front/pages/nfe_list.dart';
 import 'package:project/back/nfe_info_functions/nfe_items.dart';
 import 'package:project/back/nfe_info_functions/payment_nfe.dart';
-import 'package:project/back/teste.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -2972,9 +2968,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                         item.unid_comercial ?? "",
                         item.quantidade_comercial?.toString() ?? "",
                         item.valor_unit_comercial?.toStringAsFixed(2) ?? "",
-                        (item.quantidade_comercial! * item.valor_unit_comercial)
-                                ?.toStringAsFixed(2) ??
-                            "",
+                        (item.quantidade_comercial! * item.valor_unit_comercial).toStringAsFixed(2) ?? "",
                         item.vl_desc?.toStringAsFixed(2) ?? "",
                         item.vl_bc_icms?.toStringAsFixed(2) ?? "",
                         item.vl_icms?.toStringAsFixed(2) ?? "",

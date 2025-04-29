@@ -8,6 +8,7 @@ import 'package:project/Front/pages/sales_graphic.dart';
 import 'package:project/back/sales_info_functions/sales_monitor.dart';
 import 'package:project/front/components/style.dart';
 import 'package:project/front/components/home/elements/modal_button.dart';
+import 'package:project/front/pages/consult.dart';
 import 'package:project/front/pages/estoque.dart';
 import 'package:project/main.dart';
 import 'package:project/services/foreground_service.dart';
@@ -601,6 +602,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                           },
                                                           child: Text(
                                                             'Consultar Estoque',
+                                                            style: TextStyle(
+                                                              color: Style
+                                                                  .secondaryColor,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: Style
+                                                                  .height_12(
+                                                                      context),
+                                                              fontFamily:
+                                                                  'Poppins-Medium',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: Style.height_5(context),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushReplacement(
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                ConsultPage()));
+                                                          },
+                                                          child: Text(
+                                                            'Consultar Crédito',
                                                             style: TextStyle(
                                                               color: Style
                                                                   .secondaryColor,

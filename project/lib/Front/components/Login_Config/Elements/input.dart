@@ -16,6 +16,7 @@ class Input extends StatefulWidget {
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
   final onTap;
+  final onChanged;
 
   const Input(
       {super.key,
@@ -28,7 +29,8 @@ class Input extends StatefulWidget {
       // required this.textAlign,
       this.textInputAction,
       this.inputFormatters,
-      this.onTap});
+      this.onTap,
+      this.onChanged,});
 
   @override
   State<Input> createState() => _InputState();
@@ -74,6 +76,7 @@ class _InputState extends State<Input> {
                     widget.textInputAction ?? TextInputAction.unspecified,
                 inputFormatters: widget.inputFormatters,
                 onTap: widget.onTap,
+                onChanged:  widget.onChanged,
                 decoration: InputDecoration(
                   suffixIcon: widget.IconButton,
                   suffixIconColor: Style.primaryColor,

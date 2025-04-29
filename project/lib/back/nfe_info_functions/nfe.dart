@@ -67,13 +67,13 @@ class Nfe {
   String? trans_cep;
   String? trans_placa;
   String? trans_placa_uf;
-  dynamic? quant_volume;
-  dynamic? peso_liq;
-  dynamic? peso_bruto;
+  dynamic quant_volume;
+  dynamic peso_liq;
+  dynamic peso_bruto;
   String? marca;
   String? especie;
   String? codigorastreio;
-  dynamic? ind_frete;
+  dynamic ind_frete;
   String? codigoretorno;
   String? descricaoretorno;
   String? finalidade;

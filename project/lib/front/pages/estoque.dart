@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:project/back/product/stock_consult.dart';
+import 'package:project/back/consult/stock_consult.dart';
 import 'package:project/back/sales_info_functions/company_list.dart';
 import 'package:project/front/components/global/elements/navbar_button.dart';
 import 'package:project/front/components/global/structure/navbar.dart';
@@ -9,7 +9,6 @@ import 'package:project/front/components/global/structure/request_card.dart';
 import 'package:project/front/components/nfe/structure/primary_card.dart';
 import 'package:project/front/components/style.dart';
 import 'package:project/front/pages/home_page.dart';
-import 'package:project/front/pages/teste.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EstoquePage extends StatefulWidget {
@@ -40,7 +39,6 @@ class _EstoquePageState extends State<EstoquePage> {
   NumberFormat currencyFormat =
       NumberFormat.currency(locale: 'pt_BR', symbol: '');
 
-  final TextEditingController _controller = TextEditingController();
   bool _scanned = false;
 
   @override
@@ -370,7 +368,7 @@ class _EstoquePageState extends State<EstoquePage> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Cód. - ${stock!.first.codigo}',
+                                            'Cód. - ${stock.first.codigo}',
                                             style: TextStyle(
                                                 color: Style.primaryColor,
                                                 fontSize:
@@ -387,7 +385,7 @@ class _EstoquePageState extends State<EstoquePage> {
                                           Container(
                                             width: Style.width_150(context),
                                             child: Text(
-                                              'Desc. - ${stock!.first.nome}',
+                                              'Desc. - ${stock.first.nome}',
                                               style: TextStyle(
                                                   color: Style.primaryColor,
                                                   fontSize:
@@ -403,7 +401,7 @@ class _EstoquePageState extends State<EstoquePage> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Pr.Venda - ${currencyFormat.format(stock!.first.tpreco01)}',
+                                            'Pr.Venda - ${currencyFormat.format(stock.first.tpreco01)}',
                                             style: TextStyle(
                                                 color: Style.primaryColor,
                                                 fontSize:
@@ -418,7 +416,7 @@ class _EstoquePageState extends State<EstoquePage> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Pr. Custo - ${currencyFormat.format(stock!.first.tcusto01)}',
+                                            'Pr. Custo - ${currencyFormat.format(stock.first.tcusto01)}',
                                             style: TextStyle(
                                                 color: Style.primaryColor,
                                                 fontSize:
@@ -466,7 +464,7 @@ class _EstoquePageState extends State<EstoquePage> {
                                       Row(
                                         children: [
                                           Text(
-                                            'Peso Líq. - ${stock!.first.pesoliquido}',
+                                            'Peso Líq. - ${stock.first.pesoliquido}',
                                             style: TextStyle(
                                                 color: Style.primaryColor,
                                                 fontSize:
