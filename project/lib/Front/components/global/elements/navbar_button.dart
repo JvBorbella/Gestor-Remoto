@@ -6,7 +6,8 @@ class NavbarButton extends StatefulWidget {
   final Icons;
   final volta;
 
-  const NavbarButton({Key? key, this.destination, required this.Icons, this.volta})
+  const NavbarButton(
+      {Key? key, this.destination, required this.Icons, this.volta})
       : super(key: key);
 
   @override
@@ -23,7 +24,7 @@ class _NavbarButtonState extends State<NavbarButton> {
         //Área externa do button
         decoration: BoxDecoration(
           border: Border.all(color: Colors.transparent),
-          color: Style.primaryColor,
+          color: Theme.of(context).colorScheme.primary,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -31,10 +32,12 @@ class _NavbarButtonState extends State<NavbarButton> {
             GestureDetector(
               //Função que está sendo definida na página em que este código está sendo chamado
               onTap: () {
-                widget.volta == 'volta' ? Navigator.pop(context) :
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => widget.destination),
-                );
+                widget.volta == 'volta'
+                    ? Navigator.pop(context)
+                    : Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => widget.destination),
+                      );
               },
               child: Icon(
                 widget.Icons,

@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class _CalendarState extends State<Calendar> {
   //     BuildContext context) async {
   //   final config = CalendarDatePicker2WithActionButtonsConfig(
   //     calendarType: CalendarDatePicker2Type.range,
-  //     selectedDayHighlightColor: Style.primaryColor,
+  //     selectedDayHighlightColor: Theme.of(context).colorScheme.primary,
   //     firstDayOfWeek: 1,
   //     closeDialogOnCancelTapped: true,
   //     weekdayLabelTextStyle: const TextStyle(
@@ -138,9 +139,10 @@ class _CalendarState extends State<Calendar> {
 Future<List<DateTime?>?> showCalendarDialog(BuildContext context) async {
   final config = CalendarDatePicker2WithActionButtonsConfig(
     calendarType: CalendarDatePicker2Type.range,
-    selectedDayHighlightColor: Style.primaryColor,
+    selectedDayHighlightColor: Theme.of(context).colorScheme.primary,
     firstDayOfWeek: 1,
     closeDialogOnCancelTapped: true,
+    
     // cancelButton: GestureDetector(
     //   onTap: () {
     //     _closeModal(context);
@@ -161,12 +163,12 @@ Future<List<DateTime?>?> showCalendarDialog(BuildContext context) async {
     //     ),
     //   ),
     // ),
-    weekdayLabelTextStyle: const TextStyle(
-      color: Colors.black87,
+    weekdayLabelTextStyle: TextStyle(
+      color: Theme.of(context).colorScheme.secondary,
       fontWeight: FontWeight.bold,
     ),
-    controlsTextStyle: const TextStyle(
-      color: Colors.black,
+    controlsTextStyle: TextStyle(
+      color: Theme.of(context).colorScheme.secondary,
       fontSize: 15,
       fontWeight: FontWeight.bold,
     ),
@@ -179,7 +181,9 @@ Future<List<DateTime?>?> showCalendarDialog(BuildContext context) async {
     dialogSize: const Size(325, 370),
     borderRadius: BorderRadius.circular(15),
     value: [DateUtils.dateOnly(DateTime.now())], // Valor inicial
-    dialogBackgroundColor: Colors.white,
+    dialogBackgroundColor: AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark
+          ? Colors.grey[900]
+          : Style.defaultColor,
   );
   print(values);
   return values;

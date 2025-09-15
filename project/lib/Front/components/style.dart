@@ -6,7 +6,7 @@ class Style {
   static const Color primaryColor = Color(0xff00568e);
   static const Color secondaryColor = Color(0xff42b9f0);
   static const Color tertiaryColor = Color(0xffffffff);
-    static const Color disabledColor = Color(0xffDADBE0);
+  static const Color disabledColor = Color(0xffDADBE0);
   static const Color quarantineColor = Color(0xffA6A6A6);
   static const Color sucefullColor = Colors.green;
   static const Color errorColor = Color.fromARGB(255, 214, 38, 25);
@@ -75,8 +75,6 @@ class Style {
   }
 //}
 
-
-
 //Tamanho dinâmico dos elementos de sales_page {
   static double TextDetailsSize(BuildContext context) {
     return MediaQuery.of(context).size.height * 0.0128;
@@ -139,157 +137,157 @@ class Style {
   static double TextButtonExitSize(BuildContext context) {
     return MediaQuery.of(context).size.height * 0.0255;
   }
-   //Tamanhos dinâmicos da aba Drawer {
-      static double PaddingDrawerButton(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.015;
-      }
 
-      static double SizeDrawerButton(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.032;
-      }
+  //Tamanhos dinâmicos da aba Drawer {
+  static double PaddingDrawerButton(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.015;
+  }
 
-      static double CompanyNameSalesPageSize(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.035;
-      }
+  static double SizeDrawerButton(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.032;
+  }
 
-      static double AccountEmailSize(BuildContext context) {
-        return MediaQuery.of(context).size.width * 0.2;
-      }
+  static double CompanyNameSalesPageSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.035;
+  }
 
-      static double AccountNameWidth(BuildContext context) {
-        return MediaQuery.of(context).size.width * 0.144;
-      }
+  static double AccountEmailSize(BuildContext context) {
+    return MediaQuery.of(context).size.width * 0.2;
+  }
 
-      static double AccountNameHeight(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.095;
-      }
+  static double AccountNameWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width * 0.144;
+  }
 
-      static double IconCloseDrawerSize(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.048;
-      }
+  static double AccountNameHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.095;
+  }
 
-      static double LoginFontSize(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.0322;
-      }
+  static double IconCloseDrawerSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.048;
+  }
 
-      static double EmailFontSize(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.0128;
-      }
+  static double LoginFontSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.0322;
+  }
 
-      static double PaddingContainerDrawerHeader(BuildContext context) {
-        return MediaQuery.of(context).size.width * 0.0192;
-      }
+  static double EmailFontSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.0128;
+  }
 
-      static double DrawerHeaderSize(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.24;
-      }
+  static double PaddingContainerDrawerHeader(BuildContext context) {
+    return MediaQuery.of(context).size.width * 0.0192;
+  }
 
-      static double ButtonDrawerSize(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.024;
-      }
+  static double DrawerHeaderSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.24;
+  }
 
-      static double ButtonDrawerSpace(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.016;
-      }
+  static double ButtonDrawerSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.024;
+  }
 
-      static double PaddingAccountName(BuildContext context) {
-        return MediaQuery.of(context).size.height * 0.048;
-      }
+  static double ButtonDrawerSpace(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.016;
+  }
 
-      //Tamanhos dinâmicos dos elementos de modal_button {
-          static double ModalButtonPadding(BuildContext context) {
-            return MediaQuery.of(context).size.width * 0.005;
-          }
+  static double PaddingAccountName(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.048;
+  }
 
-          static double ModalButtonHeight(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.04;
-          }
+  //Tamanhos dinâmicos dos elementos de modal_button {
+  static double ModalButtonPadding(BuildContext context) {
+    return MediaQuery.of(context).size.width * 0.005;
+  }
 
-          static double ModalButtonWidth(BuildContext context) {
-            return MediaQuery.of(context).size.width * 0.16;
-          }
+  static double ModalButtonHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.04;
+  }
 
-          static double TextModalButtonSize(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.0224;
-          }
+  static double ModalButtonWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width * 0.16;
+  }
 
-          static double IconModalButtonSize(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.032;
-          }
+  static double TextModalButtonSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.0224;
+  }
 
-          static double ModalButtonSpace(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.012;
-          }
+  static double IconModalButtonSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.032;
+  }
 
-          static double ModalSize(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.32;
-          }
+  static double ModalButtonSpace(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.012;
+  }
 
-          static double ModalWidth(BuildContext context) {
-            return MediaQuery.of(context).size.width * 5;
-          }
+  static double ModalSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.32;
+  }
 
-          static double TextExitConfirmation(BuildContext context) {
-          return MediaQuery.of(context).size.height * 0.0256;
-          }
+  static double ModalWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width * 5;
+  }
 
-          static double ButtonExitWidth(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.128;
-          }
+  static double TextExitConfirmation(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.0256;
+  }
 
-          static double ButtonCancelWidth(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.175;
-          }
+  static double ButtonExitWidth(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.128;
+  }
 
-          static double ButtonExitHeight(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.088;
-          }
+  static double ButtonCancelWidth(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.175;
+  }
 
-          static double ButtonCancelHeight(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.088;
-          }
+  static double ButtonExitHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.088;
+  }
 
-          static double ButtonExitPadding(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.024;
-          }
+  static double ButtonCancelHeight(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.088;
+  }
 
-          static double ButtonCancelPadding(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.024;
-          }
+  static double ButtonExitPadding(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.024;
+  }
 
-          static double ButtonExitBorderRadius(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.016;
-          }
+  static double ButtonCancelPadding(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.024;
+  }
 
-          static double ButtonCancel(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.016;
-          }
+  static double ButtonExitBorderRadius(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.016;
+  }
 
-          static double PaddingModal(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.0128;
-          }
+  static double ButtonCancel(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.016;
+  }
 
-          static double InternalModalSize(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.24;
-          }
+  static double PaddingModal(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.0128;
+  }
 
-          static double InternalModalPadding(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.0192;
-          }
+  static double InternalModalSize(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.24;
+  }
 
-          static double ModalMargin(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.016;
-          }
+  static double InternalModalPadding(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.0192;
+  }
 
-          static double ModalBorderRadius(BuildContext context) {
-            return MediaQuery.of(context).size.height * 0.016;
-          }
-        //}
-    //}
+  static double ModalMargin(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.016;
+  }
+
+  static double ModalBorderRadius(BuildContext context) {
+    return MediaQuery.of(context).size.height * 0.016;
+  }
+  //}
+  //}
 //}
 
- 
-//Tamanho dinâmico dos elementos de request_page { 
+//Tamanho dinâmico dos elementos de request_page {
   static double ImageProfileRequestSize(BuildContext context) {
     return MediaQuery.of(context).size.height * 0.112;
   }
@@ -335,7 +333,6 @@ class Style {
   }
 //}
 
-  
 //Espaçamentos globais {
   static double height_05(BuildContext context) {
     return MediaQuery.of(context).size.height * 0.0008;
@@ -425,7 +422,7 @@ class Style {
     return MediaQuery.of(context).size.width * 0.1388888888888889;
   }
 
-    static double width_53(BuildContext context) {
+  static double width_53(BuildContext context) {
     return MediaQuery.of(context).size.width * 0.1472222222222222;
   }
 
@@ -477,13 +474,14 @@ class Style {
     return MediaQuery.of(context).size.height * 0.32;
   }
 
-   static double width_100(BuildContext context) {
+  static double width_100(BuildContext context) {
     return MediaQuery.of(context).size.width * 0.2777777777777778;
   }
 
   static double width_200(BuildContext context) {
     return MediaQuery.of(context).size.width * 0.5555555555555556;
   }
+
   static double width_215(BuildContext context) {
     return MediaQuery.of(context).size.width * 0.5972222222222222;
   }

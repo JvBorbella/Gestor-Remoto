@@ -100,16 +100,14 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
             body: ListView(
               children: [
                 Navbar(text: 'Detalhes da Ocorrência', children: [
-                  NavbarButton(
-                      volta: 'volta',
-                      Icons: Icons.arrow_back_ios_new)
+                  NavbarButton(volta: 'volta', Icons: Icons.arrow_back_ios_new)
                 ]),
                 Container(
                   padding: EdgeInsets.all(Style.height_12(context)),
                   child: Container(
                     padding: EdgeInsets.all(Style.height_8(context)),
                     decoration: BoxDecoration(
-                        color: Style.primaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                         borderRadius:
                             BorderRadius.circular(Style.height_10(context))),
                     child: Column(
@@ -125,6 +123,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                               fontSize: Style.height_15(context),
                               color: Style.tertiaryColor,
                               fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                         ),
                         SizedBox(
                           height: Style.height_10(context),
@@ -230,7 +229,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                 //   ),
                 //   child: Container(
                 //     decoration: BoxDecoration(
-                //       color: Style.primaryColor
+                //       color: Theme.of(context).colorScheme.primary
                 //     ),
                 //     child: Column(
                 //       children: [
@@ -263,7 +262,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                   child: Table(
                     border: TableBorder.all(
                         width: 1,
-                        color: Style.primaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                         borderRadius:
                             BorderRadius.circular(Style.height_10(context))),
                     children: [
@@ -275,7 +274,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                               topRight:
                                   Radius.circular(Style.height_10(context)),
                             ),
-                            color: Style.primaryColor,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           children: [
                             Container(
@@ -454,7 +453,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                               'Observação:',
                               style: TextStyle(
                                   fontSize: Style.height_10(context),
-                                  color: Style.primaryColor,
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold),
                               textAlign: TextAlign.start,
                             ),
@@ -463,7 +462,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                               padding: EdgeInsets.all(Style.height_8(context)),
                               alignment: Alignment.topLeft,
                               decoration: BoxDecoration(
-                                  color: Style.disabledColor,
+                                  color: Theme.of(context).colorScheme.tertiary,
                                   border: Border.all(
                                     width: 1,
                                     color: Colors.black,
@@ -495,7 +494,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                           'Observação:',
                           style: TextStyle(
                               fontSize: Style.height_10(context),
-                              color: Style.primaryColor,
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.start,
                         ),
@@ -504,7 +503,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                           padding: EdgeInsets.all(Style.height_8(context)),
                           alignment: Alignment.topLeft,
                           decoration: BoxDecoration(
-                              color: Style.disabledColor,
+                              color: Theme.of(context).colorScheme.tertiary,
                               border: Border.all(
                                 width: 1,
                                 color: Colors.black,
@@ -531,7 +530,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                   child: Table(
                     // border: TableBorder.all(
                     //     width: 1,
-                    //     color: Style.primaryColor,
+                    //     color: Theme.of(context).colorScheme.primary,
                     //     borderRadius: BorderRadius.circular(
                     //       Style.height_10(context)
                     //     )
@@ -542,7 +541,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                   child: Text(
                     'Produtos',
                     style: TextStyle(
-                        color: Style.primaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: Style.height_15(context),
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
@@ -553,14 +552,14 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                   child: Container(
                       decoration: BoxDecoration(
                           border: Border.all(
-                              width: 1, color: Style.quarantineColor),
+                              width: 1, color: Theme.of(context).colorScheme.tertiary),
                           borderRadius:
                               BorderRadius.circular(Style.height_10(context))),
                       child: Column(
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: Style.primaryColor,
+                                color: Theme.of(context).colorScheme.primary,
                                 borderRadius: BorderRadius.only(
                                   topLeft:
                                       Radius.circular(Style.height_10(context)),
@@ -707,7 +706,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                                           border: Border(
                                               right: BorderSide(
                                                   width: 2,
-                                                  color: Style.disabledColor))),
+                                                  color: Theme.of(context).colorScheme.tertiary))),
                                       child: Text(
                                         ocurrencesItem[index]
                                             .codigoproduto
@@ -730,7 +729,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                                           border: Border(
                                               right: BorderSide(
                                                   width: 2,
-                                                  color: Style.disabledColor))),
+                                                  color: Theme.of(context).colorScheme.tertiary))),
                                       child: Text(
                                         ocurrencesItem[index]
                                             .nomeproduto
@@ -755,7 +754,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                                           border: Border(
                                               right: BorderSide(
                                                   width: 2,
-                                                  color: Style.disabledColor))),
+                                                  color: Theme.of(context).colorScheme.tertiary))),
                                       child: Text(
                                         ocurrencesItem[index]
                                             .quantidade
@@ -780,7 +779,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
                                           border: Border(
                                               right: BorderSide(
                                                   width: 2,
-                                                  color: Style.disabledColor))),
+                                                  color: Theme.of(context).colorScheme.tertiary))),
                                       child: Text(
                                         ocurrencesItem[index]
                                             .quantidadeinformada
@@ -879,8 +878,7 @@ class _OcurrencesDetailsState extends State<OcurrencesDetails> {
             // widget.dataano,
             // widget.datames,
             // widget.datadia,
-            widget.selectDate
-            );
+            widget.selectDate);
     if (fetchedData != null) {
       setState(() {
         ocurrencesItem = fetchedData;

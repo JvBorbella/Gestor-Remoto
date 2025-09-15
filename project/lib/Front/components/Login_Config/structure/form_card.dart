@@ -24,7 +24,7 @@ class _FormCardState extends State<FormCard> {
           // Imagem usada nas telas de login e config.
           Image.asset(
             "assets/images/image_card/image_card.png",
-            color: Style.primaryColor,
+            color: Theme.of(context).colorScheme.primary,
             height: Style.logoSize(context),
           ),
           //Área do container com os widgets de form.

@@ -130,7 +130,8 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Total de hoje',
                                     style: TextStyle(
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       // fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -147,7 +148,8 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Total de ontem',
                                     style: TextStyle(
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       // fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -172,7 +174,8 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Total da semana',
                                     style: TextStyle(
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       // fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -189,7 +192,8 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Total do mês',
                                     style: TextStyle(
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       // fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -230,7 +234,9 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       'Requisições',
                                       style: TextStyle(
-                                          color: Style.primaryColor,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
                                           fontSize: Style.TextRequests(context),
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -278,18 +284,21 @@ class _HomePageState extends State<HomePage> {
                       height: Style.height_10(context),
                     ),
                     Container(
-                      padding: EdgeInsets.all(Style.height_15(context)),
-                      margin: EdgeInsets.only(bottom: Style.height_20(context)),
+                      //padding: EdgeInsets.all(Style.height_15(context)),
+                      margin: EdgeInsets.only(
+                        bottom: Style.height_20(context),
+                        left: Style.height_20(context),
+                      ),
                       decoration: BoxDecoration(
-                        color: Style.defaultColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.15),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                        //color: Colors.transparent,
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Colors.grey.withOpacity(0.15),
+                        //     spreadRadius: 5,
+                        //     blurRadius: 7,
+                        //     offset: Offset(0, 3),
+                        //   ),
+                        // ],
                       ),
                       child: Row(
                         children: [
@@ -328,12 +337,14 @@ class _HomePageState extends State<HomePage> {
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Empresa',
                                   child: Text(
                                     'Empresa',
@@ -342,12 +353,14 @@ class _HomePageState extends State<HomePage> {
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Maiores vendas de hoje',
                                   child: Text(
                                     'Maiores vendas de hoje',
@@ -356,84 +369,98 @@ class _HomePageState extends State<HomePage> {
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Menores vendas de hoje',
                                   child: Text('Menores vendas de hoje'),
                                 ),
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Maiores vendas de ontem',
                                   child: Text('Maiores vendas de ontem'),
                                 ),
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Menores vendas de ontem',
                                   child: Text('Menores vendas de ontem'),
                                 ),
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Maiores vendas da semana',
                                   child: Text('Maiores vendas da semana'),
                                 ),
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Menores vendas da semana',
                                   child: Text('Menores vendas da semana'),
                                 ),
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Maiores vendas do mês',
                                   child: Text('Maiores vendas do mês'),
                                 ),
                                 PopupMenuDivider(
                                   height: Style.height_1(context),
                                 ),
-                                const PopupMenuItem<String>(
+                                PopupMenuItem<String>(
                                   labelTextStyle: WidgetStatePropertyAll(
                                       TextStyle(
                                           fontSize: 20,
                                           fontFamily: 'Poppins-Medium',
-                                          color: Style.primaryColor)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)),
                                   value: 'Menores vendas do mês',
                                   child: Text('Menores vendas do mês'),
                                 ),
@@ -470,7 +497,8 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Icon(
                                       Icons.filter_list_outlined,
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       size: Style.height_20(context),
                                     ),
                                     SizedBox(
@@ -486,7 +514,9 @@ class _HomePageState extends State<HomePage> {
                                       child: Text(
                                         selectedOptionChild,
                                         style: TextStyle(
-                                          color: Style.secondaryColor,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                           fontWeight: FontWeight.bold,
                                           fontSize: Style.height_12(context),
                                         ),

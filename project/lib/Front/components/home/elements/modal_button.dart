@@ -41,7 +41,7 @@ class _ModalButtonState extends State<ModalButton> {
                             'Deseja sair da aplicação?',
                             style: TextStyle(
                               fontSize: Style.height_15(context),
-                              color: Style.primaryColor,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                             overflow: TextOverflow.clip,
                             softWrap: true,
@@ -68,7 +68,7 @@ class _ModalButtonState extends State<ModalButton> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(
                                       Style.ButtonExitBorderRadius(context)),
-                                  color: Style.primaryColor),
+                                  color: Style.errorColor),
                               child: Text(
                                 'Sair',
                                 style: TextStyle(
@@ -96,13 +96,14 @@ class _ModalButtonState extends State<ModalButton> {
                                 border: Border.all(
                                     width: Style.WidthBorderImageContainer(
                                         context),
-                                    color: Style.secondaryColor),
-                                color: Style.tertiaryColor,
+                                    color: Theme.of(context).colorScheme.primary
+                                    ),
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                               child: Text(
                                 'Cancelar',
                                 style: TextStyle(
-                                  color: Style.secondaryColor,
+                                  color: Style.tertiaryColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: Style.height_10(context),
                                 ),
@@ -142,7 +143,7 @@ class _ModalButtonState extends State<ModalButton> {
       color: Colors.transparent,
       child: Container(
         //Área externa do button que abre o modal
-        color: Style.primaryColor,
+        color: Theme.of(context).colorScheme.primary,
         // padding: EdgeInsets.only(left: 10, top: 5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

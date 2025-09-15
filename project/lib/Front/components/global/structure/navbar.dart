@@ -17,7 +17,7 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        color: Style.primaryColor,
+        color: Theme.of(context).colorScheme.primary,
         height: Style.NavbarSize(context),
         //Stack usado para que os elementos se sobreponham e seus respectivos tamanhos não influenciem no alinhamento
         child: Stack(

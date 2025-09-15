@@ -18,19 +18,20 @@ class Input extends StatefulWidget {
   final onTap;
   final onChanged;
 
-  const Input(
-      {super.key,
-      required this.text,
-      required this.type,
-      this.obscureText,
-      this.controller,
-      this.validator,
-      this.IconButton,
-      // required this.textAlign,
-      this.textInputAction,
-      this.inputFormatters,
-      this.onTap,
-      this.onChanged,});
+  const Input({
+    super.key,
+    required this.text,
+    required this.type,
+    this.obscureText,
+    this.controller,
+    this.validator,
+    this.IconButton,
+    // required this.textAlign,
+    this.textInputAction,
+    this.inputFormatters,
+    this.onTap,
+    this.onChanged,
+  });
 
   @override
   State<Input> createState() => _InputState();
@@ -71,27 +72,28 @@ class _InputState extends State<Input> {
                 keyboardType: widget.type,
                 // textAlign: widget.textAlign,
                 obscureText: widget.obscureText ?? false,
-                cursorColor: Style.primaryColor,
+                cursorColor: Theme.of(context).colorScheme.primary,
                 textInputAction:
                     widget.textInputAction ?? TextInputAction.unspecified,
                 inputFormatters: widget.inputFormatters,
                 onTap: widget.onTap,
-                onChanged:  widget.onChanged,
+                onChanged: widget.onChanged,
                 decoration: InputDecoration(
                   suffixIcon: widget.IconButton,
-                  suffixIconColor: Style.primaryColor,
+                  suffixIconColor: Theme.of(context).colorScheme.primary,
                   labelText: widget.text,
                   labelStyle: TextStyle(
                     color: Style.quarantineColor,
                     fontSize: Style.height_10(context),
                   ),
                   floatingLabelAlignment: FloatingLabelAlignment.center,
-                  enabledBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(color: Style.secondaryColor),
-                  ),
-                  focusedBorder: const UnderlineInputBorder(
+                  enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Style.secondaryColor,
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),

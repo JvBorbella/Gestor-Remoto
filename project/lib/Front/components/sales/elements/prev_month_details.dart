@@ -40,7 +40,7 @@ class _PrevMonthDetailsState extends State<PrevMonthDetails> {
                       //Estilização
                       padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
-                        color: Style.primaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.only(
                             bottomLeft:
                                 Radius.circular(Style.height_2(context)),

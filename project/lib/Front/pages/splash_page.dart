@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
                   children: [
                     Image.asset(
                       'assets/images/image_card/image_card.png',
-                      color: Style.primaryColor,
+                      color: Theme.of(context).colorScheme.primary,
                       height: Style.LogoSplashSize(context),
                     ),
                   ],

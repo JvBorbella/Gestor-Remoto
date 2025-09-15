@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:project/Front/components/global/elements/search_bar.dart';
 import 'package:project/back/consult/stock_consult.dart';
 import 'package:project/back/sales_info_functions/company_list.dart';
 import 'package:project/front/components/global/elements/navbar_button.dart';
@@ -100,7 +101,8 @@ class _EstoquePageState extends State<EstoquePage> {
                             child: Container(
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       width: Style.height_2(context)),
                                   borderRadius: BorderRadius.circular(
                                       Style.height_5(context))),
@@ -131,65 +133,48 @@ class _EstoquePageState extends State<EstoquePage> {
                           ),
                         Container(
                           padding: EdgeInsets.all(Style.height_15(context)),
-                          child: TextField(
-                            onSubmitted: (value) async {
-                              setState(() {
-                                loadStock = true;
-                              });
-                              await fetchDataStock();
-                            },
-                            controller: searchController,
-                            style:
-                                TextStyle(fontSize: Style.height_15(context)),
-                            enabled: true,
-                            onChanged: (searchController) {
-                              print(searchController);
-                              if (searchController == '') {
-                                setState(() {
-                                  flagClear = false;
-                                });
-                              } else {
-                                setState(() {
-                                  flagClear = true;
-                                });
-                              }
-                            },
-                            decoration: InputDecoration(
-                              prefixIcon: IconButton(
-                                padding:
-                                    EdgeInsets.all(Style.height_2(context)),
-                                onPressed: () async {
-                                  setState(() {
-                                    loadStock = true;
-                                  });
-                                  await fetchDataStock();
-                                },
-                                icon: Icon(Icons.search),
-                                color: Style.primaryColor,
-                                iconSize: Style.height_30(context),
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () async {
-                                  searchController.clear();
+                          child: Container(
+                            child: SearchBarDefault(
+                              controller: searchController,
+                              hintText: 'Pesquise pelo código do produto',
+                              flagClear: flagClear,
+                              onChanged: (searchController) {
+                                print(searchController);
+                                if (searchController == '') {
                                   setState(() {
                                     flagClear = false;
                                   });
-                                },
-                                icon: Icon(Icons.backspace_rounded),
-                                color: flagClear == true
-                                    ? Style.errorColor
-                                    : Colors.transparent,
-                                iconSize: Style.height_15(context),
-                              ),
-                              hintText: 'Pesquise pelo código do produto',
-                              hintStyle: TextStyle(
-                                  fontSize: Style.height_15(context),
-                                  color: Style.quarantineColor),
+                                } else {
+                                  setState(() {
+                                    flagClear = true;
+                                  });
+                                }
+                              },
+                              onPressedPrefix: () async {
+                                setState(() {
+                                  loadStock = true;
+                                });
+                                await fetchDataStock();
+                              },
+                              onPressedSuffix: () async {
+                                searchController.clear();
+                                setState(() {
+                                  flagClear = false;
+                                });
+                              },
+                              onSubmited: (value) async {
+                                setState(() {
+                                  loadStock = true;
+                                });
+                                await fetchDataStock();
+                              },
                             ),
                           ),
                         ),
                         Container(
-                          height: flagcam == true ? Style.height_250(context) : Style.height_400(context),
+                          height: flagcam == true
+                              ? Style.height_250(context)
+                              : Style.height_400(context),
                           child: Center(
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -203,7 +188,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                     Text(
                                       'Busque pelo código do produto',
                                       style: TextStyle(
-                                          color: Style.primaryColor,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
                                           fontSize: Style.height_15(context)),
                                       textAlign: TextAlign.center,
                                     )
@@ -211,7 +198,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                     Container(
                                       width: Style.width_100(context),
                                       child: LinearProgressIndicator(
-                                        color: Style.primaryColor,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         minHeight: Style.height_2(context),
                                         year2023: false,
                                       ),
@@ -253,7 +242,8 @@ class _EstoquePageState extends State<EstoquePage> {
                             child: Container(
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       width: Style.height_2(context)),
                                   borderRadius: BorderRadius.circular(
                                       Style.height_5(context))),
@@ -283,55 +273,42 @@ class _EstoquePageState extends State<EstoquePage> {
                             ),
                           ),
                         Container(
-                          padding: EdgeInsets.all(Style.height_12(context)),
-                          child: TextField(
-                            onSubmitted: (value) async {
-                              await fetchDataStock();
-                            },
-                            controller: searchController,
-                            enabled: true,
-                            style:
-                                TextStyle(fontSize: Style.height_15(context)),
-                            onChanged: (searchController) {
-                              print(searchController);
-                              if (searchController == '') {
-                                setState(() {
-                                  flagClear = false;
-                                });
-                              } else {
-                                setState(() {
-                                  flagClear = true;
-                                });
-                              }
-                            },
-                            decoration: InputDecoration(
-                              prefixIcon: IconButton(
-                                padding:
-                                    EdgeInsets.all(Style.height_2(context)),
-                                onPressed: () async {
-                                  await fetchDataStock();
-                                },
-                                icon: Icon(Icons.search),
-                                color: Style.primaryColor,
-                                iconSize: Style.height_30(context),
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () async {
-                                  searchController.clear();
+                          padding: EdgeInsets.all(Style.height_15(context)),
+                          child: Container(
+                            child: SearchBarDefault(
+                              controller: searchController,
+                              hintText: 'Pesquise pelo código do produto',
+                              flagClear: flagClear,
+                              onChanged: (searchController) {
+                                print(searchController);
+                                if (searchController == '') {
                                   setState(() {
                                     flagClear = false;
                                   });
-                                },
-                                icon: Icon(Icons.backspace_rounded),
-                                color: flagClear == true
-                                    ? Style.errorColor
-                                    : Colors.transparent,
-                                iconSize: Style.height_15(context),
-                              ),
-                              hintText: 'Pesquise pelo código do produto',
-                              hintStyle: TextStyle(
-                                  fontSize: Style.height_15(context),
-                                  color: Style.quarantineColor),
+                                } else {
+                                  setState(() {
+                                    flagClear = true;
+                                  });
+                                }
+                              },
+                              onPressedPrefix: () async {
+                                setState(() {
+                                  loadStock = true;
+                                });
+                                await fetchDataStock();
+                              },
+                              onPressedSuffix: () async {
+                                searchController.clear();
+                                setState(() {
+                                  flagClear = false;
+                                });
+                              },
+                              onSubmited: (value) async {
+                                setState(() {
+                                  loadStock = true;
+                                });
+                                await fetchDataStock();
+                              },
                             ),
                           ),
                         ),
@@ -370,7 +347,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                           Text(
                                             'Cód. - ${stock.first.codigo}',
                                             style: TextStyle(
-                                                color: Style.primaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
                                                 fontSize:
                                                     Style.height_10(context),
                                                 fontWeight: FontWeight.bold),
@@ -387,7 +366,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                             child: Text(
                                               'Desc. - ${stock.first.nome}',
                                               style: TextStyle(
-                                                  color: Style.primaryColor,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontSize:
                                                       Style.height_10(context),
                                                   fontWeight: FontWeight.bold),
@@ -403,7 +384,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                           Text(
                                             'Pr.Venda - ${currencyFormat.format(stock.first.tpreco01)}',
                                             style: TextStyle(
-                                                color: Style.primaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
                                                 fontSize:
                                                     Style.height_10(context),
                                                 fontWeight: FontWeight.bold),
@@ -418,7 +401,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                           Text(
                                             'Pr. Custo - ${currencyFormat.format(stock.first.tcusto01)}',
                                             style: TextStyle(
-                                                color: Style.primaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
                                                 fontSize:
                                                     Style.height_10(context),
                                                 fontWeight: FontWeight.bold),
@@ -433,7 +418,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                           Text(
                                             'Un. - ${stock.first.abreviacao}',
                                             style: TextStyle(
-                                                color: Style.primaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
                                                 fontSize:
                                                     Style.height_10(context),
                                                 fontWeight: FontWeight.bold),
@@ -450,7 +437,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                             child: Text(
                                               'Gp. Trib. - ${stock.first.nome_3}',
                                               style: TextStyle(
-                                                  color: Style.primaryColor,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontSize:
                                                       Style.height_10(context),
                                                   fontWeight: FontWeight.bold),
@@ -466,7 +455,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                           Text(
                                             'Peso Líq. - ${stock.first.pesoliquido}',
                                             style: TextStyle(
-                                                color: Style.primaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
                                                 fontSize:
                                                     Style.height_10(context),
                                                 fontWeight: FontWeight.bold),
@@ -487,18 +478,18 @@ class _EstoquePageState extends State<EstoquePage> {
                         if (empresa_id.isEmpty)
                           Container(
                             padding: EdgeInsets.all(Style.height_15(context)),
-                            margin: EdgeInsets.only(
-                                bottom: Style.height_20(context)),
+                            // margin: EdgeInsets.only(
+                            //     bottom: Style.height_20(context)),
                             decoration: BoxDecoration(
-                              color: Style.defaultColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.15),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
+                              //color: Style.defaultColor,
+                              // boxShadow: [
+                              //   BoxShadow(
+                              //     color: Colors.grey.withOpacity(0.15),
+                              //     spreadRadius: 5,
+                              //     blurRadius: 7,
+                              //     offset: Offset(0, 3),
+                              //   ),
+                              // ],
                             ),
                             child: Row(
                               children: [
@@ -542,7 +533,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                         children: [
                                           Icon(
                                             Icons.filter_list_outlined,
-                                            color: Style.primaryColor,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                             size: Style.height_20(context),
                                           ),
                                           SizedBox(
@@ -561,7 +554,9 @@ class _EstoquePageState extends State<EstoquePage> {
                                             child: Text(
                                               '${empresa_codigo} ${empresa_nome}',
                                               style: TextStyle(
-                                                color: Style.secondaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize:
                                                     Style.height_12(context),
@@ -670,7 +665,7 @@ class _EstoquePageState extends State<EstoquePage> {
             child: Text(
               'Empresa - ${empresa}, ${empresaNome}',
               style: TextStyle(
-                  color: Style.primaryColor,
+                  color: Theme.of(context).colorScheme.primary,
                   fontSize: Style.height_12(context),
                   fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,

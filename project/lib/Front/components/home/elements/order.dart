@@ -137,7 +137,7 @@
 //                     children: [
 //                       Icon(
 //                         Icons.filter_list_outlined,
-//                         color: Style.primaryColor,
+//                         color: Theme.of(context).colorScheme.primary,
 //                         size: Style.height_20(context),
 //                       ),
 //                       SizedBox(
@@ -152,7 +152,7 @@
 //                         child: Text(
 //                           selectedOptionChild,
 //                           style: TextStyle(
-//                             color: Style.secondaryColor,
+//                             color: Theme.of(context).colorScheme.secondary,
 //                             fontWeight: FontWeight.bold,
 //                             fontSize: Style.height_12(context),
 //                           ),

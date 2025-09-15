@@ -311,7 +311,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                     child: Container(
                       padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
-                          color: Style.primaryColor,
+                          color: Theme.of(context).colorScheme.primary,
                           borderRadius:
                               BorderRadius.circular(Style.height_10(context))),
                       child: Column(
@@ -596,7 +596,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                           widget.em_razaosocial,
                           style: TextStyle(
                             fontSize: Style.height_15(context),
-                            color: Style.primaryColor,
+                            color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -612,7 +612,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                           widget.dest_razaosocial,
                           style: TextStyle(
                             fontSize: Style.height_15(context),
-                            color: Style.primaryColor,
+                            color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
@@ -634,14 +634,19 @@ class _NfeDetailsState extends State<NfeDetails> {
                           child: Container(
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                      width: 1, color: Style.quarantineColor),
+                                      width: 1,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary),
                                   borderRadius: BorderRadius.circular(
                                       Style.height_10(context))),
                               child: Column(
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: Style.primaryColor,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                         borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(
                                               Style.height_10(context)),
@@ -773,8 +778,10 @@ class _NfeDetailsState extends State<NfeDetails> {
                                                   border: Border(
                                                       right: BorderSide(
                                                           width: 2,
-                                                          color: Style
-                                                              .disabledColor))),
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .tertiary))),
                                               child: Text(
                                                 (nfeItems[index].codigo)
                                                     .toString(),
@@ -798,8 +805,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                                                   border: Border(
                                                       right: BorderSide(
                                                           width: 2,
-                                                          color: Style
-                                                              .disabledColor))),
+                                                          color: Theme.of(context)
+                                                                  .colorScheme
+                                                                  .tertiary))),
                                               child: Text(
                                                 (nfeItems[index].nome)
                                                     .toString(),
@@ -826,8 +834,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                                                   border: Border(
                                                       right: BorderSide(
                                                           width: 2,
-                                                          color: Style
-                                                              .disabledColor))),
+                                                          color: Theme.of(context)
+                                                                  .colorScheme
+                                                                  .tertiary))),
                                               child: Text(
                                                 (nfeItems[index]
                                                         .quantidade_comercial)
@@ -903,112 +912,144 @@ class _NfeDetailsState extends State<NfeDetails> {
                                     'Vl. Total dos produtos: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. Total do IPI: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. Frete: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Outras Despesas: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. Seguro: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Descontos: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'BC. IMCS: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. ICMS: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. FCP: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. II: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'BC. ICMS ST: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. ICMS ST: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. FCP ST: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. COFINS: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. PIS: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                   Text(
                                     'Vl. PIS ST: ',
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.quarantineColor,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
                                     ),
                                   ),
                                 ],
@@ -1023,7 +1064,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1033,7 +1075,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1043,7 +1086,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1053,7 +1097,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1063,7 +1108,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1073,7 +1119,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1083,7 +1130,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1093,7 +1141,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1103,7 +1152,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1113,7 +1163,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1123,7 +1174,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1133,7 +1185,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1143,7 +1196,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1153,7 +1207,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1163,7 +1218,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1173,7 +1229,8 @@ class _NfeDetailsState extends State<NfeDetails> {
                                         .toString(),
                                     style: TextStyle(
                                       fontSize: Style.height_10(context),
-                                      color: Style.primaryColor,
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -1190,7 +1247,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                     child: Container(
                       padding: EdgeInsets.all(Style.height_8(context)),
                       decoration: BoxDecoration(
-                          // color: Style.primaryColor,
+                          // color: Theme.of(context).colorScheme.primary,
                           borderRadius:
                               BorderRadius.circular(Style.height_10(context))),
                       child: Column(
@@ -1199,7 +1256,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                             'Valor Total',
                             style: TextStyle(
                               fontSize: Style.height_10(context),
-                              color: Style.primaryColor,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                           Text(
@@ -1208,7 +1265,7 @@ class _NfeDetailsState extends State<NfeDetails> {
                                 .toString(),
                             style: TextStyle(
                               fontSize: Style.height_15(context),
-                              color: Style.primaryColor,
+                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -2968,7 +3025,9 @@ class _NfeDetailsState extends State<NfeDetails> {
                         item.unid_comercial ?? "",
                         item.quantidade_comercial?.toString() ?? "",
                         item.valor_unit_comercial?.toStringAsFixed(2) ?? "",
-                        (item.quantidade_comercial! * item.valor_unit_comercial).toStringAsFixed(2) ?? "",
+                        (item.quantidade_comercial! * item.valor_unit_comercial)
+                                .toStringAsFixed(2) ??
+                            "",
                         item.vl_desc?.toStringAsFixed(2) ?? "",
                         item.vl_bc_icms?.toStringAsFixed(2) ?? "",
                         item.vl_icms?.toStringAsFixed(2) ?? "",
@@ -3412,7 +3471,7 @@ class PdfViewerScreen extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        backgroundColor: Style.primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Style.tertiaryColor,
         title: Text('Visualizador de PDF'),
         centerTitle: true,

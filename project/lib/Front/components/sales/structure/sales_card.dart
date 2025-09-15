@@ -24,7 +24,8 @@ class _SalesCardState extends State<SalesCard> {
         padding: EdgeInsets.zero,
         decoration: BoxDecoration(
           border: Border.all(
-              width: Style.height_1(context), color: Style.primaryColor),
+              width: Style.height_1(context),
+              color: Theme.of(context).colorScheme.primary),
           borderRadius: BorderRadius.circular(Style.height_5(context)),
         ),
         //Parte do código para que sejam atribuidos os widgets definidos no código da tela que ficarão dentro do card

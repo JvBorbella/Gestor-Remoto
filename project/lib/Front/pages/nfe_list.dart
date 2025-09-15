@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:project/Front/components/Login_Config/Elements/action_button.dart';
 import 'package:project/Front/components/global/elements/calendar.dart';
 import 'package:project/Front/components/global/elements/navbar_button.dart';
+import 'package:project/Front/components/global/elements/search_bar.dart';
 import 'package:project/Front/components/global/structure/navbar.dart';
 import 'package:project/Front/components/style.dart';
 import 'package:project/Front/pages/home_page.dart';
@@ -52,6 +53,8 @@ class _NfeListState extends State<NfeList> {
   DateTime selectedDate = DateTime.now();
   int flagDay = 0;
   int flagPeriodic = 0;
+
+  bool flagClear = false;
 
   List<Nfe> nfe = [];
   List<CompanyList> company = [];
@@ -133,19 +136,25 @@ class _NfeListState extends State<NfeList> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: Style.height_250(context),
-                      padding: EdgeInsets.all(Style.height_12(context)),
-                      child: SearchBar(
-                        onSubmitted: (value) async {
-                          loadingNFeList = true;
-                          await fetchDataNFe(); // Chama a função de pesquisa ao pressionar "Enter"
-                        },
-                        controller: searchController,
-                        textStyle: WidgetStatePropertyAll(
-                            TextStyle(fontSize: Style.height_10(context))),
-                        enabled: true,
-                        leading: IconButton(
-                          onPressed: () async {
+                        width: Style.height_300(context),
+                        padding: EdgeInsets.all(Style.height_15(context)),
+                        child: SearchBarDefault(
+                          controller: searchController,
+                          hintText: 'Pesquise pelo número da nota',
+                          flagClear: flagClear,
+                          onChanged: (searchController) {
+                            print(searchController);
+                            if (searchController == '') {
+                              setState(() {
+                                flagClear = false;
+                              });
+                            } else {
+                              setState(() {
+                                flagClear = true;
+                              });
+                            }
+                          },
+                          onPressedPrefix: () async {
                             var concat = selectDates.length == 2
                                 ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
                                 : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
@@ -169,18 +178,139 @@ class _NfeListState extends State<NfeList> {
                               fetchDataNFe();
                             });
                           },
-                          icon: Icon(Icons.search),
-                          color: Style.primaryColor,
-                          iconSize: Style.height_30(context),
+                          onPressedSuffix: () async {
+                            searchController.clear();
+                            setState(() {
+                              flagClear = false;
+                            });
+                          },
+                          onSubmited: (value) async {
+                            loadingNFeList = true;
+                            await fetchDataNFe(); // Chama a função de pesquisa ao pressionar "Enter"
+                          },
+                        )
+                        //   child: TextField(
+                        //     onSubmitted: (value) async {
+                        //   loadingNFeList = true;
+                        //   await fetchDataNFe(); // Chama a função de pesquisa ao pressionar "Enter"
+                        // },
+                        //     controller: searchController,
+                        //     style:
+                        //         TextStyle(fontSize: Style.height_15(context)),
+                        //     enabled: true,
+                        //     onChanged: (searchController) {
+                        //       print(searchController);
+                        //       if (searchController == '') {
+                        //         setState(() {
+                        //           flagClear = false;
+                        //         });
+                        //       } else {
+                        //         setState(() {
+                        //           flagClear = true;
+                        //         });
+                        //       }
+                        //     },
+                        //     decoration: InputDecoration(
+                        //       prefixIcon: IconButton(
+                        //         padding:
+                        //             EdgeInsets.all(Style.height_2(context)),
+                        //         onPressed: () async {
+                        //     var concat = selectDates.length == 2
+                        //         ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                        //         : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                        //     await DataServiceNfe.fetchDataNfe(
+                        //         context,
+                        //         urlBasic,
+                        //         empresa_id,
+                        //         // selectedDate.year.toString(),
+                        //         // selectedDate.month.toString(),
+                        //         // selectedDate.day.toString(),
+                        //         concat,
+                        //         // flagDay,
+                        //         // flagPeriodic,
+                        //         _onProductAdded,
+                        //         searchController.text,
+                        //         codTipoNfe);
+
+                        //     loadingNFeList = true;
+
+                        //     setState(() {
+                        //       fetchDataNFe();
+                        //     });
+                        //   },
+                        //         icon: Icon(Icons.search),
+                        //         color: Theme.of(context).colorScheme.primary,
+                        //         iconSize: Style.height_30(context),
+                        //       ),
+                        //       suffixIcon: IconButton(
+                        //         onPressed: () async {
+                        //           searchController.clear();
+                        //           setState(() {
+                        //             flagClear = false;
+                        //           });
+                        //         },
+                        //         icon: Icon(Icons.backspace_rounded),
+                        //         color: flagClear == true
+                        //             ? Style.errorColor
+                        //             : Colors.transparent,
+                        //         iconSize: Style.height_15(context),
+                        //       ),
+                        //       hintText: 'Pesquise pelo número da nota',
+                        //       hintStyle: TextStyle(
+                        //           fontSize: Style.height_10(context),
+                        //           color: Style.quarantineColor),
+                        //     ),
+                        //   ),
                         ),
-                        hintText: 'Pesquise pelo Nº da nota',
-                        hintStyle: WidgetStatePropertyAll(TextStyle(
-                            fontSize: Style.height_10(context),
-                            color: Style.quarantineColor)),
-                        backgroundColor:
-                            WidgetStatePropertyAll(Style.disabledColor),
-                      ),
-                    ),
+                    // Container(
+                    //   width: Style.height_250(context),
+                    //   padding: EdgeInsets.all(Style.height_12(context)),
+                    //   child: SearchBar(
+                    //     onSubmitted: (value) async {
+                    //       loadingNFeList = true;
+                    //       await fetchDataNFe(); // Chama a função de pesquisa ao pressionar "Enter"
+                    //     },
+                    //     controller: searchController,
+                    //     textStyle: WidgetStatePropertyAll(
+                    //         TextStyle(fontSize: Style.height_10(context))),
+                    //     enabled: true,
+                    //     leading: IconButton(
+                    //       onPressed: () async {
+                    //         var concat = selectDates.length == 2
+                    //             ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                    //             : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                    //         await DataServiceNfe.fetchDataNfe(
+                    //             context,
+                    //             urlBasic,
+                    //             empresa_id,
+                    //             // selectedDate.year.toString(),
+                    //             // selectedDate.month.toString(),
+                    //             // selectedDate.day.toString(),
+                    //             concat,
+                    //             // flagDay,
+                    //             // flagPeriodic,
+                    //             _onProductAdded,
+                    //             searchController.text,
+                    //             codTipoNfe);
+
+                    //         loadingNFeList = true;
+
+                    //         setState(() {
+                    //           fetchDataNFe();
+                    //         });
+                    //       },
+                    //       icon: Icon(Icons.search),
+                    //       color: Theme.of(context).colorScheme.primary,
+                    //       iconSize: Style.height_30(context),
+                    //     ),
+                    //     hintText: 'Pesquise pelo Nº da nota',
+                    //     hintStyle: WidgetStatePropertyAll(TextStyle(
+                    //         fontSize: Style.height_10(context),
+                    //         color: Style.quarantineColor)),
+                    //     backgroundColor:
+                    //         WidgetStatePropertyAll(Style.disabledColor),
+                    //   ),
+                    // ),
                     Container(
                       padding: EdgeInsets.only(right: Style.height_15(context)),
                       width: Style.width_50(context),
@@ -278,7 +408,9 @@ class _NfeListState extends State<NfeList> {
                                                 child: Text(
                                                   'Empresa',
                                                   style: TextStyle(
-                                                    color: Style.secondaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: Style.height_20(
                                                         context),
@@ -293,7 +425,9 @@ class _NfeListState extends State<NfeList> {
                                           Text(
                                             empresa_nome,
                                             style: TextStyle(
-                                                color: Style.secondaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
                                                 fontSize:
                                                     Style.height_8(context)),
                                           ),
@@ -326,7 +460,9 @@ class _NfeListState extends State<NfeList> {
                                                 child: Text(
                                                   'Data/Período',
                                                   style: TextStyle(
-                                                    color: Style.secondaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: Style.height_20(
                                                         context),
@@ -352,8 +488,9 @@ class _NfeListState extends State<NfeList> {
                                                   style: TextStyle(
                                                       fontSize: Style.height_8(
                                                           context),
-                                                      color:
-                                                          Style.secondaryColor),
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary),
                                                 ),
                                               )
                                             ],
@@ -431,7 +568,9 @@ class _NfeListState extends State<NfeList> {
                                                   //     : empresa_nome,
                                                   'Status da NFe',
                                                   style: TextStyle(
-                                                    color: Style.secondaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: Style.height_20(
                                                         context),
@@ -446,7 +585,9 @@ class _NfeListState extends State<NfeList> {
                                           Text(
                                             tipoNfe,
                                             style: TextStyle(
-                                                color: Style.secondaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
                                                 fontSize:
                                                     Style.height_8(context)),
                                           ),
@@ -473,7 +614,9 @@ class _NfeListState extends State<NfeList> {
                                                   padding: EdgeInsets.all(
                                                       Style.height_8(context)),
                                                   decoration: BoxDecoration(
-                                                    color: Style.primaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             Style.height_10(
@@ -511,7 +654,7 @@ class _NfeListState extends State<NfeList> {
                               });
                         },
                         icon: Icon(Icons.filter_list_alt),
-                        color: Style.secondaryColor,
+                        color: Theme.of(context).colorScheme.secondary,
                         iconSize: Style.height_20(context),
                       ),
                     ),
@@ -539,94 +682,98 @@ class _NfeListState extends State<NfeList> {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => NfeDetails(
-                                  selectDate: selectedDate,
-                                  flagDay: flagDay,
-                                  flagPeriodic: flagPeriodic,
-                                  empresa_id: empresa_id,
-                                  empresa_nome: empresa_nome,
-                                  codTipoNfe: codTipoNfe,
-                                  searchcontroller: searchController.text,
-                                  documentonfe_id: nfe[index].documentonfe_id,
-                                  num_doc: nfe[index].num_doc,
-                                  chv_nfe: nfe[index].chv_nfe,
-                                  serie: nfe[index].serie,
-                                  dt_doc: nfe[index].dt_doc,
-                                  dt_e_s: nfe[index].dt_e_s,
-                                  vl_doc: nfe[index].vl_doc,
-                                  vl_desc: nfe[index].vl_desc,
-                                  vl_merc: nfe[index].vl_merc,
-                                  vl_frete: nfe[index].vl_frete,
-                                  vl_bc_icms: nfe[index].vl_bc_icms,
-                                  vl_icms: nfe[index].vl_icms,
-                                  vl_bc_icms_st: nfe[index].vl_bc_icms_st,
-                                  vl_icms_st: nfe[index].vl_icms_st,
-                                  vl_ipi: nfe[index].vl_ipi,
-                                  vl_cofins: nfe[index].vl_cofins,
-                                  vl_pis_st: nfe[index].vl_pis_st,
-                                  vl_pis: nfe[index].vl_pis,
-                                  vl_cofins_st: nfe[index].vl_cofins_st,
-                                  vl_ii: nfe[index].vl_ii,
-                                  vl_out_da: nfe[index].vl_out_da,
-                                  vl_seg: nfe[index].vl_seg,
-                                  vl_icmsfecp: nfe[index].vl_icmsfecp,
-                                  vl_icmsfecp_st: nfe[index].vl_icmsfecp_st,
-                                  desc_nat_op: nfe[index].desc_nat_op,
-                                  cod_mod: nfe[index].cod_mod,
-                                  em_razaosocial: nfe[index].em_razaosocial,
-                                  em_cnpj: nfe[index].em_cnpj,
-                                  em_cpf: nfe[index].em_cpf,
-                                  em_ie: nfe[index].em_ie,
-                                  em_fone: nfe[index].em_fone,
-                                  em_end: nfe[index].em_end,
-                                  em_num: nfe[index].em_num,
-                                  em_bairro: nfe[index].em_bairro,
-                                  em_mun: nfe[index].em_mun,
-                                  em_uf: nfe[index].em_uf,
-                                  em_cep: nfe[index].em_cep,
-                                  dest_razaosocial: nfe[index].dest_razaosocial,
-                                  dest_cnpj: nfe[index].dest_cnpj,
-                                  dest_cpf: nfe[index].dest_cpf,
-                                  dest_end: nfe[index].dest_end,
-                                  dest_num: nfe[index].dest_num,
-                                  dest_cep: nfe[index].dest_cep,
-                                  dest_bairro: nfe[index].dest_bairro,
-                                  dest_mun: nfe[index].dest_mun,
-                                  dest_fone: nfe[index].dest_fone,
-                                  dest_ie: nfe[index].dest_ie,
-                                  dest_uf: nfe[index].dest_uf,
-                                  trans_razaosocial: nfe[index].trans_razaosocial,
-                                  trans_cnpj: nfe[index].trans_cnpj,
-                                  trans_cpf: nfe[index].trans_cpf,
-                                  trans_ie: nfe[index].trans_ie,
-                                  trans_fone: nfe[index].trans_fone,
-                                  trans_end: nfe[index].trans_end,
-                                  trans_num: nfe[index].trans_num,
-                                  trans_mun: nfe[index].trans_mun,
-                                  trans_uf: nfe[index].trans_uf,
-                                  trans_cep: nfe[index].trans_cep,
-                                  trans_placa: nfe[index].trans_placa,
-                                  trans_placa_uf: nfe[index].trans_placa_uf,
-                                  quant_volume: nfe[index].quant_volume,
-                                  peso_liq: nfe[index].peso_liq,
-                                  peso_bruto: nfe[index].peso_bruto,
-                                  marca: nfe[index].marca,
-                                  especie: nfe[index].especie,
-                                  codigorastreio: nfe[index].codigorastreio,
-                                  ind_frete: nfe[index].ind_frete,
-                                  codigoretorno: nfe[index].codigoretorno,
-                                  descricaoretorno: nfe[index].descricaoretorno,
-                                  finalidade: nfe[index].finalidade,
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => NfeDetails(
+                                    selectDate: selectedDate,
+                                    flagDay: flagDay,
+                                    flagPeriodic: flagPeriodic,
+                                    empresa_id: empresa_id,
+                                    empresa_nome: empresa_nome,
+                                    codTipoNfe: codTipoNfe,
+                                    searchcontroller: searchController.text,
+                                    documentonfe_id: nfe[index].documentonfe_id,
+                                    num_doc: nfe[index].num_doc,
+                                    chv_nfe: nfe[index].chv_nfe,
+                                    serie: nfe[index].serie,
+                                    dt_doc: nfe[index].dt_doc,
+                                    dt_e_s: nfe[index].dt_e_s,
+                                    vl_doc: nfe[index].vl_doc,
+                                    vl_desc: nfe[index].vl_desc,
+                                    vl_merc: nfe[index].vl_merc,
+                                    vl_frete: nfe[index].vl_frete,
+                                    vl_bc_icms: nfe[index].vl_bc_icms,
+                                    vl_icms: nfe[index].vl_icms,
+                                    vl_bc_icms_st: nfe[index].vl_bc_icms_st,
+                                    vl_icms_st: nfe[index].vl_icms_st,
+                                    vl_ipi: nfe[index].vl_ipi,
+                                    vl_cofins: nfe[index].vl_cofins,
+                                    vl_pis_st: nfe[index].vl_pis_st,
+                                    vl_pis: nfe[index].vl_pis,
+                                    vl_cofins_st: nfe[index].vl_cofins_st,
+                                    vl_ii: nfe[index].vl_ii,
+                                    vl_out_da: nfe[index].vl_out_da,
+                                    vl_seg: nfe[index].vl_seg,
+                                    vl_icmsfecp: nfe[index].vl_icmsfecp,
+                                    vl_icmsfecp_st: nfe[index].vl_icmsfecp_st,
+                                    desc_nat_op: nfe[index].desc_nat_op,
+                                    cod_mod: nfe[index].cod_mod,
+                                    em_razaosocial: nfe[index].em_razaosocial,
+                                    em_cnpj: nfe[index].em_cnpj,
+                                    em_cpf: nfe[index].em_cpf,
+                                    em_ie: nfe[index].em_ie,
+                                    em_fone: nfe[index].em_fone,
+                                    em_end: nfe[index].em_end,
+                                    em_num: nfe[index].em_num,
+                                    em_bairro: nfe[index].em_bairro,
+                                    em_mun: nfe[index].em_mun,
+                                    em_uf: nfe[index].em_uf,
+                                    em_cep: nfe[index].em_cep,
+                                    dest_razaosocial:
+                                        nfe[index].dest_razaosocial,
+                                    dest_cnpj: nfe[index].dest_cnpj,
+                                    dest_cpf: nfe[index].dest_cpf,
+                                    dest_end: nfe[index].dest_end,
+                                    dest_num: nfe[index].dest_num,
+                                    dest_cep: nfe[index].dest_cep,
+                                    dest_bairro: nfe[index].dest_bairro,
+                                    dest_mun: nfe[index].dest_mun,
+                                    dest_fone: nfe[index].dest_fone,
+                                    dest_ie: nfe[index].dest_ie,
+                                    dest_uf: nfe[index].dest_uf,
+                                    trans_razaosocial:
+                                        nfe[index].trans_razaosocial,
+                                    trans_cnpj: nfe[index].trans_cnpj,
+                                    trans_cpf: nfe[index].trans_cpf,
+                                    trans_ie: nfe[index].trans_ie,
+                                    trans_fone: nfe[index].trans_fone,
+                                    trans_end: nfe[index].trans_end,
+                                    trans_num: nfe[index].trans_num,
+                                    trans_mun: nfe[index].trans_mun,
+                                    trans_uf: nfe[index].trans_uf,
+                                    trans_cep: nfe[index].trans_cep,
+                                    trans_placa: nfe[index].trans_placa,
+                                    trans_placa_uf: nfe[index].trans_placa_uf,
+                                    quant_volume: nfe[index].quant_volume,
+                                    peso_liq: nfe[index].peso_liq,
+                                    peso_bruto: nfe[index].peso_bruto,
+                                    marca: nfe[index].marca,
+                                    especie: nfe[index].especie,
+                                    codigorastreio: nfe[index].codigorastreio,
+                                    ind_frete: nfe[index].ind_frete,
+                                    codigoretorno: nfe[index].codigoretorno,
+                                    descricaoretorno:
+                                        nfe[index].descricaoretorno,
+                                    finalidade: nfe[index].finalidade,
 
-                                  empresa_codigo: nfe[index].empresa_codigo,
-                                  empresaNome: nfe[index].empresa_nome,
-                                  mensagem: nfe[index].mensagem,
+                                    empresa_codigo: nfe[index].empresa_codigo,
+                                    empresaNome: nfe[index].empresa_nome,
+                                    mensagem: nfe[index].mensagem,
 
-                                  xmldistribuicao: nfe[index].xmldistribuicao,
-                                  //datahoraaut: nfe[index].datahoraaut,
-                                ), 
-                              ),
+                                    xmldistribuicao: nfe[index].xmldistribuicao,
+                                    //datahoraaut: nfe[index].datahoraaut,
+                                  ),
+                                ),
                               );
                             },
                             child: Container(
@@ -635,7 +782,9 @@ class _NfeListState extends State<NfeList> {
                                   border: Border.symmetric(
                                       horizontal: BorderSide(
                                           width: 1,
-                                          color: Style.quarantineColor))),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary))),
                               child: Container(
                                 child: Column(
                                   children: [
@@ -654,14 +803,18 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_8(context),
-                                                  color: Style.quarantineColor),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
                                             ),
                                             Text(
                                               (nfe[index].num_doc).toString(),
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_12(context),
-                                                  color: Style.primaryColor,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
@@ -672,7 +825,9 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_8(context),
-                                                  color: Style.quarantineColor),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
                                             ),
                                             Text(
                                               (nfe[index].codigoretorno)
@@ -680,7 +835,9 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_12(context),
-                                                  color: Style.primaryColor,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ],
@@ -696,14 +853,18 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_8(context),
-                                                  color: Style.quarantineColor),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
                                             ),
                                             Text(
                                               (nfe[index].serie).toString(),
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_12(context),
-                                                  color: Style.primaryColor,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
@@ -714,7 +875,9 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_8(context),
-                                                  color: Style.quarantineColor),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
                                             ),
                                             Container(
                                               width: Style.width_200(context),
@@ -724,7 +887,9 @@ class _NfeListState extends State<NfeList> {
                                                 style: TextStyle(
                                                     fontSize: Style.height_12(
                                                         context),
-                                                    color: Style.primaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                     fontWeight:
                                                         FontWeight.bold),
                                                 softWrap: true,
@@ -745,7 +910,9 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_8(context),
-                                                  color: Style.quarantineColor),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
                                             ),
                                             Text(
                                               DateFormat('dd/MM/yyyy').format(
@@ -755,7 +922,9 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_12(context),
-                                                  color: Style.primaryColor,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
@@ -766,7 +935,9 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_8(context),
-                                                  color: Style.quarantineColor),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary),
                                             ),
                                             Text(
                                               currencyFormat
@@ -775,7 +946,9 @@ class _NfeListState extends State<NfeList> {
                                               style: TextStyle(
                                                   fontSize:
                                                       Style.height_12(context),
-                                                  color: Style.primaryColor,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ],
@@ -993,10 +1166,10 @@ class _NfeListState extends State<NfeList> {
   Future<void> fetchDataNFe({bool? ascending}) async {
     var concat = '';
     print(selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)));
-    print('A'+DateFormat('(yyyy-MM-dd)').format(DateTime.now()));
+    print('A' + DateFormat('(yyyy-MM-dd)').format(DateTime.now()));
     if (selectDates.length == 1 &&
         DateFormat('yyyy-MM-dd').format(selectDates.first!) ==
-        DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+            DateFormat('yyyy-MM-dd').format(DateTime.now())) {
       setState(() {
         concat =
             "=%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}'";

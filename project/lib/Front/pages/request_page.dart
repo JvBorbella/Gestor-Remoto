@@ -169,7 +169,9 @@ class _RequestPageState extends State<RequestPage> {
                                                     fontSize: Style
                                                         .TextExitConfirmation(
                                                             context),
-                                                    color: Style.primaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                   ),
                                                 ),
                                               ],
@@ -221,8 +223,9 @@ class _RequestPageState extends State<RequestPage> {
                                                             .circular(Style
                                                                 .ButtonExitBorderRadius(
                                                                     context)),
-                                                        color:
-                                                            Style.primaryColor),
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary),
                                                     child: Text(
                                                       'Autorizar',
                                                       style: TextStyle(
@@ -262,16 +265,19 @@ class _RequestPageState extends State<RequestPage> {
                                                           width: Style
                                                               .WidthBorderImageContainer(
                                                                   context),
-                                                          color: Style
-                                                              .secondaryColor),
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary),
                                                       color:
                                                           Style.tertiaryColor,
                                                     ),
                                                     child: Text(
                                                       'Cancelar',
                                                       style: TextStyle(
-                                                        color: Style
-                                                            .secondaryColor,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: Style
@@ -334,7 +340,9 @@ class _RequestPageState extends State<RequestPage> {
                                                     fontSize: Style
                                                         .TextExitConfirmation(
                                                             context),
-                                                    color: Style.primaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                   ),
                                                 ),
                                               ],
@@ -373,8 +381,9 @@ class _RequestPageState extends State<RequestPage> {
                                                             .circular(Style
                                                                 .ButtonExitBorderRadius(
                                                                     context)),
-                                                        color:
-                                                            Style.primaryColor),
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .primary),
                                                     child: Text(
                                                       'Não Autorizar',
                                                       style: TextStyle(
@@ -414,16 +423,19 @@ class _RequestPageState extends State<RequestPage> {
                                                           width: Style
                                                               .WidthBorderImageContainer(
                                                                   context),
-                                                          color: Style
-                                                              .secondaryColor),
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary),
                                                       color:
                                                           Style.tertiaryColor,
                                                     ),
                                                     child: Text(
                                                       'Cancelar',
                                                       style: TextStyle(
-                                                        color: Style
-                                                            .secondaryColor,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: Style

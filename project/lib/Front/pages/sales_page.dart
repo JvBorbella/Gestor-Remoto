@@ -244,8 +244,12 @@ class _SalesPageState extends State<SalesPage> {
                         //Widget dos valores
                         WeekValues(
                           valorSemana: (widget.valorSemana + widget.valorHoje),
-                          valorcancelamentosSemana: (widget.valorcancelamentosSemana + widget.valorcancelamentosHoje),
-                          cancelamentosSemana: (widget.cancelamentosSemana + widget.cancelamentosHoje).toInt(),
+                          valorcancelamentosSemana:
+                              (widget.valorcancelamentosSemana +
+                                  widget.valorcancelamentosHoje),
+                          cancelamentosSemana: (widget.cancelamentosSemana +
+                                  widget.cancelamentosHoje)
+                              .toInt(),
                           metaSemana: (widget.metaSemana + widget.metaHoje),
                         ),
                         SizedBox(
@@ -253,9 +257,12 @@ class _SalesPageState extends State<SalesPage> {
                         ),
                         //Widget dos valores adicionais - rodapé do card
                         WeekDetails(
-                          ticketSemana: (widget.ticketSemana + widget.ticketHoje),
-                          ticketmedioSemana: (widget.ticketmedioSemana + widget.ticketmedioHoje),
-                          margemSemana: (widget.margemSemana + widget.margemHoje),
+                          ticketSemana:
+                              (widget.ticketSemana + widget.ticketHoje),
+                          ticketmedioSemana: (widget.ticketmedioSemana +
+                              widget.ticketmedioHoje),
+                          margemSemana:
+                              (widget.margemSemana + widget.margemHoje),
                         ),
                       ],
                     ),
@@ -281,8 +288,11 @@ class _SalesPageState extends State<SalesPage> {
                         //Widget dos valores
                         MonthValues(
                           valorMes: (widget.valorMes + widget.valorHoje),
-                          valorcancelamentosMes: (widget.valorcancelamentosMes + widget.valorcancelamentosHoje),
-                          cancelamentosMes: (widget.cancelamentosMes + widget.cancelamentosHoje).toInt(),
+                          valorcancelamentosMes: (widget.valorcancelamentosMes +
+                              widget.valorcancelamentosHoje),
+                          cancelamentosMes: (widget.cancelamentosMes +
+                                  widget.cancelamentosHoje)
+                              .toInt(),
                           metaMes: (widget.metaMes + widget.metaHoje),
                         ),
                         SizedBox(
@@ -291,7 +301,8 @@ class _SalesPageState extends State<SalesPage> {
                         //Widget dos valores adicionais - rodapé do card
                         MonthDetails(
                           ticketMes: (widget.ticketMes + widget.ticketHoje),
-                          ticketmedioMes: (widget.ticketmedioMes + widget.ticketmedioHoje),
+                          ticketmedioMes:
+                              (widget.ticketmedioMes + widget.ticketmedioHoje),
                           margemMes: (widget.margemMes + widget.margemHoje),
                         ),
                       ],

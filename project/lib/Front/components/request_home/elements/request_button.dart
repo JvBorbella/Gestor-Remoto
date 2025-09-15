@@ -38,7 +38,7 @@ class _RequestButtonState extends State<RequestButton> {
         decoration: BoxDecoration(
           //Estilização
           border: Border.all(
-              width: Style.height_2(context), color: Color(0xff42B9F0)),
+              width: Style.height_2(context), color: Theme.of(context).colorScheme.secondary),
           borderRadius: BorderRadius.circular(Style.height_35(context)),
         ),
         //Conteúdo interno do button
@@ -57,7 +57,7 @@ class _RequestButtonState extends State<RequestButton> {
               child: Text(
                 widget.text,
                 style: TextStyle(
-                  color: Color(0xff42b9f0),
+                  color: Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.bold,
                   fontSize: Style.height_10(context),
                 ),

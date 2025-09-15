@@ -64,7 +64,7 @@ class _TextSplashState extends State<TextSplash> {
           style: TextStyle(
             fontSize: Style.TextSplashSize(context),
             fontWeight: FontWeight.w300,
-            color: Style.primaryColor,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

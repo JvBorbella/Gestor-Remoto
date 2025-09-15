@@ -30,7 +30,8 @@ class _RequestCardState extends State<RequestCard> {
             //Estilização
             decoration: BoxDecoration(
               border: Border.all(
-                  width: Style.height_1(context), color: Style.primaryColor),
+                  width: Style.height_1(context),
+                  color: Theme.of(context).colorScheme.primary),
               borderRadius: BorderRadius.circular(Style.height_10(context)),
             ),
             //Espaçamento interno do card

@@ -25,6 +25,7 @@ android {
     ndkVersion flutter.ndkVersion
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -43,7 +44,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("C:/Users/joaob/OneDrive/Documentos/GitHub/Gestor-Remoto/project/upload-key.jks")
+            storeFile file("C:/Users/joaob/Documents/GitHub/Gestor-Remoto/project/upload-key.jks")
             storePassword "3edsw21qa"
             keyAlias "upload"
             keyPassword "3edsw21qa"
@@ -66,6 +67,12 @@ android {
       pickFirst 'lib/arm64-v8a/libc++_shared.so'
   }
 }
+
+dependencies {
+    implementation "androidx.multidex:multidex:2.0.1"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
+}
+
 
 // dependencies {
 //     implementation 'androidx.core:core-ktx:1.12.0'

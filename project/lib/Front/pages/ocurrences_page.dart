@@ -72,15 +72,15 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
               padding: EdgeInsets.all(Style.height_15(context)),
               margin: EdgeInsets.only(bottom: Style.height_20(context)),
               decoration: BoxDecoration(
-                color: Style.defaultColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.15),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  ),
-                ],
+               // color: Style.defaultColor,
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.15),
+                //     spreadRadius: 5,
+                //     blurRadius: 7,
+                //     offset: Offset(0, 3),
+                //   ),
+                // ],
               ),
               child: Row(
                 children: [
@@ -117,7 +117,7 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                     },
                     icon: Icon(Icons.filter_alt_rounded),
                     iconSize: Style.height_15(context),
-                    color: Style.secondaryColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                   SizedBox(
                     width: Style.height_10(context),
@@ -158,17 +158,17 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                   ]),
                   Container(
                       padding: EdgeInsets.all(Style.height_15(context)),
-                      margin: EdgeInsets.only(bottom: Style.height_20(context)),
+                      //margin: EdgeInsets.only(bottom: Style.height_20(context)),
                       decoration: BoxDecoration(
-                        color: Style.defaultColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.15),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                        //color: Style.defaultColor,
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Colors.grey.withOpacity(0.15),
+                        //     spreadRadius: 5,
+                        //     blurRadius: 7,
+                        //     offset: Offset(0, 3),
+                        //   ),
+                        // ],
                       ),
                       child: Row(
                         children: [
@@ -227,7 +227,7 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                             },
                             icon: Icon(Icons.filter_alt_rounded),
                             iconSize: Style.height_15(context),
-                            color: Style.secondaryColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                           SizedBox(
                             width: Style.height_10(context),
@@ -264,10 +264,14 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                                         border: BorderDirectional(
                                             bottom: BorderSide(
                                                 width: Style.height_05(context),
-                                                color: Style.quarantineColor),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary),
                                             top: BorderSide(
                                                 width: Style.height_05(context),
-                                                color: Style.quarantineColor))),
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .tertiary))),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -323,7 +327,9 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                                                   style: TextStyle(
                                                     fontSize:
                                                         Style.height_8(context),
-                                                    color: Style.primaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                   ),
                                                 ),
                                                 Text(
@@ -333,7 +339,9 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                                                   style: TextStyle(
                                                     fontSize: Style.height_10(
                                                         context),
-                                                    color: Style.primaryColor,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 )
@@ -350,7 +358,9 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                                               style: TextStyle(
                                                 fontSize:
                                                     Style.height_8(context),
-                                                color: Style.primaryColor,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
                                               ),
                                             ),
                                             if (ocurrences[index]
@@ -380,8 +390,10 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                                                 children: [
                                                   Text('Finalizada ',
                                                       style: TextStyle(
-                                                          color: Style
-                                                              .secondaryColor,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary,
                                                           fontSize:
                                                               Style.height_8(
                                                                   context),

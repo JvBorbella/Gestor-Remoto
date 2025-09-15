@@ -90,11 +90,12 @@ class _BranchCardContentState extends State<BranchCardContent> {
               ],
             ),
             //Linha divisória interna do card
-            Divider(
-              color: Color(0xffD9D9D9), // Cor da linha
-              height: Style.height_20(context), // Altura da linha
-              thickness: Style.height_1(context),
-            ),
+            // Divider(
+            //   color: Color(0xffD9D9D9), // Cor da linha
+            //   height: Style.height_20(context), // Altura da linha
+            //   thickness: Style.height_1(context),
+            // ),
+            SizedBox(height: Style.height_20(context)),
             //Conteúdo abaixo da linha divisória.
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -117,11 +118,8 @@ class _BranchCardContentState extends State<BranchCardContent> {
                         currencyFormat
                             .format(widget.valorMes + widget.valorHoje),
                         style: TextStyle(
-                            // context).size.width < 600
-                            //     ? MediaQuery.of(context).size.width * 0.07
-                            //     : MediaQuery.of(context).size.width * 0.018,
                             fontWeight: FontWeight.bold,
-                            color: Style.primaryColor),
+                            color: Theme.of(context).colorScheme.primary),
                       ),
                   ],
                 ),

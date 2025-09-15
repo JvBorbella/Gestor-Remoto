@@ -28,7 +28,7 @@ class _TotalValuesCardState extends State<TotalValuesCard> {
       child: Container(
         //Estilização
         decoration: BoxDecoration(
-          color: Style.primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(Style.height_10(context)),
         ),
         child: Column(

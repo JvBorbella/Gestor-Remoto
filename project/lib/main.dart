@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:project/back/sales_info_functions/sales_monitor.dart';
 import 'package:project/firebase_options.dart';
 import 'package:project/front/pages/splash_page.dart';
@@ -13,12 +15,80 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  final AdaptiveThemeMode? savedThemeMode;
+  const MyApp({super.key, this.savedThemeMode});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Verifique se há uma atualização quando a tela inicial é carregada
+    checkForUpdate();
+  }
+
+  Future<void> checkForUpdate() async {
+    try {
+      // Verifica a disponibilidade da atualização.
+      // O método `checkForUpdate()` é a forma mais simples de começar.
+      AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
+
+      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        // Se houver uma atualização disponível, inicie o fluxo de atualização flexível.
+        final result = await InAppUpdate.startFlexibleUpdate();
+
+        // Após o download da atualização, mostre uma notificação para o usuário instalar.
+        if (result == AppUpdateResult.success) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('Atualização pronta para instalar!'),
+                action: SnackBarAction(
+                  label: 'Instalar',
+                  onPressed: () {
+                    InAppUpdate.completeFlexibleUpdate();
+                  },
+                ),
+              ),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      // Se algo der errado, a chamada vai lançar uma exceção.
+      debugPrint('Falha ao verificar a atualização: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return AdaptiveTheme(
+      light: ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(0, 0, 0, 0), // cor base do tema claro
+      primary: const Color(0xff00568e),
+      secondary: const Color(0xff42b9f0),
+      onSecondary: const Color(0xff00568e),
+      tertiary: const Color(0xffA6A6A6),
+      brightness: Brightness.light,
+    ),
+  ),
+  dark: ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(0, 255, 255, 255), // cor base do tema escuro
+      primary: const Color.fromARGB(255, 22, 91, 122),
+      secondary: const Color.fromARGB(255, 22, 91, 122),
+      onSecondary: const Color(0xff42b9f0),
+      tertiary: const Color.fromARGB(255, 109, 108, 108),
+      brightness: Brightness.dark,
+    ),
+  ),
+      initial: widget.savedThemeMode ?? AdaptiveThemeMode.light, 
+      builder: (theme, darkTheme) => MaterialApp(
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -29,32 +99,11 @@ class MyApp extends StatelessWidget {
       ],
       debugShowCheckedModeBanner: false,
       title: "Gestor Remoto",
-      theme: ThemeData(
-        textTheme: TextTheme(
-          bodySmall: TextStyle(
-              fontFamily: 'Poppins-Regular',
-              fontSize: MediaQuery.of(context).size.height * 0.012),
-          bodyMedium: TextStyle(
-              fontFamily: 'Poppins-Regular',
-              fontSize: MediaQuery.of(context).size.height * 0.018),
-          bodyLarge: TextStyle(
-              fontFamily: 'Poppins-Regular',
-              fontSize: MediaQuery.of(context).size.width * 0.025),
-          labelSmall: TextStyle(
-              fontFamily: 'Poppins-Regular',
-              fontSize: MediaQuery.of(context).size.height * 0.012),
-          labelMedium: TextStyle(
-              fontFamily: 'Poppins-Regular',
-              fontSize: MediaQuery.of(context).size.height * 0.018),
-          labelLarge: TextStyle(
-              fontFamily: 'Poppins-Regular',
-              fontSize: MediaQuery.of(context).size.height * 0.025),
-        ),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
+      theme: theme,
+      darkTheme: darkTheme,
       home: const SplashPage(),
       navigatorKey: navigatorKey, // Define o navigatorKey global
+    )
     );
   }
 }
@@ -139,6 +188,7 @@ void _configureWorkmanager() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
   // Inicializa o Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -187,7 +237,7 @@ void main() async {
             create: (context) =>
                 FirebaseMessagingService(context.read<NotifyService>())),
       ],
-      child: const MyApp(),
+      child: MyApp(savedThemeMode: savedThemeMode),
     ),
   );
 

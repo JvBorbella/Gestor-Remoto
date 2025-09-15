@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,37 @@ import 'package:project/main.dart';
 import 'package:project/services/foreground_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
+
+class MyApp extends StatelessWidget {
+  final AdaptiveThemeMode? savedThemeMode;
+
+  const MyApp({super.key, this.savedThemeMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return AdaptiveTheme(
+      light: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: Colors.blue,
+      ),
+      dark: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.blue,
+      ),
+      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      // overrideMode: AdaptiveThemeMode.dark,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: 'Adaptive Theme Demo',
+        theme: theme,
+        darkTheme: darkTheme,
+        home: const CustomDrawer(),
+      ),
+      debugShowFloatingThemeButton: true,
+    );
+  }
+}
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
@@ -62,14 +94,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: WillPopScope(
             child: Drawer(
                 // width: MediaQuery.of(context).size.width * 0.8,
-                child: Column(
+                child: ListView(
               children: [
                 Container(
                   child: Column(
                     children: [
                       Container(
                         // height: Style.DrawerHeaderSize(context),
-                        decoration: BoxDecoration(color: Style.primaryColor),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary),
                         child: Container(
                           padding: EdgeInsets.all(Style.height_15(context)),
                           child: Column(
@@ -183,486 +216,513 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ],
                   ),
                 ),
-                ListBody(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      // padding: EdgeInsets.only(left: 15),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: Style.height_5(context),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    SizedBox(
+                      height: Style.height_5(context),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isExpandedConfig = !_isExpandedConfig;
+                            });
+                          },
+                          child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isExpandedConfig = !_isExpandedConfig;
-                                  });
-                                },
+                              Container(
+                                padding: EdgeInsets.only(
+                                    left: Style.height_10(context)),
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          left: Style.height_10(context)),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: Style.height_10(context),
+                                    SizedBox(
+                                      height: Style.height_10(context),
+                                    ),
+                                    Row(
+                                      children: [
+                                        if (_isExpandedConfig)
+                                          Transform.rotate(
+                                            angle:
+                                                3.1416, // 180 graus em radianos (π)
+                                            child: Icon(
+                                              Icons.arrow_drop_down_outlined,
+                                              size: Style.height_20(context),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
+                                          )
+                                        else
+                                          Icon(
+                                            Icons.arrow_drop_down_outlined,
+                                            size: Style.height_20(context),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                           ),
-                                          Row(
+                                        SizedBox(
+                                          width: Style.width_10(context),
+                                        ),
+                                        Text(
+                                          'Configurações',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Style.height_15(context),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Style.height_10(context),
+                                    ),
+                                    AnimatedContainer(
+                                      padding: EdgeInsets.only(
+                                          left: Style.height_12(context)),
+                                      duration: Duration(milliseconds: 300),
+                                      // height: _isExpanded
+                                      //     ? Style.height_50(context)
+                                      //     : 0,
+                                      child: Visibility(
+                                          visible: _isExpandedConfig,
+                                          maintainAnimation: true,
+                                          maintainState: true,
+                                          maintainSize: false,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              if (_isExpandedConfig)
-                                                Transform.rotate(
-                                                  angle:
-                                                      3.1416, // 180 graus em radianos (π)
-                                                  child: Icon(
-                                                    Icons
-                                                        .arrow_drop_down_outlined,
-                                                    size: Style.height_20(
-                                                        context),
-                                                    color: Style.primaryColor,
+                                              Row(
+                                                children: [
+                                                  Checkbox(
+                                                    activeColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    value: flagNotify,
+                                                    onChanged: (value) async {
+                                                      setState(() {
+                                                        flagNotify = value!;
+                                                      });
+                                                      SharedPreferences
+                                                          sharedPreferences =
+                                                          await SharedPreferences
+                                                              .getInstance();
+                                                      await sharedPreferences
+                                                          .setBool('flagNotify',
+                                                              flagNotify);
+                                                      if (flagNotify == true) {
+                                                        // startForegroundService();
+                                                        _configureWorkmanager();
+                                                      }
+                                                    },
                                                   ),
-                                                )
-                                              else
-                                                Icon(
-                                                  Icons
-                                                      .arrow_drop_down_outlined,
-                                                  size:
-                                                      Style.height_20(context),
-                                                  color: Style.primaryColor,
-                                                ),
-                                              SizedBox(
-                                                width: Style.width_10(context),
+                                                  Text(
+                                                    'Ativar Notificações',
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                      fontSize: Style.height_12(
+                                                          context),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              Text(
-                                                'Configurações',
-                                                style: TextStyle(
-                                                    fontSize: Style.height_15(
-                                                        context),
-                                                    color: Style.primaryColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Switch(
+                                                    trackOutlineColor: MaterialStatePropertyAll(
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary),
+                                                    inactiveThumbColor: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    activeColor:
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                    value: AdaptiveTheme.of(
+                                                                context)
+                                                            .mode
+                                                            .isDark ??
+                                                        false,
+                                                    onChanged: (value) {
+                                                      if (value) {
+                                                        AdaptiveTheme.of(
+                                                                context)
+                                                            .setDark();
+                                                      } else {
+                                                        AdaptiveTheme.of(
+                                                                context)
+                                                            .setLight();
+                                                      }
+                                                    },
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Text(
+                                                    'Tema escuro',
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                      fontSize: Style.height_12(
+                                                          context),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
-                                          ),
-                                          SizedBox(
-                                            height: Style.height_10(context),
-                                          ),
-                                          AnimatedContainer(
-                                            padding: EdgeInsets.only(
-                                                left: Style.height_12(context)),
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            // height: _isExpanded
-                                            //     ? Style.height_50(context)
-                                            //     : 0,
-                                            child: Visibility(
-                                                visible: _isExpandedConfig,
-                                                maintainAnimation: true,
-                                                maintainState: true,
-                                                maintainSize: false,
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Checkbox(
-                                                          activeColor: Style
-                                                              .secondaryColor,
-                                                          value: flagNotify,
-                                                          onChanged:
-                                                              (value) async {
-                                                            setState(() {
-                                                              flagNotify =
-                                                                  value!;
-                                                            });
-                                                            SharedPreferences
-                                                                sharedPreferences =
-                                                                await SharedPreferences
-                                                                    .getInstance();
-                                                            await sharedPreferences
-                                                                .setBool(
-                                                                    'flagNotify',
-                                                                    flagNotify);
-                                                            if (flagNotify ==
-                                                                true) {
-                                                              // startForegroundService();
-                                                              _configureWorkmanager();
-                                                            }
-                                                          },
-                                                        ),
-                                                        Text(
-                                                          'Ativar Notificações',
-                                                          style: TextStyle(
-                                                            color: Style
-                                                                .secondaryColor,
-                                                            fontSize:
-                                                                Style.height_12(
-                                                                    context),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                )),
-                                          ),
-                                        ],
-                                      ),
+                                          )),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: Style.height_15(context),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: Style.height_15(context),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isExpandedMonit = !_isExpandedMonit;
+                            });
+                          },
+                          child: Column(
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isExpandedMonit = !_isExpandedMonit;
-                                  });
-                                },
+                              Container(
+                                padding: EdgeInsets.only(
+                                    left: Style.height_10(context)),
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
+                                    Row(
+                                      children: [
+                                        if (_isExpandedMonit)
+                                          Transform.rotate(
+                                            angle:
+                                                3.1416, // 180 graus em radianos (π)
+                                            child: Icon(
+                                              Icons.arrow_drop_down_outlined,
+                                              size: Style.height_20(context),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
+                                          )
+                                        else
+                                          Icon(
+                                            Icons.arrow_drop_down_outlined,
+                                            size: Style.height_20(context),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        SizedBox(
+                                          width: Style.width_10(context),
+                                        ),
+                                        Text(
+                                          'Monitores',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Style.height_15(context),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Style.height_10(context),
+                                    ),
+                                    AnimatedContainer(
                                       padding: EdgeInsets.only(
-                                          left: Style.height_10(context)),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
+                                          left: Style.height_12(context),
+                                          top: Style.height_2(context)),
+                                      duration: Duration(milliseconds: 1200),
+                                      // height: _isExpanded
+                                      //     ? Style.height_50(context)
+                                      //     : 0,
+                                      child: Visibility(
+                                          visible: _isExpandedMonit,
+                                          maintainAnimation: true,
+                                          maintainState: true,
+                                          maintainSize: false,
+                                          child: Column(
                                             children: [
-                                              if (_isExpandedMonit)
-                                                Transform.rotate(
-                                                  angle:
-                                                      3.1416, // 180 graus em radianos (π)
-                                                  child: Icon(
-                                                    Icons
-                                                        .arrow_drop_down_outlined,
-                                                    size: Style.height_20(
-                                                        context),
-                                                    color: Style.primaryColor,
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          OcurrencesPage()));
+                                                    },
+                                                    child: Text(
+                                                      'Lista de ocorrências',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            Style.height_12(
+                                                                context),
+                                                        fontFamily:
+                                                            'Poppins-Medium',
+                                                      ),
+                                                    ),
                                                   ),
-                                                )
-                                              else
-                                                Icon(
-                                                  Icons
-                                                      .arrow_drop_down_outlined,
-                                                  size:
-                                                      Style.height_20(context),
-                                                  color: Style.primaryColor,
-                                                ),
-                                              SizedBox(
-                                                width: Style.width_10(context),
-                                              ),
-                                              Text(
-                                                'Monitores',
-                                                style: TextStyle(
-                                                    fontSize: Style.height_15(
-                                                        context),
-                                                    color: Style.primaryColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: Style.height_10(context),
-                                          ),
-                                          AnimatedContainer(
-                                            padding: EdgeInsets.only(
-                                                left: Style.height_12(context),
-                                                top: Style.height_2(context)),
-                                            duration:
-                                                Duration(milliseconds: 1200),
-                                            // height: _isExpanded
-                                            //     ? Style.height_50(context)
-                                            //     : 0,
-                                            child: Visibility(
-                                                visible: _isExpandedMonit,
-                                                maintainAnimation: true,
-                                                maintainState: true,
-                                                maintainSize: false,
-                                                child: Column(
-                                                  children: [
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                OcurrencesPage()));
-                                                          },
-                                                          child: Text(
-                                                            'Lista de ocorrências',
-                                                            style: TextStyle(
-                                                              color: Style
-                                                                  .secondaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: Style
-                                                                  .height_12(
-                                                                      context),
-                                                              fontFamily:
-                                                                  'Poppins-Medium',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height:
-                                                              Style.height_5(
+                                                  SizedBox(
+                                                    height:
+                                                        Style.height_5(context),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          SalesGraphic()));
+                                                    },
+                                                    child: Text(
+                                                      'Dados de vendas',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize:
+                                                              Style.height_12(
                                                                   context),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                SalesGraphic()));
-                                                          },
-                                                          child: Text(
-                                                            'Dados de vendas',
-                                                            style: TextStyle(
-                                                                color: Style
-                                                                    .secondaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: Style
-                                                                    .height_12(
-                                                                        context),
-                                                                fontFamily:
-                                                                    'Poppins-Medium'),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height:
-                                                              Style.height_5(
-                                                                  context),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                NfeList()));
-                                                          },
-                                                          child: Text(
-                                                            'Lista de NFe',
-                                                            style: TextStyle(
-                                                                color: Style
-                                                                    .secondaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: Style
-                                                                    .height_12(
-                                                                        context),
-                                                                fontFamily:
-                                                                    'Poppins-Medium'),
-                                                          ),
-                                                        ),
-                                                      ],
+                                                          fontFamily:
+                                                              'Poppins-Medium'),
                                                     ),
-                                                  ],
-                                                )),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: Style.height_15(context),
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isExpandedConsult = !_isExpandedConsult;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          left: Style.height_10(context)),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              if (_isExpandedConsult)
-                                                Transform.rotate(
-                                                  angle:
-                                                      3.1416, // 180 graus em radianos (π)
-                                                  child: Icon(
-                                                    Icons
-                                                        .arrow_drop_down_outlined,
-                                                    size: Style.height_20(
-                                                        context),
-                                                    color: Style.primaryColor,
                                                   ),
-                                                )
-                                              else
-                                                Icon(
-                                                  Icons
-                                                      .arrow_drop_down_outlined,
-                                                  size:
-                                                      Style.height_20(context),
-                                                  color: Style.primaryColor,
-                                                ),
-                                              SizedBox(
-                                                width: Style.width_10(context),
-                                              ),
-                                              Text(
-                                                'Consultas',
-                                                style: TextStyle(
-                                                    fontSize: Style.height_15(
-                                                        context),
-                                                    color: Style.primaryColor,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  SizedBox(
+                                                    height:
+                                                        Style.height_5(context),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          NfeList()));
+                                                    },
+                                                    child: Text(
+                                                      'Lista de NFe',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize:
+                                                              Style.height_12(
+                                                                  context),
+                                                          fontFamily:
+                                                              'Poppins-Medium'),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
-                                          ),
-                                          SizedBox(
-                                            height: Style.height_10(context),
-                                          ),
-                                          AnimatedContainer(
-                                            padding: EdgeInsets.only(
-                                                left: Style.height_12(context),
-                                                top: Style.height_2(context)),
-                                            duration:
-                                                Duration(milliseconds: 1200),
-                                            // height: _isExpanded
-                                            //     ? Style.height_50(context)
-                                            //     : 0,
-                                            child: Visibility(
-                                                visible: _isExpandedConsult,
-                                                maintainAnimation: true,
-                                                maintainState: true,
-                                                maintainSize: false,
-                                                child: Column(
-                                                  children: [
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                EstoquePage()));
-                                                          },
-                                                          child: Text(
-                                                            'Consultar Estoque',
-                                                            style: TextStyle(
-                                                              color: Style
-                                                                  .secondaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: Style
-                                                                  .height_12(
-                                                                      context),
-                                                              fontFamily:
-                                                                  'Poppins-Medium',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: Style.height_5(context),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pushReplacement(
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                ConsultPage()));
-                                                          },
-                                                          child: Text(
-                                                            'Consultar Crédito',
-                                                            style: TextStyle(
-                                                              color: Style
-                                                                  .secondaryColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: Style
-                                                                  .height_12(
-                                                                      context),
-                                                              fontFamily:
-                                                                  'Poppins-Medium',
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                )),
-                                          ),
-                                        ],
-                                      ),
+                                          )),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    )
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: Style.height_15(context),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isExpandedConsult = !_isExpandedConsult;
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                    left: Style.height_10(context)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        if (_isExpandedConsult)
+                                          Transform.rotate(
+                                            angle:
+                                                3.1416, // 180 graus em radianos (π)
+                                            child: Icon(
+                                              Icons.arrow_drop_down_outlined,
+                                              size: Style.height_20(context),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
+                                          )
+                                        else
+                                          Icon(
+                                            Icons.arrow_drop_down_outlined,
+                                            size: Style.height_20(context),
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        SizedBox(
+                                          width: Style.width_10(context),
+                                        ),
+                                        Text(
+                                          'Consultas',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  Style.height_15(context),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Style.height_10(context),
+                                    ),
+                                    AnimatedContainer(
+                                      padding: EdgeInsets.only(
+                                          left: Style.height_12(context),
+                                          top: Style.height_2(context)),
+                                      duration: Duration(milliseconds: 1200),
+                                      // height: _isExpanded
+                                      //     ? Style.height_50(context)
+                                      //     : 0,
+                                      child: Visibility(
+                                          visible: _isExpandedConsult,
+                                          maintainAnimation: true,
+                                          maintainState: true,
+                                          maintainSize: false,
+                                          child: Column(
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          EstoquePage()));
+                                                    },
+                                                    child: Text(
+                                                      'Consultar Estoque',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            Style.height_12(
+                                                                context),
+                                                        fontFamily:
+                                                            'Poppins-Medium',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        Style.height_5(context),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          ConsultPage()));
+                                                    },
+                                                    child: Text(
+                                                      'Consultar Crédito',
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            Style.height_12(
+                                                                context),
+                                                        fontFamily:
+                                                            'Poppins-Medium',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
-                )
+                ),
               ],
             )),
             onWillPop: () async {

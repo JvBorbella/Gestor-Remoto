@@ -1,11 +1,11 @@
 // This is a generated file; do not edit or check into version control.
 FLUTTER_ROOT=C:\Users\joaob\AppData\Local\flutter
-FLUTTER_APPLICATION_PATH=C:\Users\joaob\OneDrive\Documentos\GitHub\Gestor-Remoto\project
+FLUTTER_APPLICATION_PATH=C:\Users\joaob\Documents\GitHub\Gestor-Remoto\project
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib\main.dart
 FLUTTER_BUILD_DIR=build
-FLUTTER_BUILD_NAME=4.5.3
-FLUTTER_BUILD_NUMBER=7
+FLUTTER_BUILD_NAME=4.6.4
+FLUTTER_BUILD_NUMBER=14
 EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
 EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
 DART_OBFUSCATION=false

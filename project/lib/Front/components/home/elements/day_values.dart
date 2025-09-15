@@ -18,9 +18,11 @@ class _DayValuesState extends State<DayValues> {
       child: Text(
         widget.text,
         style: TextStyle(
-            fontSize: Style.height_8(context),
-            color: Style.primaryColor,
-            fontWeight: FontWeight.bold),
+            fontSize: Style.height_10(context),
+            color: Theme.of(context).colorScheme.primary,
+             //fontFamily: 'Poppins-Bold',
+            fontWeight: FontWeight.bold
+          ),
       ),
     );
   }

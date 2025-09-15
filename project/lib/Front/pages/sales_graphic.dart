@@ -65,7 +65,7 @@ class _SalesGraphicState extends State<SalesGraphic> {
                     'Esta ação pode levar alguns minutos. Por favor, aguarde.',
                     style: TextStyle(
                         fontSize: Style.height_15(context),
-                        color: Style.primaryColor),
+                        color: Theme.of(context).colorScheme.primary),
                     textAlign: TextAlign.center,
                   ))
             ],
@@ -144,7 +144,7 @@ class _SalesGraphicState extends State<SalesGraphic> {
                                 style: TextStyle(
                                   fontSize: Style.height_12(context),
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                               ),
                               Text(
@@ -152,7 +152,7 @@ class _SalesGraphicState extends State<SalesGraphic> {
                                 style: TextStyle(
                                   fontSize: Style.height_12(context),
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.clip,
@@ -203,7 +203,9 @@ class _SalesGraphicState extends State<SalesGraphic> {
                                     '${payment.nomecondicaopagamento} - ${currencyFormat.format(payment.valor)}',
                                     style: TextStyle(
                                         fontSize: Style.height_10(context),
-                                        color: Style.primaryColor),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
                                   )
                                 ],
                               ),
@@ -221,8 +223,8 @@ class _SalesGraphicState extends State<SalesGraphic> {
                             final selectedDates =
                                 await showCalendarDialog(context);
                             if (selectedDates != selectDates) {
-                                loadingPieChart = true;
-                              }
+                              loadingPieChart = true;
+                            }
                             var concat = selectDates.length == 2
                                 ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
                                 : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
@@ -243,7 +245,7 @@ class _SalesGraphicState extends State<SalesGraphic> {
                                       .join(' - ')
                                   : 'Selecione uma ou mais datas',
                               style: TextStyle(
-                                color: Style.secondaryColor,
+                                color: Theme.of(context).colorScheme.onSecondary,
                                 fontWeight: FontWeight.bold,
                                 fontSize: Style.height_12(context),
                               ),
@@ -256,16 +258,16 @@ class _SalesGraphicState extends State<SalesGraphic> {
                 padding: EdgeInsets.all(Style.height_15(context)),
                 margin: EdgeInsets.only(bottom: Style.height_10(context)),
                 decoration: BoxDecoration(
-                  color: Style.defaultColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.15),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3),
+                    //color: Style.defaultColor,
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Colors.grey.withOpacity(0.15),
+                    //     spreadRadius: 5,
+                    //     blurRadius: 7,
+                    //     offset: Offset(0, 3),
+                    //   ),
+                    // ],
                     ),
-                  ],
-                ),
                 child: Row(
                   children: [
                     Container(
@@ -293,7 +295,8 @@ class _SalesGraphicState extends State<SalesGraphic> {
                                       ? 'Filtre o método de pagamento'
                                       : cond_pgto,
                                   style: TextStyle(
-                                    color: Style.secondaryColor,
+                                    color:
+                                        Theme.of(context).colorScheme.onSecondary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: Style.height_12(context),
                                   ),
@@ -309,7 +312,7 @@ class _SalesGraphicState extends State<SalesGraphic> {
                               ),
                               Icon(
                                 Icons.arrow_drop_down_circle,
-                                color: Style.primaryColor,
+                                color: Theme.of(context).colorScheme.primary,
                                 size: Style.height_20(context),
                               ),
                             ]),

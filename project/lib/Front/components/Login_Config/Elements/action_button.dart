@@ -41,7 +41,7 @@ class _ActionButton extends State<ActionButton> {
               widget.text,
               //Estilização do button
               style: TextStyle(
-                color: Style.secondaryColor,
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.bold,
                 fontSize: widget.height,
               ),
