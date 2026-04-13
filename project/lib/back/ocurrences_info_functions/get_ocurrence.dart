@@ -88,10 +88,14 @@ class DataServiceOcurrence {
       String token,
       String urlBasic,
       String empresaid,
-      String data) async {
+      String data,
+      bool flagWithDivergence,
+      bool flagNoDivergence,
+      String numDoc) async {
     List<GetOcurrence>? ocurrences;
     try {
-      var urlPost = Uri.parse('''$urlBasic/ideia/core/getdata/ocorrenciaproduto%20o%20WHERE%20o.empresa_id%20=%20'$empresaid'%20AND%20o.datacadastro%20$data/''');
+      var urlPost = Uri.parse(
+          '''$urlBasic/ideia/core/getdata/ocorrenciaproduto%20o%20WHERE%20o.empresa_id%20LIKE%20'$empresaid%25'%20AND%20o.datacadastro%20$data/''');
 
       var response = await http.get(
         urlPost,
@@ -100,22 +104,22 @@ class DataServiceOcurrence {
         },
       );
 
-      if (empresaid.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            behavior: SnackBarBehavior.floating,
-            padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
-            content: Text(
-              'Empresa não vinculada ao usuário',
-              style: TextStyle(
-                fontSize: Style.SaveUrlMessageSize(context),
-                color: Style.tertiaryColor,
-              ),
-            ),
-            backgroundColor: Style.errorColor,
-          ),
-        );
-      }
+      // if (empresaid.isEmpty) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(
+      //       behavior: SnackBarBehavior.floating,
+      //       padding: EdgeInsets.all(Style.SaveUrlMessagePadding(context)),
+      //       content: Text(
+      //         'Empresa não vinculada ao usuário',
+      //         style: TextStyle(
+      //           fontSize: Style.SaveUrlMessageSize(context),
+      //           color: Style.tertiaryColor,
+      //         ),
+      //       ),
+      //       backgroundColor: Style.errorColor,
+      //     ),
+      //   );
+      // }
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -132,6 +136,20 @@ class DataServiceOcurrence {
             ocurrences = ocurrences
                 .where((ocurrence) => ocurrence.flagexcluido == 0)
                 .toList();
+            if (flagWithDivergence) {
+              ocurrences = ocurrences
+                  .where((ocurrence) => ocurrence.flagdivergencia == 0 || ocurrence.flagdivergencia == 1)
+                  .toList();
+            } else if (flagNoDivergence) {
+              ocurrences = ocurrences
+                  .where((ocurrence) => ocurrence.flagdivergencia == 2)
+                  .toList();
+            } 
+            if (numDoc.isNotEmpty) {
+              ocurrences = ocurrences
+                .where((ocurrence) => ocurrence.numero!.contains(numDoc))
+                .toList();
+            }
           } else {
             print('Dados ausentes no JSON. Ocorrências');
           }

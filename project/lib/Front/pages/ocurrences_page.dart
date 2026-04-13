@@ -8,6 +8,7 @@ import 'package:project/back/ocurrences_info_functions/get_ocurrence.dart';
 import 'package:project/back/customer_info_functions/person.dart';
 import 'package:project/front/components/global/elements/navbar_button.dart';
 import 'package:project/front/components/global/structure/navbar.dart';
+import 'package:project/front/components/login_config/elements/input.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OcurrencesPage extends StatefulWidget {
@@ -23,18 +24,21 @@ class OcurrencesPage extends StatefulWidget {
 class _OcurrencesPageState extends State<OcurrencesPage> {
   List<GetOcurrence> ocurrences = [];
 
-  String token = '';
-  String urlBasic = '';
-  String empresaid = '';
-
-  String nomepessoa = '';
-  String pessoa_id = '';
+  String token = '',
+      urlBasic = '',
+      empresaid = '',
+      nomepessoa = '',
+      pessoa_id = '';
 
   DateTime selectedDate = DateTime.now();
   List<DateTime?> selectDates = [DateTime.now()];
 
-  bool isLoading = true;
-  bool isLoadingOcurrence = true;
+  bool isLoading = true,
+      isLoadingOcurrence = true,
+      flagWithDivergence = false,
+      flagNoDivergence = false;
+
+  TextEditingController numController = TextEditingController();
 
   @override
   void initState() {
@@ -72,48 +76,49 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
               padding: EdgeInsets.all(Style.height_15(context)),
               margin: EdgeInsets.only(bottom: Style.height_20(context)),
               decoration: BoxDecoration(
-               // color: Style.defaultColor,
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Colors.grey.withOpacity(0.15),
-                //     spreadRadius: 5,
-                //     blurRadius: 7,
-                //     offset: Offset(0, 3),
-                //   ),
-                // ],
-              ),
+                  // color: Style.defaultColor,
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Colors.grey.withOpacity(0.15),
+                  //     spreadRadius: 5,
+                  //     blurRadius: 7,
+                  //     offset: Offset(0, 3),
+                  //   ),
+                  // ],
+                  ),
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () async {
-                      final selectedDates = await showCalendarDialog(context);
-                      var concat = selectDates.length == 2
-                          ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
-                          : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
-                      await DataServiceOcurrence.fetchDataOcurrence(
-                          context,
-                          token,
-                          urlBasic,
-                          empresaid,
-                          // selectedDate.year.toString(),
-                          // selectedDate.month.toString().padLeft(2, '0'),
-                          // selectedDate.day.toString().padLeft(2, '0'),
-                          // selectDates.length == 2
-                          //     ? selectDates
-                          //         .map((date) =>
-                          //             DateFormat('BETWEEN%20yyy-MM-dd')
-                          //                 .format(date!))
-                          //         .join("'%20AND%20'")
-                          //         .toString()
-                          //     : selectDates
-                          //         .map((date) =>
-                          //             DateFormat('yyy-MM-dd').format(date!))
-                          //         .join("")
-                          concat);
-                      isLoadingOcurrence = true;
-                      setState(() {
-                        fetchDataOcurrences();
-                      });
+                      modalFilters();
+                      // final selectedDates = await showCalendarDialog(context);
+                      // var concat = selectDates.length == 2
+                      //     ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                      //     : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                      // await DataServiceOcurrence.fetchDataOcurrence(
+                      //     context,
+                      //     token,
+                      //     urlBasic,
+                      //     empresaid,
+                      //     // selectedDate.year.toString(),
+                      //     // selectedDate.month.toString().padLeft(2, '0'),
+                      //     // selectedDate.day.toString().padLeft(2, '0'),
+                      //     // selectDates.length == 2
+                      //     //     ? selectDates
+                      //     //         .map((date) =>
+                      //     //             DateFormat('BETWEEN%20yyy-MM-dd')
+                      //     //                 .format(date!))
+                      //     //         .join("'%20AND%20'")
+                      //     //         .toString()
+                      //     //     : selectDates
+                      //     //         .map((date) =>
+                      //     //             DateFormat('yyy-MM-dd').format(date!))
+                      //     //         .join("")
+                      //     concat);
+                      // isLoadingOcurrence = true;
+                      // setState(() {
+                      //   fetchDataOcurrences();
+                      // });
                     },
                     icon: Icon(Icons.filter_alt_rounded),
                     iconSize: Style.height_15(context),
@@ -160,70 +165,71 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
                       padding: EdgeInsets.all(Style.height_15(context)),
                       //margin: EdgeInsets.only(bottom: Style.height_20(context)),
                       decoration: BoxDecoration(
-                        //color: Style.defaultColor,
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     color: Colors.grey.withOpacity(0.15),
-                        //     spreadRadius: 5,
-                        //     blurRadius: 7,
-                        //     offset: Offset(0, 3),
-                        //   ),
-                        // ],
-                      ),
+                          //color: Style.defaultColor,
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.grey.withOpacity(0.15),
+                          //     spreadRadius: 5,
+                          //     blurRadius: 7,
+                          //     offset: Offset(0, 3),
+                          //   ),
+                          // ],
+                          ),
                       child: Row(
                         children: [
                           IconButton(
                             onPressed: () async {
-                              final selectedDates =
-                                  await showCalendarDialog(context);
+                              modalFilters();
+                              // final selectedDates =
+                              //     await showCalendarDialog(context);
 
-                              if (selectedDates != null) {
-                                setState(() {
-                                  selectDates = selectedDates;
-                                });
-                              }
-                              var concat = selectDates.length == 2
-                                  ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
-                                  : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
-                              // final DateTime? dateTime = await showDatePicker(
-                              //     context: context,
-                              //     initialDate: selectedDate,
-                              //     firstDate: DateTime(2000),
-                              //     lastDate: DateTime(3000));
-                              // if (dateTime != null) {
+                              // if (selectedDates != null) {
                               //   setState(() {
-                              //     selectedDate = dateTime;
+                              //     selectDates = selectedDates;
                               //   });
                               // }
-                              if (selectedDates != selectDates) {
-                                isLoadingOcurrence = false;
-                              } else {
-                                isLoadingOcurrence = true;
-                              }
+                              // var concat = selectDates.length == 2
+                              //     ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                              //     : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                              // // final DateTime? dateTime = await showDatePicker(
+                              // //     context: context,
+                              // //     initialDate: selectedDate,
+                              // //     firstDate: DateTime(2000),
+                              // //     lastDate: DateTime(3000));
+                              // // if (dateTime != null) {
+                              // //   setState(() {
+                              // //     selectedDate = dateTime;
+                              // //   });
+                              // // }
+                              // if (selectedDates != selectDates) {
+                              //   isLoadingOcurrence = false;
+                              // } else {
+                              //   isLoadingOcurrence = true;
+                              // }
 
-                              await DataServiceOcurrence.fetchDataOcurrence(
-                                  context,
-                                  token,
-                                  urlBasic,
-                                  empresaid,
-                                  // selectedDate.year.toString(),
-                                  // selectedDate.month.toString().padLeft(2, '0'),
-                                  // selectedDate.day.toString().padLeft(2, '0'),
-                                  // selectDates.length == 2
-                                  //     ? selectDates
-                                  //         .map((date) =>
-                                  //             DateFormat('BETWEEN%20yyy-MM-dd')
-                                  //                 .format(date!))
-                                  //         .join("'%20AND%20'")
-                                  //         .toString()
-                                  //     : selectDates
-                                  //         .map((date) => DateFormat('yyy-MM-dd')
-                                  //             .format(date!))
-                                  //         .join("")
-                                  concat);
-                              setState(() {
-                                fetchDataOcurrences();
-                              });
+                              // await DataServiceOcurrence.fetchDataOcurrence(
+                              //     context,
+                              //     token,
+                              //     urlBasic,
+                              //     empresaid,
+                              //     // selectedDate.year.toString(),
+                              //     // selectedDate.month.toString().padLeft(2, '0'),
+                              //     // selectedDate.day.toString().padLeft(2, '0'),
+                              //     // selectDates.length == 2
+                              //     //     ? selectDates
+                              //     //         .map((date) =>
+                              //     //             DateFormat('BETWEEN%20yyy-MM-dd')
+                              //     //                 .format(date!))
+                              //     //         .join("'%20AND%20'")
+                              //     //         .toString()
+                              //     //     : selectDates
+                              //     //         .map((date) => DateFormat('yyy-MM-dd')
+                              //     //             .format(date!))
+                              //     //         .join("")
+                              //     concat);
+                              // setState(() {
+                              //   fetchDataOcurrences();
+                              // });
                             },
                             icon: Icon(Icons.filter_alt_rounded),
                             iconSize: Style.height_15(context),
@@ -641,22 +647,16 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
     var concat = selectDates.length == 2
         ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
         : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
-    List<GetOcurrence>? fetchedData = await DataServiceOcurrence.fetchDataOcurrence(
-        context,
-        token,
-        urlBasic,
-        empresaid,
-        // selectedDate.year.toString(),
-        // selectedDate.month.toString(),
-        // selectedDate.day.toString(),
-        // selectDates.length == 2 ? selectDates
-        //                           .map((date) =>
-        //                               DateFormat('yyy-MM-dd').format(date!))
-        //                           .join("'%20AND%20'").toString() : selectDates
-        //                           .map((date) =>
-        //                               DateFormat('yyy-MM-dd').format(date!))
-        //                           .join(""));
-        concat);
+    List<GetOcurrence>? fetchedData =
+        await DataServiceOcurrence.fetchDataOcurrence(
+            context,
+            token,
+            urlBasic,
+            empresaid,
+            concat,
+            flagWithDivergence,
+            flagNoDivergence,
+            numController.text);
     if (fetchedData != null) {
       setState(() {
         ocurrences = fetchedData;
@@ -684,5 +684,106 @@ class _OcurrencesPageState extends State<OcurrencesPage> {
         ),
       );
     }
+  }
+
+  void modalFilters() async {
+    showDialog(
+        context: context,
+        builder: (context) => StatefulBuilder(
+              builder: (context, setState) => AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () async {
+                          final selectedDates =
+                              await showCalendarDialog(context);
+
+                          if (selectedDates != null) {
+                            setState(() {
+                              selectDates = selectedDates;
+                            });
+                          }
+                          var concat = selectDates.length == 2
+                              ? "BETWEEN%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("'%20AND%20'").toString()}'"
+                              : "LIKE%20'${selectDates.map((date) => DateFormat('yyyy-MM-dd').format(date!)).join("")}%25'";
+                          if (selectedDates != selectDates) {
+                            isLoadingOcurrence = false;
+                          } else {
+                            isLoadingOcurrence = true;
+                          }
+
+                          await DataServiceOcurrence.fetchDataOcurrence(
+                              context,
+                              token,
+                              urlBasic,
+                              empresaid,
+                              concat,
+                              flagWithDivergence,
+                              flagNoDivergence,
+                              numController.text);
+                        },
+                        child: Text('Data/Período')),
+                    ElevatedButton(
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Status da ocorrência'),
+                            Icon(Icons.arrow_drop_down)
+                          ],
+                        )),
+                    Container(
+                      child: Row(
+                        children: [
+                          Checkbox(
+                              value: flagWithDivergence,
+                              onChanged: (value) {
+                                setState(() {
+                                  flagNoDivergence = false;
+                                  flagWithDivergence = value!;
+                                });
+                              }),
+                          Text('Com divergências')
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Row(
+                        children: [
+                          Checkbox(
+                              value: flagNoDivergence,
+                              onChanged: (value) {
+                                setState(() {
+                                  flagWithDivergence = false;
+                                  flagNoDivergence = value!;
+                                });
+                              }),
+                          Text('Sem divergências')
+                        ],
+                      ),
+                    ),
+                    Input(
+                      text: 'Número da ocorrência',
+                      type: TextInputType.text,
+                      controller: numController,
+                    )
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Fechar')),
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          fetchDataOcurrences();
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Salvar')),
+                ],
+              ),
+            ));
   }
 }

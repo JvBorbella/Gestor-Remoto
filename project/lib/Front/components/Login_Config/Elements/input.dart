@@ -79,6 +79,8 @@ class _InputState extends State<Input> {
                 onTap: widget.onTap,
                 onChanged: widget.onChanged,
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.transparent,
                   suffixIcon: widget.IconButton,
                   suffixIconColor: Theme.of(context).colorScheme.primary,
                   labelText: widget.text,
