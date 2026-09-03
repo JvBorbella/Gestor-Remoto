@@ -21,7 +21,7 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "
 
 android {
     namespace "com.ideiatecnologia.GestorRemoto"
-    compileSdk 35
+    compileSdk 36
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -36,8 +36,8 @@ android {
 
     defaultConfig {
         applicationId "com.ideiatecnologia.GestorRemoto"
-        minSdkVersion 23
-        targetSdkVersion flutter.targetSdkVersion // ✅ Definição direta
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
